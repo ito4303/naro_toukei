@@ -1,0 +1,73 @@
+##
+## Example 2: Stan
+##
+
+library(rstan)
+
+# data
+k <- 10
+x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+y <- c(1, 2, 2, 6, 4, 5, 8, 9, 9, 9, 10)
+n <- length(x)
+
+# pdf("example2.pdf", width = 240/72, height = 240/72,
+#    family = "Helvetica", pointsize = 10)
+# plot(x, y, las = 1)
+# dev.off()
+
+# model
+example2_code <- "
+data {
+  int<lower=0> N;
+  int<lower=0> K;
+  int<lower=0> X[N];
+  int<lower=0> Y[N];
+}
+parameters {
+  real beta;
+  real beta_x;
+}
+transformed parameters {
+  real<lower=0,upper=1> p[N];
+
+  for (i in 1:N) {
+    p[i] <- inv_logit(beta + beta_x * X[i]);
+  }
+}
+model {
+  Y ~ binomial(K, p);
+  
+  # priors
+  beta ~ normal(0.0, 1.0e+3);
+  beta_x ~ normal(0.0, 1.0e+3);
+}
+"
+
+# number of chains
+n.chains <- 3
+
+# initial values
+inits <- vector("list", 3)
+inits[[1]] <- list(beta = -10, beta_x = 0)
+inits[[2]] <- list(beta =  -5, beta_x = 2)
+inits[[3]] <- list(beta =   0, beta_x = -2)
+
+# parameters
+pars <- c("beta", "beta_x")
+
+# run Stan
+fit <- stan(model_code = example2_code,
+            data = list(X = x, Y = y, N = n, K = k),
+            pars = pars, init = inits, seed = 123,
+            chains = n.chains,
+            iter = 2500, warmup = 500, thin = 2)
+
+
+# plot results
+# pdf("example2stan.pdf", width = 400/72, height = 400/72,
+#     family = "Helvetica", pointsize = 10)
+plot(fit)
+# dev.off()
+
+# show results
+print(fit)

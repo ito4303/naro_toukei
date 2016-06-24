@@ -1,0 +1,29 @@
+var
+  M,                    # Number of blocks
+  N,                    # Number of observations per block
+  X1[M, N], X2[M, N],   # Data
+  Y[M, N],
+  e.B[M],               # Random effect
+  beta, beta.1, beta.2, # Parameters
+  tau, sigma, 
+  tau.G, sigma.G;       # Hyperparameters
+
+model {
+  for (i in 1:M) {
+    for (j in 1:N) {
+      Y[i, j] ~ dnorm(mu[i, j], tau)
+      mu[i, j] <- beta + beta.1 * X1[i, j] +
+                         beta.2 * X2[i, j] + e.B[i]
+    }
+    e.B[i] ~ dnorm(0, tau.B)
+  }
+
+  ## Priors
+  beta ~ dnorm(0, 1.0E-6)
+  beta.1 ~ dnorm(0, 1.0E-6)
+  beta.2 ~ dnorm(0, 1.0E-6)
+  tau <- 1 / (sigma * sigma)
+  tau.B <- 1 / (sigma.B * sigma.B)
+  sigma ~ dunif(0, 1.0E+4)
+  sigma.B ~ dunif(0, 1.0E+4)
+}

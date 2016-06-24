@@ -1,0 +1,8 @@
+model {
+  for (i in 1:N) {
+    Y[i] ~ dbin(p[i], K)
+    logit(p[i]) <- beta + beta.x * X[i]
+  }
+  beta ~ dnorm(0, 1.0E-6)
+  beta.x ~ dnorm(0, 1.0E-6)
+}
