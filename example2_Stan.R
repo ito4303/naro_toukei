@@ -20,7 +20,7 @@ example2_code <- "
 data {
   int<lower=0> N;
   int<lower=0> K;
-  int<lower=0> X[N];
+  vector[N] X;
   int<lower=0> Y[N];
 }
 parameters {
@@ -28,14 +28,12 @@ parameters {
   real beta_x;
 }
 transformed parameters {
-  real<lower=0,upper=1> p[N];
+  vector[N] logit_p;
 
-  for (i in 1:N) {
-    p[i] <- inv_logit(beta + beta_x * X[i]);
-  }
+  logit_p = beta + beta_x * X;
 }
 model {
-  Y ~ binomial(K, p);
+  Y ~ binomial_logit(K, logit_p);
   
   # priors
   beta ~ normal(0.0, 1.0e+3);
