@@ -16,7 +16,7 @@ fit <- stan("example4.stan",
                         Y = data$Num,
                         X = data$Light),
             pars = c("p", "beta"),
-            chains = 4, iter = 11000, warmup = 1000, thin = 10)
+            chains = 4, iter = 6000, warmup = 1000, thin = 5)
 
 plot(fit)
 traceplot(fit)

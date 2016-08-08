@@ -61,11 +61,8 @@ fit <- stan(model_code = example2_code,
             iter = 2500, warmup = 500, thin = 2)
 
 
-# plot results
-# pdf("example2stan.pdf", width = 400/72, height = 400/72,
-#     family = "Helvetica", pointsize = 10)
-plot(fit)
-# dev.off()
+# plot trace
+traceplot(fit)
 
 # show results
 print(fit)

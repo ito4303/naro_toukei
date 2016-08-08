@@ -94,6 +94,14 @@ summary(post2.mcmc)
 ## Exponential of poseterior mean of lambda
 exp(summary(post2.mcmc)$statistics["Mean"])
 
+## Convergence diagnostic
+# Gelman & Rubin
+gelman.diag(post2.mcmc)
+
+# Geweke
+geweke.diag(post2.mcmc)
+
+
 
 ## Use MCMCmetrop1R function
 
@@ -129,16 +137,15 @@ post3 <- lapply(chains,
                 })
 post3.mcmc <- mcmc.list(post3)
 
-## Show results
-summary(post3.mcmc)
-
 ## Convergence diagnostic
 # Gelman & Rubin
 gelman.diag(post3.mcmc)
 
-# Geweke
-geweke.diag(post3.mcmc)
+## Plot trace
+plot(post3.mcmc)
 
+## Show results
+summary(post3.mcmc)
 
 ## Informative prior
 
