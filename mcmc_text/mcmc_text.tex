@@ -885,7 +885,7 @@ $\bm{x}$と$\bm{y}$との関係をプロットしてみると，図\ref{example2
 \end{figure}
 
 
-\subsubsection{MCMCpackによる例}
+\subsubsection{MCMCpack:による例}
 
 まず，\textsf{MCMCpack}で解いてみる。
 \textsf{R}スクリプトは\texttt{example2.R}。
@@ -966,9 +966,6 @@ The Metropolis acceptance rate for beta was 0.52400
 	\label{plot_coda_mcmcpack}
 \end{figure}
 
-%ページ調整
-\vspace{3zw}
-
 収束診断のため，Gelman-Rubin統計量($\Hat{R}$)を表示する。
 \begin{lstlisting}
 > gelman.diag(post.mcmc)
@@ -984,6 +981,10 @@ Multivariate psrf
 \end{lstlisting}
 図\ref{plot_coda_mcmcpack}の結果と合わせ，うまく収束していると
 判断できる。
+
+%ページ調整
+\vspace{1zw}
+
 
 結果を表示する。
 \begin{lstlisting}
@@ -1011,6 +1012,72 @@ x            0.3675  0.4883  0.5518  0.6204  0.7736
 切片の事後平均が-2.17，95\%信用区間が-3.20〜-1.26，
 xの係数の事後平均が0.56，95\%信用区間が0.37〜0.77と推定された。
 
+\paragraph{MCMCmetrop1R()を使った例}
+
+次に、\texttt{MCMCmetrop1R()}関数を使って同じ問題を解いてみよう。
+この場合、データとして元の\texttt{x}と\texttt{y}をそのまま利用できる。
+\texttt{MCMCmetrop1R()}関数に渡す、対数事後確率（この例では、事前分布はないものと扱っているので、
+対数尤度に同じ）を返す関数は以下のように定義できる。
+\texttt{beta}引数に与えるデータは、2次元のベクトルになることに注意。
+
+\begin{lstlisting}
+LogFun <- function(beta, x, y, k) {
+  mu <- beta[1] + beta[2] * x
+  sum(log(dbinom(y, k, (1 / (1 + exp(-mu))))))
+}
+\end{lstlisting}
+
+\noindent
+ロジットスケールの線形予測子\texttt{mu}を、リストの3行目、\texttt{dbinom()}関数の第3引数の部分で
+逆ロジット変換して確率スケールにしている。
+
+次に、\texttt{MCMCmetrop1R()}関数でMCMC計算を実行するが、ここでも\texttt{lapply()}関数を
+使ってプログラムを短くしている。
+上で定義した\texttt{LogFun()}の\texttt{beta}引数は2次元ベクトルなので、初期値\texttt{theta.init}引数に
+与えるデータも2次元ベクトルになるように、\texttt{inits}は2次元ベクトルを要素とするリストとして
+定義する。
+
+
+\begin{lstlisting}
+chains <- 1:3
+inits <- list(c(1, 1), c(3, 3), c(-3, -3))
+seeds <- c(1117, 1123, 1129)
+post2 <- lapply(chains,
+                function(chain) {
+                  MCMCmetrop1R(fun = LogFun,
+                               theta.init = inits[[chain]],
+                               burnin = 1000, mcmc = 1000,
+                               thin = 1,
+                               tune = 1.1, seed = seeds[chain],
+                               verbose = 500, logfun = TRUE,
+                               x = x, y = y, k = 10)
+                })
+post2.mcmc <- mcmc.list(post2)
+\end{lstlisting}
+
+\texttt{MCMClogit()}関数を使用したのと、ほぼ同様の結果が得られる。
+
+\begin{lstlisting}
+> summary(post2.mcmc)
+
+Iterations = 1001:2000
+Thinning interval = 1 
+Number of chains = 3 
+Sample size per chain = 1000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+        Mean     SD Naive SE Time-series SE
+[1,] -2.1842 0.5123 0.009354       0.028818
+[2,]  0.5624 0.1067 0.001948       0.006238
+
+2. Quantiles for each variable:
+
+        2.5%     25%     50%     75%  97.5%
+[1,] -3.2531 -2.5065 -2.1734 -1.8401 -1.217
+[2,]  0.3566  0.4866  0.5628  0.6374  0.782
+\end{lstlisting}
 
 %%
 %% 実習ここまで
@@ -1098,19 +1165,6 @@ p(X_i) &= \mathrm{logit}^{-1}(\beta+\beta_{x}X_i)) \notag \\
 \Pr(\beta_{x}) &= \mathrm{Normal}(0, 10^{6})
 \end{align}
 
-%最後に，\texttt{write.model()}関数で``\texttt{example2\_mode.txt}''という
-%ファイルに書き出している（はじめに\texttt{model.file}に``\texttt{example2\_model.txt}''と
-%いう値を与えている）。
-%簡単なモデルなら，このように \textsf{R}のスクリプト内で記述して，
-%\texttt{write.model()}関数で書き出すということもできる。
-%
-%\begin{minipage}{110mm}
-%\begin{lstlisting}
-%> write.model(model, model.file)
-%\end{lstlisting}
-%\end{minipage}
-%\vspace{1.0zw}
-
 \paragraph{設定}
 
 つづいて，chainの数，パラメーターの初期値を決める。
@@ -1188,8 +1242,8 @@ MCMCpackなどでいうburn-inの回数に相当する。
 各chainについて，繰り返し回数3000回，サンプリング間隔3回としている。
 
 \begin{lstlisting}
-> post.samp <- coda.samples(model, n.iter = 3000, thin = 3,
-+                           variable.names = pars)
+> post <- coda.samples(model, n.iter = 4000, thin = 4,
++                      variable.names = pars)
   |**************************************************| 100%
 \end{lstlisting}
 
@@ -1198,7 +1252,7 @@ MCMCpackなどでいうburn-inの回数に相当する。
 
 さっそく，結果をプロットしてみる（図\ref{plot_coda}）。
 \begin{lstlisting}
-> plot(post.samp)
+> plot(post)
 \end{lstlisting}
 
 
@@ -1217,27 +1271,27 @@ MCMCpackなどでいうburn-inの回数に相当する。
 図\ref{plot_coda}の軌跡とあわせて，うまく収束したことが
 確認できる。
 \begin{lstlisting}
-> gelman.diag(post.samp)
+> gelman.diag(post)
 Potential scale reduction factors:
 
        Point est. Upper C.I.
-beta            1       1.01
-beta.x          1       1.00
+beta         1.01       1.03
+beta.x       1.01       1.05
 
 Multivariate psrf
 
-1
+1.02
 \end{lstlisting}
 
 %ページ調整
-\pagebreak
+%\pagebreak
 
 結果の要約を表示する。
 \begin{lstlisting}
-> summary(post.samp)
+> summary(post)
 
-Iterations = 2003:5000
-Thinning interval = 3 
+Iterations = 1004:5000
+Thinning interval = 4 
 Number of chains = 3 
 Sample size per chain = 1000 
 
@@ -1245,20 +1299,20 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
           Mean     SD Naive SE Time-series SE
-beta   -2.1827 0.5204 0.009501       0.020194
-beta.x  0.5618 0.1067 0.001948       0.004253
+beta   -2.0500 0.4792 0.008749       0.030093
+beta.x  0.5339 0.0978 0.001786       0.007075
 
 2. Quantiles for each variable:
 
-          2.5%     25%     50%     75%  97.5%
-beta   -3.2779 -2.4999 -2.1626 -1.8296 -1.243
-beta.x  0.3663  0.4891  0.5548  0.6288  0.793
+          2.5%     25%     50%     75%   97.5%
+beta   -3.0310 -2.3765 -2.0308 -1.7170 -1.1529
+beta.x  0.3554  0.4644  0.5304  0.5977  0.7382
 
 \end{lstlisting}
 
 \noindent
-\texttt{beta}の平均値が-2.18，95\%ベイズ信用区間が-3.28〜-1.24，
-\texttt{beta.x}の平均値が0.56，95\%ベイズ信用区間が0.37〜0.79
+\texttt{beta}の事後平均が-2.05，95\%ベイズ信用区間が-3.03〜-1.15，
+\texttt{beta.x}の事後平均が0.53，95\%ベイズ信用区間が0.36〜0.74
 であることがわかる。
 
 %ページ調整
@@ -1266,8 +1320,8 @@ beta.x  0.3663  0.4891  0.5548  0.6288  0.793
 
 つづいて，$\bm{X}$と$\bm{Y}$とのプロットに，$\bm{Y}$の期待値を重ねて表示させてみよう。
 \begin{lstlisting}
-> beta <- unlist(post.samp[, "beta"])
-> beta.x <- unlist(post.samp[, "beta.x"])
+> beta <- unlist(post[, "beta"])
+> beta.x <- unlist(post[, "beta.x"])
 > 
 > new.x <- seq(0, 10, len = 100)
 > logit.p <- beta + beta.x %o% new.x
@@ -1289,7 +1343,7 @@ beta.x  0.3663  0.4891  0.5548  0.6288  0.793
 +        lty = c(1, 2, 3))
 \end{lstlisting}
 \noindent
-\texttt{post.samp}には，各chainをリストの要素として，
+\texttt{post}には，各chainをリストの要素として，
 各パラメーターについて
 サンプリングされた値が格納されているので，それを取り出して使っている。
 1行目と2行目の\texttt{unlist()}関数は，リスト構造になっているものを
@@ -1530,6 +1584,9 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 > y  <- t(matrix(data$y,  nrow = n.data, ncol = n.block))
 \end{lstlisting}
 
+%ページ調整
+\vspace{3zw}
+
 
 \texttt{x1}の内容を確認する。
 \begin{lstlisting}
@@ -1613,7 +1670,7 @@ BUGS言語では，変数宣言は必ずしも必要ではないが，高次元�
 
 \begin{figure}[htbp]
 	\begin{center}
-		\includegraphics[bb=0 0 440 384, clip, width=320 bp]{example3_schema.pdf}
+		\includegraphics[bb=0 0 440 384, clip, width=280 bp]{example3_schema.pdf}
 	\end{center}
 	\caption{モデルの概念図}
 	\label{example3_schema}
@@ -1670,8 +1727,8 @@ BUGS言語では，変数宣言は必ずしも必要ではないが，高次元�
   |**************************************************| 100%
 > 
 > ## Sampling
-> post.samp <- coda.samples(model, n.iter = 5000, thin = 5,
-+                           variable.names = pars)
+> post <- coda.samples(model, n.iter = 5000, thin = 5,
++                      variable.names = pars)
   |**************************************************| 100%
 \end{lstlisting}
 
@@ -1680,28 +1737,28 @@ BUGS言語では，変数宣言は必ずしも必要ではないが，高次元�
 結果は以下のようになる。
 
 \begin{lstlisting}
-> gelman.diag(post.samp)
+> gelman.diag(post)
 Potential scale reduction factors:
 
         Point est. Upper C.I.
-beta         1.000      1.001
-beta.1       0.999      1.000
-beta.2       1.001      1.004
-e.B[1]       1.001      1.002
-e.B[2]       1.001      1.001
-e.B[3]       1.000      1.001
-e.B[4]       0.999      0.999
-e.B[5]       1.001      1.003
-e.B[6]       1.001      1.003
-e.B[7]       1.002      1.005
-e.B[8]       1.000      1.000
-sigma        1.000      1.002
-sigma.B      1.000      1.001
+beta          1.00       1.00
+beta.1        1.00       1.00
+beta.2        1.00       1.00
+e.B[1]        1.00       1.00
+e.B[2]        1.00       1.00
+e.B[3]        1.00       1.00
+e.B[4]        1.00       1.00
+e.B[5]        1.00       1.00
+e.B[6]        1.00       1.01
+e.B[7]        1.00       1.00
+e.B[8]        1.00       1.00
+sigma         1.00       1.01
+sigma.B       1.01       1.01
 
 Multivariate psrf
 
-1
-> summary(post.samp)
+1.01
+> summary(post)
 
 Iterations = 2005:7000
 Thinning interval = 5 
@@ -1712,36 +1769,36 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
            Mean     SD Naive SE Time-series SE
-beta     3.6431 1.2561 0.022934       0.023453
-beta.1   0.4762 0.1859 0.003394       0.003395
-beta.2  -0.3376 0.1989 0.003631       0.003995
-e.B[1]  -0.7389 0.6441 0.011760       0.011762
-e.B[2]  -1.5472 0.6489 0.011847       0.010824
-e.B[3]  -0.6236 0.6332 0.011560       0.011173
-e.B[4]   0.2604 0.6515 0.011894       0.012082
-e.B[5]   0.8410 0.6469 0.011810       0.011813
-e.B[6]   1.3045 0.6537 0.011935       0.011938
-e.B[7]   1.0174 0.6325 0.011549       0.010129
-e.B[8]  -0.5042 0.6292 0.011487       0.012747
-sigma    0.9169 0.1255 0.002290       0.002414
-sigma.B  1.3394 0.5232 0.009553       0.010742
+beta     3.6869 1.2589 0.022984       0.022302
+beta.1   0.4683 0.1875 0.003423       0.003423
+beta.2  -0.3405 0.2043 0.003730       0.003627
+e.B[1]  -0.7276 0.6128 0.011188       0.011189
+e.B[2]  -1.5455 0.6433 0.011745       0.011748
+e.B[3]  -0.6184 0.6145 0.011219       0.010990
+e.B[4]   0.2493 0.6306 0.011514       0.011516
+e.B[5]   0.8584 0.6233 0.011379       0.011382
+e.B[6]   1.3231 0.6262 0.011434       0.011312
+e.B[7]   1.0238 0.6225 0.011364       0.011368
+e.B[8]  -0.4997 0.6137 0.011204       0.011987
+sigma    0.9206 0.1256 0.002292       0.002404
+sigma.B  1.3303 0.5201 0.009496       0.010716
 
 2. Quantiles for each variable:
 
-            2.5%     25%     50%     75%   97.5%
-beta     1.24221  2.7958  3.6471  4.4610  6.1945
-beta.1   0.12397  0.3545  0.4765  0.5953  0.8445
-beta.2  -0.74081 -0.4672 -0.3382 -0.2077  0.0461
-e.B[1]  -2.00738 -1.1424 -0.7286 -0.3214  0.4525
-e.B[2]  -2.87026 -1.9365 -1.5203 -1.1364 -0.3076
-e.B[3]  -1.91307 -1.0123 -0.6190 -0.2163  0.5828
-e.B[4]  -1.01832 -0.1383  0.2595  0.6578  1.5216
-e.B[5]  -0.40669  0.4229  0.8299  1.2526  2.1243
-e.B[6]   0.01952  0.8781  1.2820  1.7131  2.6801
-e.B[7]  -0.22065  0.6113  1.0096  1.4158  2.2682
-e.B[8]  -1.75477 -0.8872 -0.4968 -0.1091  0.7193
-sigma    0.70526  0.8270  0.9071  0.9948  1.1820
-sigma.B  0.64972  0.9875  1.2278  1.5691  2.6559
+            2.5%     25%     50%     75%    97.5%
+beta     1.22449  2.8471  3.6879  4.5337  6.16940
+beta.1   0.09328  0.3459  0.4747  0.5935  0.83270
+beta.2  -0.74771 -0.4702 -0.3394 -0.2041  0.04264
+e.B[1]  -1.98965 -1.1067 -0.7171 -0.3382  0.48830
+e.B[2]  -2.85773 -1.9566 -1.5255 -1.1312 -0.30725
+e.B[3]  -1.83887 -1.0194 -0.6075 -0.2241  0.57011
+e.B[4]  -1.02603 -0.1474  0.2487  0.6477  1.52707
+e.B[5]  -0.36805  0.4510  0.8606  1.2536  2.11989
+e.B[6]   0.15752  0.9186  1.3014  1.7216  2.60919
+e.B[7]  -0.20034  0.6317  1.0030  1.3985  2.27732
+e.B[8]  -1.73718 -0.8827 -0.5041 -0.1072  0.71509
+sigma    0.71060  0.8330  0.9109  0.9939  1.19183
+sigma.B  0.64283  0.9905  1.2170  1.5583  2.64066
 
 \end{lstlisting}
 
@@ -1875,6 +1932,8 @@ model <- jags.model(file = model.file,
 芽生えの数と林冠開空率との間に関連性があるかどうかを検討する。
 
 データは``\texttt{example4.csv}''というファイルに入っている。
+%ページ調整
+\vspace{1zw}
 \begin{lstlisting}
 "Plot","Num","Light"
 1,0,2.680
@@ -1941,7 +2000,7 @@ Number of Fisher Scoring iterations: 6
 \end{figure}
 
 %ページ調整
-%\vspace{1zw}
+\vspace{2zw}
 
 \paragraph{モデル}
 ZIPモデルを扱うBUGSコードは以下のようになる。
@@ -1986,7 +2045,7 @@ $\log\lambda = \beta + \beta_{x}X$であるとする。
 （burn-in 2000回，繰り返し回数 10000回，サンプリング間隔 10回），結果は以下のようになった。
 
 \begin{lstlisting}
-> summary(post.samp)
+> summary(post)
 
 Iterations = 2010:12000
 Thinning interval = 10 
@@ -1996,17 +2055,17 @@ Sample size per chain = 1000
 1. Empirical mean and standard deviation for each variable,
    plus standard error of the mean:
 
-           Mean     SD Naive SE Time-series SE
-beta   -0.09412 0.5810 0.010607       0.016938
-beta.x  0.49827 0.4083 0.007455       0.011882
-p       0.43111 0.1037 0.001893       0.001893
+          Mean     SD Naive SE Time-series SE
+beta   -0.1031 0.5936 0.010837       0.018007
+beta.x  0.5063 0.4172 0.007617       0.012891
+p       0.4328 0.1050 0.001917       0.001985
 
 2. Quantiles for each variable:
 
           2.5%     25%      50%    75%  97.5%
-beta   -1.2656 -0.4963 -0.07169 0.2823 1.0174
-beta.x -0.3225  0.2259  0.50584 0.7898 1.2494
-p       0.2468  0.3584  0.42481 0.5002 0.6501
+beta   -1.3386 -0.4852 -0.08479 0.3170 1.0068
+beta.x -0.3120  0.2206  0.50906 0.7882 1.3116
+p       0.2432  0.3591  0.42538 0.5015 0.6552
 
 \end{lstlisting}
 存在する確率$p$の事後平均は0.431，95\%信用区間は0.247〜0.650と推定された。

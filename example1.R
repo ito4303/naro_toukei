@@ -102,8 +102,9 @@ gelman.diag(post2.mcmc)
 geweke.diag(post2.mcmc)
 
 
-
+##
 ## Use MCMCmetrop1R function
+##
 
 ## Function returns log of prior x likelihood
 LogPoisFun <- function(lambda, x) {

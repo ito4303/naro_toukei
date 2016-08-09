@@ -64,39 +64,9 @@ model <- jags.model(file = model.file,
 update(model, n.iter = 1000)
 
 ## Sampling
-post.samp <- coda.samples(model, n.iter = 10000, thin = 10,
-                          variable.names = pars)
+post <- coda.samples(model, n.iter = 10000, thin = 10,
+                     variable.names = pars)
 
 ## Show results
-gelman.diag(post.samp)
-summary(post.samp)
-
-
-
-
-post.samp <- bugs(data = list(N = nrow(data),
-                              Y = data$Num,
-                              X = data$Light),
-                  inits = inits,
-                  parameters.to.save = params,
-                  model = model.file,
-                  n.chains = n.chains,
-                  n.iter = 25000,
-                  n.burnin = 5000,
-                  n.thin = 20,
-                  debug = FALSE,
-                  OpenBUGS.pgm = openbugs,
-                  working.directory = getwd(),
-                  clearWD = TRUE,
-                  useWINE = useWINE,
-                  newWINE = TRUE,
-                  WINE = wine,
-                  WINEPATH = winepath)
-
-## Show results
-library(coda)
-post.mcmc <- as.mcmc.list(post.samp)
-gelman.diag(post.mcmc)
-summary(post.mcmc)
-plot(post.mcmc[, c("beta", "beta.x", "p")])
-
+gelman.diag(post)
+summary(post)

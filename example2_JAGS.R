@@ -47,24 +47,24 @@ model <- jags.model(file = model.file,
 update(model, n.iter = 1000)
 
 ## Sampling
-post.samp <- coda.samples(model, n.iter = 3000, thin = 3,
-                          variable.names = pars)
+post <- coda.samples(model, n.iter = 4000, thin = 4,
+                     variable.names = pars)
 
 ## Plot results
 #pdf("example2_jags_results.pdf", width = 400/72, height = 400/72,
 #    family = "Helvetica", pointsize = 10)
-plot(post.samp)
+plot(post)
 #dev.off()
 
 ## Check convergence
-gelman.diag(post.samp)
+gelman.diag(post)
 
 ## Print results
-summary(post.samp)
+summary(post)
 
 ## Plot expected and observed values
-beta <- unlist(post.samp[, "beta"])
-beta.x <- unlist(post.samp[, "beta.x"])
+beta <- unlist(post[, "beta"])
+beta.x <- unlist(post[, "beta.x"])
 
 new.x <- seq(0, 10, len = 100)
 logit.p <- beta + beta.x %o% new.x

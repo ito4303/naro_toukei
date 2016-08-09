@@ -28,7 +28,7 @@
 <dd>BUGSモデル (nested indexing)</dd>
 <dt>example3_Stan.R</dt>
 <dd>Stanによる例</dd>
-<dt>example3_Stan.R</dt>
+<dt>example3.stan</dt>
 <dd>Stanモデル</dd>
 </dl>
 
@@ -44,4 +44,10 @@
 <dd>Stanによる例</dd>
 <dt>example4.stan</dt>
 <dd>Stanモデル</dd>
+</dl>
+
+## テキスト
+<dl>
+<dt>mcmc_text/*</dt>
+<dd>テキストのTeXファイルおよび画像データ</dd>
 </dl>

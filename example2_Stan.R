@@ -62,7 +62,7 @@ fit <- stan(model_code = example2_code,
 
 
 # plot trace
-traceplot(fit)
+rstan::traceplot(fit)
 
 # show results
 print(fit)

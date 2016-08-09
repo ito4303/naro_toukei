@@ -62,12 +62,12 @@ model <- jags.model(file = model.file,
 update(model, n.iter = 1000)
 
 ## Sampling
-post.samp <- coda.samples(model, n.iter = 5000, thin = 5,
-                          variable.names = pars)
+post <- coda.samples(model, n.iter = 5000, thin = 5,
+                     variable.names = pars)
 
 ## Show results
-gelman.diag(post.samp)
-summary(post.samp)
+gelman.diag(post)
+summary(post)
 
 ## Plot densities of random effects
 #pdf("example3_e.pdf", width = 360/72, height = 360/72,
@@ -79,7 +79,7 @@ plot(NULL, type = "n",
      las = 1)
 for (i in 1:n.block) {
   j <- paste("e.B[", i, "]", sep = "")
-  lines(density(unlist(post.samp[, j])), col = i)
+  lines(density(unlist(post[, j])), col = i)
 }
 #dev.off()
 
@@ -129,10 +129,10 @@ model <- jags.model(file = model.file,
 update(model, n.iter = 1000)
 
 ## Sampling
-post.samp <- coda.samples(model, n.iter = 5000, thin = 5,
-                          variable.names = pars)
+post <- coda.samples(model, n.iter = 5000, thin = 5,
+                     variable.names = pars)
 
 ## Show results
-gelman.diag(post.samp)
-summary(post.samp)
+gelman.diag(post)
+summary(post)
 
