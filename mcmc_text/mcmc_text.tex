@@ -55,6 +55,8 @@
 （実習には\textsf{MCMCpack}を使用する）。
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
 \footnote{本テキスト執筆時には，R 3.3.1, MCMCpack 1.3-6, JAGS 4.2.0, Stan 2.11.0を使用した。}
+例題等のファイルは\url{https://github.com/ito4303/naro_toukei}で
+公開しているので、参照されたい。
 
 \subsection{MCMCとは?}
 
@@ -514,7 +516,7 @@ $\log(\lambda)$が推定される）。
 高次のモデルでは0.25とされている\cite{IMCMR}。
 
 %ページ調整
-\vspace{4zw}
+%\vspace{4zw}
 
 
 乱数系列と初期値を変えて同様の計算を繰り返してみる。
@@ -630,6 +632,7 @@ $\log\lambda$の事後分布の平均値（事後平均）が1.33，95\%信用�
 \paragraph{収束診断}
 この例ではうまく収束したが，いつでもうまくいくというものでもない。
 うまく収束しなかった例を図\ref{bad_mcmc}にしめす。
+3本の連鎖がまったく混ざりあっていない。
 \begin{figure}[htbp]
 	\begin{center}
 		\includegraphics[bb=0 0 420 210, clip, width=320 bp]{bad_mcmc.pdf}
@@ -638,12 +641,12 @@ $\log\lambda$の事後分布の平均値（事後平均）が1.33，95\%信用�
 	\label{bad_mcmc}
 \end{figure}
 
-収束状況の診断のためには，Gelman-Rubinの収束診断($\Hat{R}$; Rhat)がよく使われる。
+収束状況を数値で診断するためには，Gelman-Rubinの収束診断($\Hat{R}$; Rhat)がよく使われる。
 \textsf{R}では，\texttt{coda}パッケージの\texttt{gelman.diag()}関数などで計算できる。
 収束していれば$\Hat{R}$の値が1に近くなる（この計算のためには複数のchainが必要である）。
 詳細は\texttt{help(gelman.diag)}などを参照されたい。
 $\Hat{R}$の値は一般には1.1以下でよいとされるが，軌跡とあわせ見て，
-収束しているかどうか判断する方がよい。
+収束しているかどうか判断する方がよいだろう。
 
 先に実行したMCMCの結果\texttt{post2.mcmc}について，$\Hat{R}$を求めてみる。
 \begin{lstlisting}
@@ -700,6 +703,7 @@ Fraction in 2nd window = 0.5
 
 \subsubsection{MCMCmetrop1R()による例}
 
+\paragraph{無情報事前分布}
 つぎに，一般的なベイズモデリングが可能な\texttt{MCMCmetrop1R()}を
 同じデータに適用した例をしめす。
 \texttt{MCMCpoisson()}はポアソン回帰専用だが，
@@ -721,11 +725,11 @@ Fraction in 2nd window = 0.5
 +   }
 + }
 \end{lstlisting}
-
-ここでは，$\lambda$の事前分布は，0〜$10^{4}$の一様分布
+%
+5行目で，$\lambda$の事前分布は，0〜$10^{4}$の一様分布
 としている。
 \begin{align*}
-\lambda &\sim \mathrm{Uniform}(0, 10^{4}) \\
+\Pr(\lambda) &\sim \mathrm{Uniform}(0, 10^{4}) \\
 \intertext{すなわち}
 \mathrm{Pr}(\lambda) &=
 \begin{cases}
@@ -736,14 +740,14 @@ Fraction in 2nd window = 0.5
 \end{align*}
 事前分布として与えるべき確率分布があらかじめわからない場合には
 このような幅が広く，とくに意味のない分布が与えられることが多い。
-このような事前分布を「無情報事前分布」や「漠然事前分布」という。
-じゅうぶんに幅の広い一様分布のほか，分散の大きい正規分布やガンマ分布もよく用いられる。
+このような事前分布を「無情報事前分布(non-informative prior)」や「漠然事前分布(vague prior)」という。
+じゅうぶんに幅の広い一様分布のほか，分散の大きい正規分布などもよく用いられる。
 また，この前の例のように実質的には存在しないと扱われる
 （$(-\infty, \infty)$の一様分布など）こともある。
 このような事前分布は，積分しても1にならないので，
 非正則事前分布(improper prior)と呼ばれる。
 
-ポアソン分布の確率密度関数は$f(x)=\lambda^{x}e^{-\lambda}/x!$なので，
+ポアソン分布の確率質量関数は$f(x)=\lambda^{x}e^{-\lambda}/x!$なので，
 パラメーター$\lambda$のもとでデータ$\bm{X}$が得られる
 尤度$L(\bm{X}  \mid  \lambda)$は以下の式\ref{likelihood_pois}になる。
 \begin{align}
@@ -767,9 +771,11 @@ L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) &=\begin{cases}
 %\end{align*}
 
 つづいて，\texttt{MCMCmetrop1R()}を実行する。
-引数\texttt{fun}は，サンプリングをおこなう事後分布の関数
+引数\texttt{fun}は，サンプリングをおこなう事後分布の密度関数
 （詳細は\texttt{help(MCMCmetrop1R)}を参照）で，
 先に定義した\texttt{LogPoisFun}を与えている。
+対数密度として与えるので\texttt{logfun}引数を\texttt{TRUE}と指定し，
+データの\texttt{x}も引数としている。
 その他の引数は\texttt{MCMCpoisoon()}におなじである。
 ここでも3本のMarkov chainを計算させているが，\texttt{lapply()}関数を使って
 プログラムを短くしている。
@@ -806,9 +812,9 @@ The Metropolis acceptance rate was 0.51000
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 \end{lstlisting}
 
-\vspace{1zw}
-
 \texttt{gelman.diag()}関数で$\Hat{R}$値を求める。
+%ページ調整
+\vspace{2zw}
 \begin{lstlisting}
 Potential scale reduction factors:
 
@@ -816,9 +822,9 @@ Potential scale reduction factors:
 [1,]          1       1.01
 
 \end{lstlisting}
-$\Hat{R}$の値は1であった。
 
-軌跡を見ても，うまく収束しているようなので，結果の要約を表示する。
+$\Hat{R}$の値は1であった。軌跡を見ても，うまく収束しているようなので，結果の要約を表示する。
+
 \begin{lstlisting}
 > summary(post3.mcmc)
 
@@ -840,8 +846,89 @@ Sample size per chain = 1000
 
 \end{lstlisting}
 
-\vspace{1zw}
+最尤推定値の3.8に近い値が事後平均として得られた。また、事後中央値は3.80であった。
 
+\paragraph{情報事前分布}
+
+次に、情報事前分布を使った例をみてみよう。
+今度は、$\lambda$がそれほど大きな値（10以上とか）は取らないだろうと事前の知識で
+わかっていたとする。
+そこで、$\lambda$の事前分布として$\mathrm{Gamma}(2, 2)$を指定した。
+この分布の平均値は1、分散は0.5である。
+グラフで示すと、図\ref{prior_posterior}の上の点線のようになる。
+
+\begin{figure}[htbp]
+	\begin{center}
+		\includegraphics[bb=0 0 480 480, clip, width=320 bp]{example1-4.pdf}
+	\end{center}
+	\caption{$\lambda$の事前分布（上の点線）・事後分布（上の実線）と、尤度（下）}
+	\label{prior_posterior}
+\end{figure}
+
+
+
+\texttt{MCMCmetrop1R()}にわたす関数は以下のように定義される。
+%
+\begin{lstlisting}
+## Function for sampling
+LogPoisFun2 <- function(lambda, x) {
+  if (lambda >= 0) {  # lambda must be non-negative
+    # prior: Gamma(2, 2)
+    log(dgamma(lambda, shape = 2, rate = 2)) + 
+      # log likelihood
+      sum(log(dpois(x, lambda)))
+  } else {
+    -Inf
+  }
+}
+\end{lstlisting}
+
+前の例と同様に、\texttt{lapply()}を使って\texttt{MCMCmetrop1R}を
+実行し、結果を\texttt{post4}に代入する。
+%
+\begin{lstlisting}
+chains <- 1:3
+inits <- c(1, 10, 20)
+seeds <- c(1117, 1123, 1129)
+post4 <- lapply(chains,
+                function(i) {
+                  MCMCmetrop1R(fun = LogPoisFun2,
+                               theta.init = inits[i],
+                               burnin = 2000, mcmc = 2000,
+                               thin = 1,
+                               tune = 2, seed = seeds[i],
+                               verbose = 0, logfun = TRUE,
+                               x = x)
+                })
+post4.mcmc <- mcmc.list(post4)
+\end{lstlisting}
+
+結果は以下のとおり。無情報事前分布を使用したときの結果よりも、事前分布の
+影響を受けて事後平均が小さくなっているのがわかる。
+
+\begin{lstlisting}
+> summary(post4.mcmc)
+
+Iterations = 2001:4000
+Thinning interval = 1 
+Number of chains = 3 
+Sample size per chain = 2000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+          Mean             SD       Naive SE Time-series SE 
+      3.543336       0.411685       0.005315       0.011512 
+
+2. Quantiles for each variable:
+
+ 2.5%   25%   50%   75% 97.5% 
+2.801 3.261 3.524 3.815 4.417 
+
+\end{lstlisting}
+
+図\ref{prior_posterior}は、事前分布（上の点線）が尤度（下の実線）で更新されて
+事後分布（上の実線）となることを示している。
 
 %ページ調整
 %\pagebreak
@@ -885,7 +972,7 @@ $\bm{x}$と$\bm{y}$との関係をプロットしてみると，図\ref{example2
 \end{figure}
 
 
-\subsubsection{MCMCpack:による例}
+\subsubsection{MCMCpackによる例}
 
 まず，\textsf{MCMCpack}で解いてみる。
 \textsf{R}スクリプトは\texttt{example2.R}。
@@ -983,7 +1070,7 @@ Multivariate psrf
 判断できる。
 
 %ページ調整
-\vspace{1zw}
+%\vspace{1zw}
 
 
 結果を表示する。
@@ -1016,7 +1103,7 @@ xの係数の事後平均が0.56，95\%信用区間が0.37〜0.77と推定され
 
 次に、\texttt{MCMCmetrop1R()}関数を使って同じ問題を解いてみよう。
 この場合、データとして元の\texttt{x}と\texttt{y}をそのまま利用できる。
-\texttt{MCMCmetrop1R()}関数に渡す、対数事後確率（この例では、事前分布はないものと扱っているので、
+\texttt{MCMCmetrop1R()}関数に渡す、対数事後分布（この例では、事前分布はないものと扱っているので、
 対数尤度に同じ）を返す関数は以下のように定義できる。
 \texttt{beta}引数に与えるデータは、2次元のベクトルになることに注意。
 
@@ -1366,13 +1453,14 @@ Xの値をすこしづつ変えながら，MCMCでサンプリングされたす
 \subsubsection{Stanによる例}
 同じ問題を\textsf{Stan}により解いてみる。
 \textsf{R}スクリプトは\texttt{example2\_Stan.R}である。
-
 RStanを使用する。
+%
 \begin{lstlisting}
 > library(rstan)
 \end{lstlisting}
 
 モデルの定義。\texttt{example2\_code}という文字列にモデルを格納している。
+%
 \begin{lstlisting}
 > example2_code <- "
 + data {
@@ -1585,7 +1673,7 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 \end{lstlisting}
 
 %ページ調整
-\vspace{3zw}
+%\vspace{3zw}
 
 
 \texttt{x1}の内容を確認する。
@@ -1735,7 +1823,8 @@ BUGS言語では，変数宣言は必ずしも必要ではないが，高次元�
 \paragraph{結果}
 
 結果は以下のようになる。
-
+%ページ調整
+\vspace{1zw}
 \begin{lstlisting}
 > gelman.diag(post)
 Potential scale reduction factors:
@@ -1932,8 +2021,6 @@ model <- jags.model(file = model.file,
 芽生えの数と林冠開空率との間に関連性があるかどうかを検討する。
 
 データは``\texttt{example4.csv}''というファイルに入っている。
-%ページ調整
-\vspace{1zw}
 \begin{lstlisting}
 "Plot","Num","Light"
 1,0,2.680
@@ -2000,7 +2087,7 @@ Number of Fisher Scoring iterations: 6
 \end{figure}
 
 %ページ調整
-\vspace{2zw}
+%\vspace{2zw}
 
 \paragraph{モデル}
 ZIPモデルを扱うBUGSコードは以下のようになる。
@@ -2147,9 +2234,10 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{IWE} K\'ery M. (2010) Introduction to WinBUGS for ecologists:
   a Bayesian approach to regression, ANOVA, mixed models and related analyais.
   Academic Press, Waltham.
-\bibitem{BPA} K\'ery M, Schaub M. (2011) Bayesian population analysis using WinBUGS.
+\bibitem{BPA} K\'ery M., Schaub M. (2011) Bayesian population analysis using WinBUGS --- A hierarchical perspective.
   Academic Press, Waltham.
     （日本語訳: 飯島勇人・伊東宏樹・深谷肇一・正木隆訳 (2016) 「BUGSで学ぶ階層モデリング入門---個体群のベイズ解析---」共立出版, 東京.）
+\bibitem{Kery2015} K\'ery M., Royle J.A. (2015) Applied Hierarchical Modeling in Ecology --- Analysis of distribution, abundance and species richness in R and BUGS, Volume 1. Academic Press, Waltham.
 \bibitem{DBDA2} Kruschke J. (2014) Doing Bayesian data analysis, 2nd ed.:
   a tutorial with R, JAGS, and Stan. Academic Press, Waltham.
 \bibitem{Kubo} 久保拓弥 (2009) 簡単な例題で理解する空間統計モデル. 
@@ -2190,8 +2278,8 @@ using MCMCpack. R News 6(1):2--7. \\
 \bibitem{WinBUGS} Spiegelhalter D., Tomas A., Best N., Lunn D. (2003)
   WinBUGS user manual version 1.4.\\
   \url{http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/manual14.pdf}
-\bibitem{Stan} Stan Development Team (2015) Stan Modeling Language:
-  User's Guide and Reference Manual, Version 2.7.0.
+\bibitem{Stan} Stan Development Team (2016) Stan Modeling Language:
+  User's Guide and Reference Manual, Version 2.11.0.
   \url{http://mc-stan.org/}
 \bibitem{Tango} 丹後俊郎 (2000) 統計モデル入門. 朝倉書店, 東京.
 \bibitem{Terui} 照井伸彦 (2010) Rによるベイズ統計分析. 朝倉書店, 東京.

@@ -17,6 +17,12 @@ barplot(h$count, names.arg = h$breaks[-length(h$breaks)],
 mean(x)
 var(x)
 
+## GLM
+fit <- glm(x ~ 1, family = poisson(link = log))
+summary(fit)
+print(exp(coef(fit)))
+
+
 ## Load MCMCpack library
 library(MCMCpack)
 
@@ -180,6 +186,8 @@ summary(post4.mcmc)
 plot(post4.mcmc, trace = TRUE, density = TRUE, las = 1)
 
 ## Plot prior, posterior and likelihood
+#pdf("example1-4.pdf", width = 480/72, height = 480/72,
+#    family = "Helvetica", pointsize = 10)
 
 par(mfrow = c(2, 1))
 # Prior
@@ -200,4 +208,6 @@ x0 <- x
 curve(ll(x, x0 = x0), from = 0, to = 5,
       type = "l", las = 1,
       xlab = "lambda", ylab = "likelihood")
+#dev.off()
+
 

@@ -1,9 +1,12 @@
+.DS_Store
+.Rapp.history
 .Rproj.user
 .Rhistory
 .RData
+*.rda
 naro_toukei.Rproj 
 mcmc_text/mcmc_text.aux
-mcmc/text/mcmc_text.dvi
+mcmc_text/mcmc_text.dvi
 mcmc_text/mcmc_text.fdb_latexmk
 mcmc_text/mcmc_text.fls
 mcmc_text/mcmc_text.log
