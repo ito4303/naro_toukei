@@ -56,7 +56,7 @@
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
 \footnote{本テキスト執筆時には，R 3.3.1, MCMCpack 1.3-6, JAGS 4.2.0, Stan 2.11.0を使用した。}
 例題等のファイルは\url{https://github.com/ito4303/naro_toukei}で
-公開しているので、参照されたい。
+公開しているので，参照されたい。
 
 \subsection{MCMCとは?}
 
@@ -846,22 +846,22 @@ Sample size per chain = 1000
 
 \end{lstlisting}
 
-最尤推定値の3.8に近い値が事後平均として得られた。また、事後中央値は3.80であった。
+最尤推定値の3.8に近い値が事後平均として得られた。また，事後中央値は3.80であった。
 
 \paragraph{情報事前分布}
 
-次に、情報事前分布を使った例をみてみよう。
-今度は、$\lambda$がそれほど大きな値（10以上とか）は取らないだろうと事前の知識で
+次に，情報事前分布を使った例をみてみよう。
+今度は，$\lambda$がそれほど大きな値（10以上とか）は取らないだろうと事前の知識で
 わかっていたとする。
-そこで、$\lambda$の事前分布として$\mathrm{Gamma}(2, 2)$を指定した。
-この分布の平均値は1、分散は0.5である。
-グラフで示すと、図\ref{prior_posterior}の上の点線のようになる。
+そこで，$\lambda$の事前分布として$\mathrm{Gamma}(2, 2)$を指定した。
+この分布の平均値は1，分散は0.5である。
+グラフで示すと，図\ref{prior_posterior}の上の点線のようになる。
 
 \begin{figure}[htbp]
 	\begin{center}
 		\includegraphics[bb=0 0 480 480, clip, width=320 bp]{example1-4.pdf}
 	\end{center}
-	\caption{$\lambda$の事前分布（上の点線）・事後分布（上の実線）と、尤度（下）}
+	\caption{$\lambda$の事前分布（上の点線）・事後分布（上の実線）と，尤度（下）}
 	\label{prior_posterior}
 \end{figure}
 
@@ -883,8 +883,8 @@ LogPoisFun2 <- function(lambda, x) {
 }
 \end{lstlisting}
 
-前の例と同様に、\texttt{lapply()}を使って\texttt{MCMCmetrop1R}を
-実行し、結果を\texttt{post4}に代入する。
+前の例と同様に，\texttt{lapply()}を使って\texttt{MCMCmetrop1R}を
+実行し，結果を\texttt{post4}に代入する。
 %
 \begin{lstlisting}
 chains <- 1:3
@@ -903,7 +903,7 @@ post4 <- lapply(chains,
 post4.mcmc <- mcmc.list(post4)
 \end{lstlisting}
 
-結果は以下のとおり。無情報事前分布を使用したときの結果よりも、事前分布の
+結果は以下のとおり。無情報事前分布を使用したときの結果よりも，事前分布の
 影響を受けて事後平均が小さくなっているのがわかる。
 
 \begin{lstlisting}
@@ -927,7 +927,7 @@ Sample size per chain = 2000
 
 \end{lstlisting}
 
-図\ref{prior_posterior}は、事前分布（上の点線）が尤度（下の実線）で更新されて
+図\ref{prior_posterior}は，事前分布（上の点線）が尤度（下の実線）で更新されて
 事後分布（上の実線）となることを示している。
 
 %ページ調整
@@ -1101,11 +1101,11 @@ xの係数の事後平均が0.56，95\%信用区間が0.37〜0.77と推定され
 
 \paragraph{MCMCmetrop1R()を使った例}
 
-次に、\texttt{MCMCmetrop1R()}関数を使って同じ問題を解いてみよう。
-この場合、データとして元の\texttt{x}と\texttt{y}をそのまま利用できる。
-\texttt{MCMCmetrop1R()}関数に渡す、対数事後分布（この例では、事前分布はないものと扱っているので、
+次に，\texttt{MCMCmetrop1R()}関数を使って同じ問題を解いてみよう。
+この場合，データとして元の\texttt{x}と\texttt{y}をそのまま利用できる。
+\texttt{MCMCmetrop1R()}関数に渡す，対数事後分布（この例では，事前分布はないものと扱っているので，
 対数尤度に同じ）を返す関数は以下のように定義できる。
-\texttt{beta}引数に与えるデータは、2次元のベクトルになることに注意。
+\texttt{beta}引数に与えるデータは，2次元のベクトルになることに注意。
 
 \begin{lstlisting}
 LogFun <- function(beta, x, y, k) {
@@ -1115,13 +1115,13 @@ LogFun <- function(beta, x, y, k) {
 \end{lstlisting}
 
 \noindent
-ロジットスケールの線形予測子\texttt{mu}を、リストの3行目、\texttt{dbinom()}関数の第3引数の部分で
+ロジットスケールの線形予測子\texttt{mu}を，リストの3行目，\texttt{dbinom()}関数の第3引数の部分で
 逆ロジット変換して確率スケールにしている。
 
-次に、\texttt{MCMCmetrop1R()}関数でMCMC計算を実行するが、ここでも\texttt{lapply()}関数を
+次に，\texttt{MCMCmetrop1R()}関数でMCMC計算を実行するが，ここでも\texttt{lapply()}関数を
 使ってプログラムを短くしている。
-上で定義した\texttt{LogFun()}の\texttt{beta}引数は2次元ベクトルなので、初期値\texttt{theta.init}引数に
-与えるデータも2次元ベクトルになるように、\texttt{inits}は2次元ベクトルを要素とするリストとして
+上で定義した\texttt{LogFun()}の\texttt{beta}引数は2次元ベクトルなので，初期値\texttt{theta.init}引数に
+与えるデータも2次元ベクトルになるように，\texttt{inits}は2次元ベクトルを要素とするリストとして
 定義する。
 
 
@@ -1142,7 +1142,7 @@ post2 <- lapply(chains,
 post2.mcmc <- mcmc.list(post2)
 \end{lstlisting}
 
-\texttt{MCMClogit()}関数を使用したのと、ほぼ同様の結果が得られる。
+\texttt{MCMClogit()}関数を使用したのと，ほぼ同様の結果が得られる。
 
 \begin{lstlisting}
 > summary(post2.mcmc)
@@ -2172,7 +2172,7 @@ p       0.2432  0.3591  0.42538 0.5015 0.6552
 ``Hierarchical modelling for the environmental sciences''\cite{Clark_Gelfand},
 ``Introduction to WinBUGS for ecologists''\cite{IWE},
 ``Bayesian population analysis using WinBUGS''\cite{BPA},
-``Bayesian methods for ccology''\cite{McCarthy}などにて，
+``Bayesian methods for ecology''\cite{McCarthy}などにて，
 生態学・環境科学における実例が紹介されている。
 
 日本語のものでは，
@@ -2184,11 +2184,10 @@ GLM$\rightarrow$GLMM$\rightarrow$階層ベイズモデル
 おり，深澤ほか\cite{Fukasawa_et_al}が実例の紹介をおこなっている。
 『マルコフ連鎖モンテカルロ法』\cite{Toyoda}には，
 共分散構造分析におけるベイズ推定など，社会科学への応用例がある。
-同じ著者の『基礎からのベイズ統計学』\cite{Toyoda2015}も，基本から
-Hamiltonian Monte Carlo法のアルゴリズムまで丁寧に解説されている。
 また，『岩波データサイエンス Vol.1』\cite{Iwanami_vol1}には，
 \textsf{JAGS}や\textsf{Stan}などを用いた解析方法の記事があり，
-サポートページ\footnote{\url{https://sites.google.com/site/iwanamidatascience/vol1/support_tokushu}}では，コードや解説動画なども公開されている。
+サポートページ\footnote{\url{https://sites.google.com/site/iwanamidatascience/vol1/support_tokushu}}では，
+コードや解説動画なども公開されている。
 
 
 その他，MCMCや階層ベイズモデルについて目に付いたものを参考文献リストに入れて
