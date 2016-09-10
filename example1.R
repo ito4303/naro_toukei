@@ -209,5 +209,5 @@ curve(ll(x, x0 = x0), from = 0, to = 5,
       type = "l", las = 1,
       xlab = "lambda", ylab = "likelihood")
 #dev.off()
-
+par(mfrow = c(1, 1))
 
