@@ -47,14 +47,14 @@
 \section{はじめに}
 
 本講では，理論的な解説については最小限として，
-マルコフ連鎖モンテカルロ(MCMC)を使って実際に問題を解くことに主眼を置きたい。
+マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置きたい。
 理論面についての解説は末尾の参考文献などを参照されたい。
-ソフトウェアとしては，\textsf{R}\cite{R}上にて
+ソフトウェア\footnote{本テキスト執筆時には，R 3.3.1, MCMCpack 1.3-6, JAGS 4.2.0, Stan 2.11.0を使用した。}
+としては，\textsf{R}\cite{R}上にて
 \textsf{MCMCpack}\cite{MCMCpack}と
 \textsf{JAGS}\cite{JAGS}を使用する
 （実習には\textsf{MCMCpack}を使用する）。
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
-\footnote{本テキスト執筆時には，R 3.3.1, MCMCpack 1.3-6, JAGS 4.2.0, Stan 2.11.0を使用した。}
 例題等のファイルは\url{https://github.com/ito4303/naro_toukei}で
 公開しているので，参照されたい。
 
@@ -378,7 +378,7 @@ Linux版主要ディストリビューションにはバイナリパッケージ
 \item ウェブサイト:
   \url{http://mc-stan.org/}
 
-\item 最新版: 2.11.0
+\item 最新版: 2.12.0
 \item オープンソース（BSDライセンスまたはGPL3）。再配布，内部の解析，改
   造なども自由にできる。
 \item \textsf{RStan}という\textsf{R}のパッケージもあり，CRANに収録されている。
