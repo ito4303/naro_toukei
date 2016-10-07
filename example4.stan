@@ -19,15 +19,16 @@ transformed parameters {
 model {
   // Improper uniform priors are implicitly defined on p and beta.
   for (i in 1:N) {
-    target += (Y[i] > 0) ?
-      // if Y[i] > 0
+    if (Y[i] > 0) {
       // Bernoulli(1|p) * Poisson(Y|λ)
-      bernoulli_lpmf(1 | p)
-      + poisson_log_lpmf(Y[i] | log_lambda[i]) :
+      1 ~ bernoulli(p);
+      Y[i] ~ poisson_log(log_lambda[i]);
+    } else {
       // if Y[i] == 0
       // Bernoulli(0|p) + Bernoulli(1|p) * Poisson(0|λ)
-      log_sum_exp(bernoulli_lpmf(0 | p),
-                  bernoulli_lpmf(1 | p)
-                  + poisson_log_lpmf(0 | log_lambda[i]));
+      target += log_sum_exp(bernoulli_lpmf(0 | p),
+                            bernoulli_lpmf(1 | p)
+                          + poisson_log_lpmf(0 | log_lambda[i]));
+    }
   }
 }
