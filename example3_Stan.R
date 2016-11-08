@@ -3,6 +3,8 @@
 ##
 
 library(rstan)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
 
 # data
 data <- read.csv("example3.csv")
