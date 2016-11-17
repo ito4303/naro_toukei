@@ -10,7 +10,7 @@ x <- c(3, 2, 4, 3, 3, 6, 4, 1, 6, 4,
 h <- hist(x, right = FALSE,
           breaks = seq(min(x), max(x) + 1, 1),
           plot = FALSE)
-barplot(h$count, names.arg = h$breaks[-length(h$breaks)],
+barplot(h$counts, names.arg = h$breaks[-length(h$breaks)],
         las = 1, xlab = "x", ylab = "count")
 
 ## Mean and variance
@@ -204,7 +204,7 @@ ll <- function(x, x0) {
   sapply(x, function(lambda) prod(dpois(x0, lambda)))
 }
 
-x0 <- x
+x0 <- x  # Preserve x as x0
 curve(ll(x, x0 = x0), from = 0, to = 5,
       type = "l", las = 1,
       xlab = "lambda", ylab = "likelihood")
