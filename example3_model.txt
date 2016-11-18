@@ -6,7 +6,7 @@ var
   e.B[M],               # Random effect
   beta, beta.1, beta.2, # Parameters
   tau, sigma, 
-  tau.G, sigma.G;       # Hyperparameters
+  tau.B, sigma.B;       # Hyperparameters
 
 model {
   for (i in 1:M) {
