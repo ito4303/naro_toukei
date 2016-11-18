@@ -4,12 +4,12 @@
 .Rhistory
 .RData
 *.rda
+*.zip
 naro_toukei.Rproj 
 mcmc_text/mcmc_text.aux
 mcmc_text/mcmc_text.dvi
 mcmc_text/mcmc_text.fdb_latexmk
 mcmc_text/mcmc_text.fls
 mcmc_text/mcmc_text.log
-mcmc_text/mcmc_text.pdf
 mcmc_text/mcmc_text.synctex.gz
 事務文書

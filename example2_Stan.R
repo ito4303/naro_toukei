@@ -23,7 +23,7 @@ data {
   int<lower=0> N;
   int<lower=0> K;
   vector[N] X;
-  int<lower=0> Y[N];
+  int<lower=0,upper=10> Y[N];
 }
 parameters {
   real beta;
