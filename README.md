@@ -2,6 +2,10 @@
 
 農研機構短期集合研修（数理統計）「ベイジアンMCMCによる統計モデル」で使用するファイルです。
 
+## テキスト
+[テキスト(PDF)](https://github.com/ito4303/naro_toukei/blob/master/mcmc_text/mcmc_text.pdf)
+
+
 ## 例題1: ポアソン回帰
 <dl>
 <dt>example1.R</dt>
@@ -49,5 +53,5 @@
 ## テキスト
 <dl>
 <dt>mcmc_text/*</dt>
-<dd>テキストのTeXファイルおよび画像データ</dd>
+<dd>テキストのTeXソースファイルおよび画像データ</dd>
 </dl>
