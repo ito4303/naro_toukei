@@ -6,6 +6,7 @@
 *.rda
 *.zip
 naro_toukei.Rproj 
+mcmc_slide.pdf
 mcmc_text/mcmc_text.aux
 mcmc_text/mcmc_text.dvi
 mcmc_text/mcmc_text.fdb_latexmk
