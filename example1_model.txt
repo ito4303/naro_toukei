@@ -1,0 +1,9 @@
+model {
+  # Prior
+  lambda ~ dunif(0, 1000);
+
+  # Likelihood
+  for (i in 1:N) {
+    X[i] ~ dpois(lambda)
+  }
+}
