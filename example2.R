@@ -1,5 +1,5 @@
 ##
-## Example 2: JAGS
+## Example 2: Logistic regression
 ##
 
 ## Load rjags library

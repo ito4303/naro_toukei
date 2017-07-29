@@ -9,6 +9,16 @@ var
   tau.B, sigma.B;       # Hyperparameters
 
 model {
+  # Priors
+  beta ~ dnorm(0, 1.0E-6)
+  beta.1 ~ dnorm(0, 1.0E-6)
+  beta.2 ~ dnorm(0, 1.0E-6)
+  tau <- 1 / (sigma * sigma)
+  tau.B <- 1 / (sigma.B * sigma.B)
+  sigma ~ dunif(0, 1.0E+4)
+  sigma.B ~ dunif(0, 1.0E+4)
+
+  # Likelihood
   for (i in 1:M) {
     for (j in 1:N) {
       Y[i, j] ~ dnorm(mu[i, j], tau)
@@ -17,13 +27,4 @@ model {
     }
     e.B[i] ~ dnorm(0, tau.B)
   }
-
-  ## Priors
-  beta ~ dnorm(0, 1.0E-6)
-  beta.1 ~ dnorm(0, 1.0E-6)
-  beta.2 ~ dnorm(0, 1.0E-6)
-  tau <- 1 / (sigma * sigma)
-  tau.B <- 1 / (sigma.B * sigma.B)
-  sigma ~ dunif(0, 1.0E+4)
-  sigma.B ~ dunif(0, 1.0E+4)
 }

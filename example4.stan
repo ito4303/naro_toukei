@@ -3,19 +3,21 @@
 //
 
 data {
-  int<lower=0> N;          // Number of observations
-  int<lower=0> Y[N];       // Number of new seedlings
-  vector<lower=0>[N] X;    // Proportion of open canopy
+  int<lower = 0> N;             // Number of sites
+  int<lower = 0> Y[N];          // Number of new seedlings
+  vector<lower = 0>[N] X;       // Explanatory variable
 }
-parameters {
-  real<lower=0,upper=1> p; // Probability of presence
-  real beta[2];            // Intercept and coefficient
-}
-transformed parameters {
-  vector[N] log_lambda;    // Log of Poisson mean
 
-  log_lambda = beta[1] + beta[2] * X;
+parameters {
+  real<lower = 0, upper = 1> p; // Probability of presence
+  real beta[2];                 // Intercept and coefficient
 }
+
+transformed parameters {
+  // Log of Poisson mean
+  vector[N] log_lambda = beta[1] + beta[2] * X;
+}
+
 model {
   // Improper uniform priors are implicitly defined on p and beta.
   for (i in 1:N) {

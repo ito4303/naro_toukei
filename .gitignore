@@ -3,7 +3,7 @@
 .Rproj.user
 .Rhistory
 .RData
-*.rda
+*.rds
 *.zip
 *~
 naro_toukei.Rproj 

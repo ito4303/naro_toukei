@@ -19,28 +19,6 @@ n <- length(x)
 
 # model
 example2_code <- "
-data {
-  int<lower=0> N;
-  int<lower=0> K;
-  vector[N] X;
-  int<lower=0,upper=10> Y[N];
-}
-parameters {
-  real beta;
-  real beta_x;
-}
-transformed parameters {
-  vector[N] logit_p;
-
-  logit_p = beta + beta_x * X;
-}
-model {
-  Y ~ binomial_logit(K, logit_p);
-  
-  # priors
-  beta ~ normal(0.0, 1.0e+3);
-  beta_x ~ normal(0.0, 1.0e+3);
-}
 "
 
 # number of chains
@@ -56,7 +34,7 @@ inits[[3]] <- list(beta =   0, beta_x = -2)
 pars <- c("beta", "beta_x")
 
 # run Stan
-fit <- stan(model_code = example2_code,
+fit <- stan("example2.stan",
             data = list(X = x, Y = y, N = n, K = k),
             pars = pars, init = inits, seed = 123,
             chains = n.chains,
