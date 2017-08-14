@@ -1,6 +1,5 @@
 ##
-## Example 4: JAGS
-## Zero-Inflated Poisson Model
+## Example 4: Zero-Inflated Poisson Model
 ##
 
 library(rjags)

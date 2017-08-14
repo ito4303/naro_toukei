@@ -1,5 +1,5 @@
 ##
-## Example 3: JAGS
+## Example 3: Linear Mixed Model
 ##
 
 library(rjags)

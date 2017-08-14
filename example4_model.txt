@@ -13,15 +13,15 @@ var
   beta,      # Intercept in the linear model
   beta.x;    # Coefficient of X in the linear model
 model {
-  # Priors
-  p ~ dunif(0, 1)
-  beta ~ dnorm(0, 1.0E-4)
-  beta.x ~ dnorm(0, 1.0E-4)
-
   # Likelihood
   for (i in 1:N) {
     Y[i] ~ dpois(lambda[i])
     lambda[i] <- z[i] * exp(beta + beta.x * X[i])
     z[i] ~ dbern(p)
   }
+
+  # Priors
+  p ~ dunif(0, 1)
+  beta ~ dnorm(0, 1.0E-4)
+  beta.x ~ dnorm(0, 1.0E-4)
 }

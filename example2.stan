@@ -17,10 +17,10 @@ transformed parameters {
 }
 
 model {
+  // Likelihood
+  Y ~ binomial_logit(K, logit_p);
+
   // Priors
   beta ~ normal(0.0, 1.0e+3);
   beta_x ~ normal(0.0, 1.0e+3);
-
-  // Likelihood
-  Y ~ binomial_logit(K, logit_p);
 }

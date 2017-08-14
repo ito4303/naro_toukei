@@ -17,10 +17,6 @@ n <- length(x)
 # plot(x, y, las = 1)
 # dev.off()
 
-# model
-example2_code <- "
-"
-
 # number of chains
 n.chains <- 3
 

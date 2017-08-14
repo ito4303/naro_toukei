@@ -1,9 +1,9 @@
 model {
-  # Prior
-  lambda ~ dgamma(2, 2);
-
   # Likelihood
   for (i in 1:N) {
     X[i] ~ dpois(lambda)
   }
+
+  # Prior
+  lambda ~ dgamma(2, 2)
 }

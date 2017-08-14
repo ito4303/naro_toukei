@@ -54,10 +54,6 @@ model2 <- jags.model("example1_model.txt",
 post2 <- coda.samples(model2, variable.names = "lambda",
                       n.iter = 50)
 
-traceplot(post2[[1]], col = 1, las = 1)
-traceplot(post2[[2]], col = 2, las = 1)
-traceplot(post2[[3]], col = 3, las = 1)
-
 ## Plot trace
 #pdf("example1-2.pdf", width = 360/72, height = 240/72,
 #    family = "Helvetica", pointsize = 10)
@@ -89,12 +85,17 @@ summary(post3)
 # Gelman & Rubin
 gelman.diag(post3)
 
-# Geweke
-geweke.diag(post3)
 
-
-# Informatvie prior
-
+## Informatvie prior
+inits <- list(list(lambda = 0.1,
+                   .RNG.seed = 1,
+                   .RNG.name = "base::Mersenne-Twister"),
+              list(lambda = 1,
+                   .RNG.seed = 2,
+                   .RNG.name = "base::Mersenne-Twister"),
+              list(lambda = 10,
+                   .RNG.seed = 3,
+                   .RNG.name = "base::Mersenne-Twister"))
 model4 <- jags.model("example1-1_model.txt",
                      data = list(X = x, N = length(x)),
                      inits = inits, n.chains = 3, n.adapt = 500)

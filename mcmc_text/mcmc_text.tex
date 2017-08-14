@@ -49,11 +49,11 @@
 本講では，理論的な解説については最小限として，
 マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置きたい。
 理論面についての解説は末尾の参考文献などを参照されたい。
-ソフトウェア\footnote{本テキスト執筆時には，R 3.4.1, MCMCpack 1.4-0, JAGS 4.3.0, Stan 2.16.0を使用した。}
+ソフトウェア\footnote{本テキスト執筆時には，R 3.4.1, JAGS 4.3.0, Stan 2.16.0を使用した。}
 としては，\textsf{R}\cite{R}上にて
-\textsf{MCMCpack}\cite{MCMCpack}と
-\textsf{JAGS}\cite{JAGS}を使用する
-（実習には\textsf{MCMCpack}を使用する）。
+%\textsf{MCMCpack}\cite{MCMCpack}と
+\textsf{JAGS}\cite{JAGS}を使用する。
+%（実習には\textsf{MCMCpack}を使用する）。
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
 例題等のファイルは\url{https://github.com/ito4303/naro_toukei}で
 公開しているので，参照されたい。
@@ -66,9 +66,9 @@
 
 現実の本質的な部分のみをモデル化する。
 
-現実をよく説明したり、うまく予測できたりする。
+現実をよく説明したり，うまく予測できたりする。
 
-t検定も、統計モデリングである。
+t検定も，統計モデリングである。
 
 \subsection{ベイズ統計とMCMC}
 
@@ -96,8 +96,6 @@ MCMCはベイズ推定のための計算手法である。
 モデルが複雑な場合は事後確率（事後分布）を解析的に解くことは困難である。
 このような問題に対してMCMCは非常に有効である。
 
-%GLMやGLMMの枠組みに収まらないような複雑なモデルもMCMCにより
-%解くことができる。
 
 \paragraph{MCMC=MC+MC}
 
@@ -165,56 +163,7 @@ MCMCのアルゴリズムとしては，Metropolis-Hastingsアルゴリズムや
 \cite{PRML,BDA3,Toyoda2015,Watanabe}
 を使用したソフトウェアもある。
 アルゴリズムについて詳しく知りたい方は参考文献を参照されたい。
-%あとで触れる\textsf{LaplacesDemon}では多数のアルゴリズムが実装されている
-%（\ref{LaplacesDemon}節）。
 
-%\subsubsection{Metropolis-Hastingアルゴリズム}
-%
-%Markov chainにおいて，現在の値$x^{(i)}$の次の値$x^{(i+1)}$を以下のようにして選ぶ。
-%
-%\begin{enumerate}
-%\item $x^{(i+1)}$の候補$y$をある条件付き分布(これをサンプラーと呼ぶ)
-%$q(\cdot|\cdot)$にしたがって確率的に決める。
-%$y$は$x^{(i)}$を少しだけ動かした値となる。
-%\item $y$が，求めたいパラメーターの分布$\pi(\cdot)$に$x^{(i)}$よりもうまく当てはまるなら，
-%$x^{(i+1)}$として$y$を採用する。
-%$x^{(i)}$の方がうまく当てはまる場合には，その当てはまりやすさに応じて，
-%$x^{(i+1)}$として$y$を選ぶか，$x^{(i)}$を選ぶかを確率的に決める。
-%その確率$\Pr$は具体的には，
-%\begin{equation}
-%\Pr = \mathrm{min}\left(1, \frac{\pi(y)q(x^{(i)}|y)}{\pi({x^{(i)}})q(y|x^{(i)})}\right)\label{MH1}
-%\end{equation}
-%\end{enumerate}
-%\noindent
-%である。
-%なお，ここでminは最小値を返す関数である。
-%
-%そして，$q(y|x) = q(x|y)$となるようなサンプラーをMetropolis samplerと呼ぶ。
-%この場合 式\ref{MH1}は，
-%\begin{equation}
-%\Pr = \mathrm{min}\left(1, \frac{\pi(y)}{\pi({x^{(i)}})}\right)\label{MH2}
-%\end{equation}
-%となる。サンプラーとしては正規分布
-%\begin{align*}
-%q(Y|X) &= \mathrm{Normal}(Y|X, \sigma^2) \notag \\
-%  &=\frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(Y-X)^2}{2\sigma^2}\right)}
-%\end{align*}
-%が用いられることが多い。
-%
-%\subsubsection{Gibbs sampler}
-%
-%Metropolisアルゴリズムの1種だが，必ず採択されるようにサンプラーを工夫してある
-%（詳しくは参考文献\cite{Iba2005,Tango,Toyoda}などを参照）。
-%%このサンプラーはGibbs samplerと呼ばれる。
-%後述（\ref{BUGS}節）のBUGS言語を使用するソフトウェアはこのGibbs samplerを使用できるように
-%なっている。
-%
-%\subsubsection{Hamiltonian Monte Carlo}
-%
-%変数の移動のアルゴリズムとしてランダムウォークでは効率が悪いので，
-%「運動量」をもたせてより効率的に目標分布に収束できるようにしたものである。
-%詳細は参考文献\cite{PRML, BDA3, Toyoda2015}を参照されたい。
-%後述（\ref{Stan}節）の\textsf{Stan}はこのアルゴリズムを使用している。
 
 \section{MCMCのためのソフトウェア}
 CやFortranなどでMCMCのプログラムを作成することも可能だが，
@@ -262,7 +211,7 @@ CやFortranなどでMCMCのプログラムを作成することも可能だが�
 \item Windows用ソフトだが，\textsf{Wine}\footnote{\url{http://www.winehq.org/} 名前は，
 ``Wine Is Not Emulator''の略。Windows互換レイヤーソフトで，Windows用ソフトウェ
   ア(すべてというわけではない)をWindowsなしで動作させることができる。
-  最新の安定版は1.8.3。}を使用
+  最新の安定版は2.0.2。}を使用
   することで，OS XやLinux，BSDでも使用することが可能。
 \item GUI環境はあるがあまり使いやすくない。\textsf{R2WinBUGS}パッケージ
   で \textsf{R}と連携可能なので，そちらから使う方が使いやすい（と思う）。
@@ -406,18 +355,18 @@ Linux版主要ディストリビューションにはバイナリパッケージ
 
 \subsubsection*{インストール}
 RStanはCRANからインストール可能。
-CmdStanのインストールには開発環境（C++など）が必要となる。
+開発環境（C++など）が必要となる。
 詳細はウェブサイトやマニュアルを参照。
 
 
-\pagebreak
+%\pagebreak
 
 %%
 %% ここから実習
 %%
-\section{実例}
+\section{例題}
 
-ここからは，簡単な実例を通してMCMCの使い方をみていきたい。
+ここからは，簡単な例題を通してMCMCの使い方をみていきたい。
 
 \subsection{最初のモデル: ポアソン回帰}
 
@@ -438,184 +387,321 @@ CmdStanのインストールには開発環境（C++など）が必要となる�
 
 \vspace{1zw}
 
-\subsubsection{MCMCpoisson()による例}
+\subsubsection{JAGSによるポアソン回帰}
 
-まずここでは \textsf{R}上で，\textsf{MCMCpack}パッケージの\textsf{MCMCpoisson()}関数
-を使用してポアソン回帰をおこなう。
+まずここでは\textsf{R}から，\textsf{JAGS}を使ってポアソン回帰をおこなう。
 \textsf{R}スクリプトは，サンプルファイルの\texttt{example1.R}である。
 \vspace{1zw}
 
-まずは，\textsf{MCMCpack}パッケージを呼び出す。
-（以下，実行例をボックスの中にしめす。なお，``\texttt{>}''は入力行のプロンプトを，
-``\texttt{+}''は，前の行からの継続をそれぞれ示す記号であり，実際には入力不要。）
+以下，実行例をボックスの中にしめす。なお，``\texttt{>}''は入力行のプロンプトを，
+``\texttt{+}''は，前の行からの継続をそれぞれ示す記号であり，実際には入力不要である。
 
-%%\begin{breakbox}
+まずは，データをベクトル\texttt{x}に代入する。
 \begin{lstlisting}
-> library(MCMCpack)
+> x <- c(3, 2, 4, 3, 3, 6, 4, 1, 6, 4,
++        5, 7, 4, 4, 1, 4, 0, 3, 8, 4)
 \end{lstlisting}
-%\end{breakbox}
+
+実際の解析に入る前に，グラフでデータを確認してみる。
+\begin{lstlisting}
+> h <- hist(x, right = FALSE,
++           breaks = seq(min(x), max(x) + 1, 1),
++           plot = FALSE)
+> barplot(h$counts, names.arg = h$breaks[-length(h$breaks)],
++         las = 1, xlab = "x", ylab = "count")
+\end{lstlisting}
+
+平均と分散を確認してみる。
+\begin{lstlisting}
+> mean(x)
+[1] 3.8
+> var(x)
+[1] 3.957895
+\end{lstlisting}
+
+GLMなら以下のようなコードとなる。
+\begin{lstlisting}
+> fit <- glm(x ~ 1, family = poisson(link = log))
+> summary(fit)
+
+Call:
+glm(formula = x ~ 1, family = poisson(link = log))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.7568  -0.4262   0.1017   0.2230   1.8738  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   1.3350     0.1147   11.64   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 23.462  on 19  degrees of freedom
+Residual deviance: 23.462  on 19  degrees of freedom
+AIC: 85.444
+
+Number of Fisher Scoring iterations: 4
+
+> print(exp(coef(fit)))
+(Intercept) 
+        3.8 
+\end{lstlisting}
+
+ではここからいよいよ\textsf{JAGS}による解析を始めよう。
+
+\textsf{JAGS}は，\textsf{BUGS}言語で書かれたモデルのパラメーターをMCMCでベイズ推定する。
+ここでは，\textsf{BUGS}言語で書かれたモデルコードは別のファイル（\texttt{example1\_model.txt}）になっている。
+このファイルの内容は以下のようになっている。
+\begin{lstlisting}
+model {
+  # Likelihood
+  for (i in 1:N) {
+    X[i] ~ dpois(lambda)
+  }
+
+  # Prior
+  lambda ~ dunif(0, 1000)
+}
+\end{lstlisting}
 %
-結果を収納するために，\texttt{post1}という要素数3のリストを作成する。
+GLMでは1行で済んだものが，\textsf{BUGS言語}ではかなり長くなってしまった。
+しかし，このような記法により，複雑なモデルも記述することができるのである。
 
-\begin{lstlisting}
-> post1 <- vector("list", 3)
-\end{lstlisting}
-%
-つづいて，\texttt{MCMCpoisson()}を実行する。
-実際の推定をおこなう前に，まずはMCMCの挙動をみるために最初の部分の軌跡を
-くわしくみることにする。
+1行目の``\texttt{model\{}''と，9行目の``\texttt{\}}''で囲まれた部分がモデルの定義となる。
+まず，3〜5行目が尤度の部分となる。
+\texttt{dpois}はポアソン分布であり，\texttt{dpois(lambda)}は，平均\texttt{lambda}の
+ポアソン分布ということになる。
+\texttt{for}ループの構文で，データ\texttt{X[i]}の添え字\texttt{i}の範囲が
+$i \in 1, 2, \dots, N$であることを示している。
+そして，\texttt{X}が，平均\texttt{lambda}のポアソン分布に従うことを表している。
 
-\begin{lstlisting}
-> post1[[1]] <- MCMCpoisson(x ~ 1, beta.start = 1,
-+                           burnin = 0, mcmc = 400,
-+                           thin = 1,
-+                           tune = 0.8, seed = 1117,
-+                           verbose = 20)
-\end{lstlisting}
-%\noindent
-引数の説明をする。
-\texttt{x $\sim$ 1}はモデル式（\texttt{glm()}などと同様）である。
-モデル式の右側は``1''だけなので，これはつまり
+8行目で，パラメーター\texttt{lambda}の事前分布を定義している。
+\texttt{dunif}は一様分布であり，ここでは，0〜1000という範囲の一様分布を
+\texttt{lambda}の事前分布として与えている。
+事前分布として与えるべき確率分布があらかじめわからない場合には
+このような，幅の広い分布が与えられることが多い。
+これを「無情報事前分布(non-informative prior)」や「漠然事前分布(vague prior)」という。
+じゅうぶんに幅の広い一様分布のほか，分散の大きい正規分布などもよく用いられる。
+
+このモデルを数式で書くなら以下のようになる。
+ポアソン分布の確率質量関数は$f(x)=\lambda^{x}e^{-\lambda}/x!$なので，
+パラメーター$\lambda$のもとでデータ$\bm{X}$が得られる
+尤度$L(\bm{X}  \mid  \lambda)$は以下の式\ref{likelihood_pois}になる。
+\begin{align}
+L(\bm{X} \mid \lambda) = \prod_{i = 1}^{N}\frac{\lambda^{X_{i}}e^{-\lambda}}{X_{i}!}
+\label{likelihood_pois}
+\end{align}
+
+式\ref{likelihood_pois}は，簡単に以下のように書くことも多い。
 \begin{align*}
-\bm{X} &\sim \mathrm{Poisson}(\lambda)
-%\hspace{1zw}{\text あるいは}\hspace{1zw}
-%\Pr(\bm{X}|\lambda) = \mathrm{Poisson}(\bm{X}|\lambda)
-\\
-\log\lambda &= C
+\bm{X} \sim \mathrm{Poisson}(\lambda)
 \end{align*}
-で，$C$を推定するということになる（\texttt{MCMCpoisson()}では，
-$\log(\lambda)$が推定される）。
-なお，このときの事前分布は実質的には存在しないものとして扱われている
-\footnote{事前分布を指定するときは，\texttt{b0}引数（平均）と
-\texttt{B0}引数（精度: 分散の逆数）を使う。}
-（improperな無情報事前分布。詳細は後述）。
 
-\texttt{beta.start}はパラメーター（ここでは$\log\lambda$）の初期値，
-\texttt{burnin}は初期値に依存しているおそれがあるので捨てる部分である
-（burn-in期間。この例では0としている。詳しくは後述）。
-\texttt{mcmc}はサンプルを得る繰り返し回数，
-\texttt{thin}はサンプルを得る間隔（この例では1，すなわち毎回サンプルを得るようにしている
-\footnote{マルコフ連鎖内の自己相関が強いモデルではこの間隔を空ける。
-ただし，thinningはよく考えられず使われているという指摘もある\cite{Link2012}。}），
-\texttt{tune}はランダムウォークの大きさにかかわるパラメーター，
-\texttt{seed}は疑似乱数のタネである。これを指定することにより乱数系列が固定され，
-あとで同じ計算をさせたときに結果が同じになる。ここでは1117を与えているが，
-この値にとくに意味はなく，適当な値を与えればよい。
-\texttt{verbose}は途中経過を表示する間隔。ここでは，20回ごとに途中経過を表示するように
-している。
+したがって，このモデルの事後分布は以下のようになる。
+\begin{align*}
+\Pr(\lambda \mid \bm{X}) &\propto L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) \\
+L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) &=\begin{cases}
+ \prod_{i = 1}^{N}\frac{\lambda^{X_{i}}e^{-\lambda}}{X_{i}!} \times 10^{-3} & 0 \leq \lambda  < 10^{3}  \\
+ 0 & 上以外の場合  \label{posterior} \\
+\end{cases}
+\end{align*}
 
-まずはMarkov chainの軌跡をプロットする。結果は図\ref{MCMCpoisson_plot}。
-
+ここでまた\textsf{R}のコードに戻ろう。
+まずは，\textsf{rjags}パッケージを読み込む。
 \begin{lstlisting}
-> plot(post1[[1]], density = FALSE, col = 1, las = 1)
+> library(rjags)
+ 要求されたパッケージ coda をロード中です 
+Linked to JAGS 4.3.0
+Loaded modules: basemod,bugs
+\end{lstlisting}
+
+続いて，初期値を定義する。
+これらは省略可能で，その場合には自動的に生成される。
+ただし，自動的に生成された値のせいでその後の計算がうまくいかないこともある。
+初期値についてはさらに，擬似乱数のタネ(\texttt{.RNG.seed})と
+擬似乱数発生アルゴリズム(\texttt{.RNG.name})も明示的に指定するようにしている。
+これらも省略可能である。
+しかし，パラメータの初期値と擬似乱数を固定しておくことで，再現可能(reproducible)，
+すなわち同じ計算を繰り返したときに同じ結果が得られるようになる。
+\begin{lstlisting}
+> inits <- vector("list", 3)
+> inits[[1]] <- list(lambda = 1,
++                    .RNG.seed = 1,
++                    .RNG.name = "base::Mersenne-Twister")
 \end{lstlisting}
 %
+要素3のリスト\texttt{inits}をまず作っている。
+ここでは1番目の要素のみを使用し，
+\texttt{lambda}の初期値は1，乱数のタネは1，乱数生成法は Mersenne-Twisterと指定している。
+
+ここまで準備ができたら，\texttt{jags.mode()}関数でJAGSのモデルオブジェクトを
+生成する。
+引数として，モデルのファイル名，データ，初期値，マルコフ連鎖の数を与える。
+\begin{lstlisting}
+> model1 <- jags.model("example1_model.txt",
++                      data = list(X = x, N = length(x)),
++                      inits = inits[[1]], n.chains = 1, n.adapt = 0)
+Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 20
+   Unobserved stochastic nodes: 1
+   Total graph size: 24
+
+Initializing model
+
+\end{lstlisting}
+%
+引数の\texttt{"example1\_model.txt"}は，BUGS言語でモデルが書かれたファイルの名前である。
+\texttt{data}引数は，モデルに渡すデータで，ここではBUGS上の\texttt{X}に\textsf{R}上の\texttt{x}を，
+\texttt{N}に\texttt{length(x)}をそれぞれ渡すとしている。
+\texttt{inits}引数は初期値であり，先に定義した\texttt{inits[[1]]}を渡している。
+\texttt{n.chains}引数はマルコフ連鎖の数である。通常は3〜4とするが，説明のためまずは1としている。
+\texttt{n.adapt}引数は，\textsf{JAGS}内部でのMCMC計算のための調整(adaptation)に使われる連鎖の長さを指定する。
+ここでは説明のために0としている。
+
+つづいて，\texttt{coda.samples()}関数で，MCMCを実行する。
+\begin{lstlisting}
+> post1 <- coda.samples(model1, variable.names = "lambda",
++                       n.iter = 50)
+NOTE: Stopping adaptation
+
+\end{lstlisting}
+%
+引数の\texttt{variable.names}で，結果を保存するパラメータを指定する（ここでは\texttt{lambda}のみ）。
+\texttt{n.iter}で，マルコフ連鎖の長さを指定する。ここでは50としている。
+
+
+計算されたマルコフ連鎖の軌跡を表示してみる。
+\begin{lstlisting}
+> traceplot(post1, col = 1, las = 1)
+\end{lstlisting}
+%
+結果は図\ref{fig:trace1}。
+
 \begin{figure}[hbtp]
   \begin{center}
     \includegraphics[bb=0 0 360 240, clip, width=240 bp]{example1-1.pdf}
   \end{center}
-  \caption{\texttt{MCMCpoissonR()}によるMarkov chainの軌跡}
-  \label{MCMCpoisson_plot}
+  \caption{マルコフ連鎖の軌跡}
+  \label{fig:trace1}
 \end{figure}
 
-最初から50回目くらいまでは，初期値の影響が残っていることがわかる。
-すくなくとも この部分はburn-in期間として除外する必要がある。
-
-\texttt{tune}の値を変えると収束の速度が変わる。
-小さすぎると，収束が遅くなる。
-かといって，大きすぎても採択率が悪くなりすぎて，やはりなかなか収束しなくなる。
-採択率の目安は（どんな場合にでもあてはまるわけではないが）1〜2次元のモデルで0.5，
-高次のモデルでは0.25とされている\cite{IMCMR}。
-
-%ページ調整
-%\vspace{4zw}
-
-
-乱数系列と初期値を変えて同様の計算を繰り返してみる。
-
+別の初期値で試してみよう。
 \begin{lstlisting}
-> post1[[2]] <- MCMCpoisson(x ~ 1, beta.start = 5,
-+                           burnin = 0, mcmc = 400, thin = 1,
-+                           tune = 0.8, seed = 1123,
-+                           verbose = 20)
-> post1[[3]] <- MCMCpoisson(x ~ 1, beta.start = 10,
-+                           burnin = 0, mcmc = 400, thin = 1,
-+                           tune = 0.8, seed = 1129,
-+                           verbose = 20)
+> inits[[2]] <- list(lambda = 30,
++                    .RNG.seed = 2,
++                    .RNG.name = "base::Mersenne-Twister")
+> inits[[3]] <- list(lambda = 100,
++                    .RNG.seed = 3,
++                    .RNG.name = "base::Mersenne-Twister")
 \end{lstlisting}
-%
-結果を\texttt{mcmc.list}形式に変換して，軌跡をプロットする。
-結果は図\ref{MCMC3}。
+\texttt{lambda}の初期値は2番目では30，3番目では100としている。
+また，乱数のタネは2番目では2，3番目では3としている。
 
+この設定で\textsf{JAGS}を実行する。
+\texttt{jags.model()}関数の\texttt{n.chains}引数の値を3としている。
+これにより，3本のマルコフ連鎖を使ってパラメーターを推定することになる。
 \begin{lstlisting}
-> post1.mcmc <- mcmc.list(post1)
-> plot(post1.mcmc, density = FALSE, ylim = c(0, 10), las = 1)
+> model2 <- jags.model("example1_model.txt",
++                      data = list(X = x, N = length(x)),
++                      inits = inits, n.chains = 3, n.adapt = 0)
+Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 20
+   Unobserved stochastic nodes: 1
+   Total graph size: 24
+
+Initializing model
+
+> post2 <- coda.samples(model2, variable.names = "lambda",
++                       n.iter = 50)
+NOTE: Stopping adaptation
+
 \end{lstlisting}
-%
+
+軌跡を表示させる。結果は図\ref{fig:trace3}。
+\begin{lstlisting}
+> traceplot(post2, las = 1)
+\end{lstlisting}
 
 \begin{figure}[hbtp]
   \begin{center}
     \includegraphics[bb=0 0 360 240, clip, width=260 bp]{example1-2.pdf}
   \end{center}
-  \caption{Markov chainを3つにした結果}
-  \label{MCMC3}
+  \caption{マルコフ連鎖を3つにした結果}
+  \label{fig:trace3}
 \end{figure}\noindent
-初期値により，その影響の残る期間は変わるが，同じような値に
+
+初期値により，その影響の残る期間は変わるが，最終的には同じような値に
 収束しているように見える。
+初期値の影響が残る期間は取り除く必要があり，
+この期間のことを，burn-inやwarmupなどと呼ぶ。
 
 では次に，実際に事後分布のサンプルを得ることとする。
-burn-inを500回，burn-in後の繰り返し回数を1000回，
-サンプル取得間隔を1回（つまり毎回），
-Markov chainの数は3とする。
-このとき，取得されるサンプルの大きさは$1000\div1\times3=3000$となる。
+設定として，burn-inを1000回（そのうち，500回は\textsf{JAGS}のadaptation），burn-in後の繰り返し回数を1000回，
+サンプル取得間隔を1回（つまり毎回）としている。
+これらをそれぞれ変数(\texttt{burnin}, \texttt{iter}, \texttt{thin})に代入してから，\texttt{rjags}の関数に渡しているが，もちろん関数の引数に直接数値を渡しても良い。
+マルコフ連鎖の数は3としているので，
+このとき，取得されるサンプルの大きさは$1000 \div 1 \times 3 = 3000$となる。
 
 \begin{lstlisting}
-> post2 <- vector("list", 3)
-> burnin <- 500
-> mcmc <- 1000
+> burnin <- 1000
+> iter <- 1000
 > thin <- 1
-> tune <- 2
-> verbose = 0
-> post2[[1]] <- MCMCpoisson(x ~ 1, beta.start = 1,
-+                           burnin = burnin, mcmc = mcmc,
-+                           thin = thin,
-+                           tune = tune, seed = 1117,
-+                           verbose = verbose)
-> post2[[2]] <- MCMCpoisson(x ~ 1, beta.start = 5,
-+                           burnin = burnin, mcmc = mcmc,
-+                           thin = thin,
-+                           tune = tune, seed = 1123,
-+                           verbose = verbose)
-> post2[[3]] <- MCMCpoisson(x ~ 1, beta.start = 10,
-+                           burnin = burnin, mcmc = mcmc,
-+                           thin = thin,
-+                           tune = tune, seed = 1129,
-+                           verbose = verbose)
-> post2.mcmc <- mcmc.list(post2)
+> model3 <- jags.model("example1_model.txt",
++                      data = list(X = x, N = length(x)),
++                      inits = inits, n.chains = 3, n.adapt = 500)
+Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 20
+   Unobserved stochastic nodes: 1
+   Total graph size: 24
+
+Initializing model
+
+  |++++++++++++++++++++++++++++++++++++++++++++++++++| 100%
+> update(model3, n.iter = burnin - 500)
+  |**************************************************| 100%
+> post3 <- coda.samples(model3,
++                       variable.names = "lambda",
++                       n.iter = iter, thin = thin)
+  |**************************************************| 100%
 \end{lstlisting}
 
-\texttt{plot()}関数で結果を図示する（図\ref{MCMC_plot}）。
+\texttt{plot()}関数で，マルコフ連鎖の軌跡と事後分布をグラフ表示させる。
+結果は図\ref{fig:plot}。
 \begin{lstlisting}
-> plot(post2.mcmc)
+> plot(post3)
 \end{lstlisting}
 
 \begin{figure}[hbtp]
   \begin{center}
     \includegraphics[bb=0 0 360 240, clip, width=260 bp]{example1-3.pdf}
   \end{center}
-  \caption{Markov chainをの軌跡と，$\lambda$の事後分布}
-  \label{MCMC_plot}
-\end{figure}
+  \caption{\texttt{plot()}関数の出力結果}
+  \label{fig:plot}
+\end{figure}\noindent
+パラメーター\texttt{lambda}について，各連鎖の軌跡と，全連鎖をまとめた事後分布の密度が図示される。
 
+図\ref{fig:plot}をみると，
 3本の連鎖がよく混ざりあっているのがわかる。このように，初期値や擬似乱数系列に
 よらず，各連鎖がよく混ざりあっているのは，MCMC計算がうまくいったことを示している。
 数値的に収束の診断をおこなう方法は後述する。
 
-\texttt{summary()}関数で要約を表示する。
+\texttt{summary()}関数で結果の要約を表示させる。
 \begin{lstlisting}
-> summary(post2.mcmc)
+> summary(post3)
 
-Iterations = 501:1500
+Iterations = 2501:3500
 Thinning interval = 1 
 Number of chains = 3 
 Sample size per chain = 1000 
@@ -624,22 +710,23 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
           Mean             SD       Naive SE Time-series SE 
-      1.327263       0.114073       0.002083       0.004269 
+      3.844708       0.460265       0.008403       0.010359 
 
 2. Quantiles for each variable:
 
  2.5%   25%   50%   75% 97.5% 
-1.109 1.251 1.327 1.406 1.548 
+3.003 3.524 3.816 4.134 4.807 
 
 \end{lstlisting}
 %
 ベイズ推定ではパラメーターの推定値も確率的に（事後分布として）与えられる。
-その代表値としては一般に平均や中央値が用いられる。
+その代表値としては一般に平均や中央値が用いられる\footnote{このほか，事後分布のモードを用いる場合もある。これをMAP(Maximum A Posterior)推定値という。}。
 また，95\%信用区間\footnote{「頻度主義」統計における信頼区間とは実は違うもの。}も同時に使われることが多い。
 この例では，
-$\log\lambda$の事後分布の平均値（事後平均）が1.33，95\%信用区間が
-1.11〜1.55と推定された。事後平均に対応する$\lambda$の値は$\exp(1.33)=3.78$と
+$\lambda$の事後分布の平均値（事後平均）が3.84，中央値が3.82，95\%信用区間が
+3.00〜4.81と推定された。事後平均に対応する$\lambda$の値は$\exp(1.33)=3.78$と
 いうことになる。
+事後平均・中央値とも，GLMによる最尤推定値とだいたい一致した。
 
 \paragraph{収束診断}
 この例ではうまく収束したが，いつでもうまくいくというものでもない。
@@ -655,210 +742,22 @@ $\log\lambda$の事後分布の平均値（事後平均）が1.33，95\%信用�
 
 収束状況を数値で診断するためには，Gelman-Rubinの収束診断($\Hat{R}$; Rhat)がよく使われる。
 \textsf{R}では，\texttt{coda}パッケージの\texttt{gelman.diag()}関数などで計算できる。
-収束していれば$\Hat{R}$の値が1に近くなる（この計算のためには複数のchainが必要である）。
+収束していれば$\Hat{R}$の値が1に近くなる（この計算のためには複数の連鎖が必要である）。
 詳細は\texttt{help(gelman.diag)}などを参照されたい。
 $\Hat{R}$の値は一般には1.1以下でよいとされるが，軌跡とあわせ見て，
 収束しているかどうか判断する方がよいだろう。
 
-先に実行したMCMCの結果\texttt{post2.mcmc}について，$\Hat{R}$を求めてみる。
+先に実行したMCMCの結果\texttt{post3}について，$\Hat{R}$を求めてみる。
 \begin{lstlisting}
-> gelman.diag(post2.mcmc)
+> gelman.diag(post3)
 Potential scale reduction factors:
 
-            Point est. Upper C.I.
-(Intercept)       1.01       1.01
+       Point est. Upper C.I.
+lambda          1          1
 
 \end{lstlisting}
-$\Hat{R}$値は1.01であった。図\ref{MCMC_plot}の結果とあわせ，
+$\Hat{R}$値は1であった。図\ref{fig:plot}の結果とあわせ，
 うまく収束したと言えそうである。
-
-\vspace{1zw}
-
-マルコフ連鎖が1本のときにも使える方法としてはGewekeの収束診断
-（\texttt{coda}パッケージでは\texttt{geweke.diag()}関数）がある。
-マルコフ連鎖の最初の部分と後半との差をZ値であらわす。
-$|Z|>1.96$のとき危険率5\%で差がある（定常状態に達していない）ことになる。
-詳細は\texttt{help(geweke.diag)}などを参照。
-\begin{lstlisting}
-> geweke.diag(post2.mcmc)
-[[1]]
-
-Fraction in 1st window = 0.1
-Fraction in 2nd window = 0.5 
-
-(Intercept) 
-     0.4582 
-
-
-[[2]]
-
-Fraction in 1st window = 0.1
-Fraction in 2nd window = 0.5 
-
-(Intercept) 
-   -0.05097 
-
-
-[[3]]
-
-Fraction in 1st window = 0.1
-Fraction in 2nd window = 0.5 
-
-(Intercept) 
-      1.202 
-
-
-\end{lstlisting}
-
-\texttt{coda}パッケージの関数のほか，\texttt{boa} (Bayesian Output Analysis)という
-パッケージでも収束診断やプロットをおこなうことができる。
-
-\subsubsection{MCMCmetrop1R()による例}
-
-\paragraph{無情報事前分布}
-つぎに，一般的なベイズモデリングが可能な\texttt{MCMCmetrop1R()}を
-同じデータに適用した例をしめす。
-\texttt{MCMCpoisson()}はポアソン回帰専用だが，
-\texttt{MCMCmetrop1R()}はより自由なモデリングが可能である。
-
-まず，サンプリングをおこなうための関数を定義する。
-ここでは，事前分布$\times$尤度の対数を返り値としている。
-この関数をあとで\texttt{MCMCmetrop1R()}に引数のひとつとして与えてやる。
-\begin{lstlisting}
-> LogPoisFun <- function(lambda, x) {
-+   # Poisson distribution: p(x) = lambda^x exp(-lambda)/x!
-+   if (lambda >= 0) {    # lambda must be non-negative
-+     # prior: dunif(0, 10^4)
-+     log(ifelse(lambda >= 0 & lambda < 10^4, 10^-4, 0)) + 
-+       # log likelihood
-+       sum(log(lambda^x * exp(-lambda) / factorial(x)))
-+   } else {
-+     -Inf
-+   }
-+ }
-\end{lstlisting}
-%
-5行目で，$\lambda$の事前分布は，0〜$10^{4}$の一様分布
-としている。
-\begin{align*}
-\Pr(\lambda) &\sim \mathrm{Uniform}(0, 10^{4}) \\
-\intertext{すなわち}
-\mathrm{Pr}(\lambda) &=
-\begin{cases}
-10^{-4} & 0 \leq \lambda  < 10^{4} \\
-0 & 上以外の場合 \\
-\end{cases}
-%\label{noninformative}
-\end{align*}
-事前分布として与えるべき確率分布があらかじめわからない場合には
-このような幅が広く，とくに意味のない分布が与えられることが多い。
-このような事前分布を「無情報事前分布(non-informative prior)」や「漠然事前分布(vague prior)」という。
-じゅうぶんに幅の広い一様分布のほか，分散の大きい正規分布などもよく用いられる。
-また，この前の例のように実質的には存在しないと扱われる
-（$(-\infty, \infty)$の一様分布など）こともある。
-このような事前分布は，積分しても1にならないので，
-非正則事前分布(improper prior)と呼ばれる。
-
-ポアソン分布の確率質量関数は$f(x)=\lambda^{x}e^{-\lambda}/x!$なので，
-パラメーター$\lambda$のもとでデータ$\bm{X}$が得られる
-尤度$L(\bm{X}  \mid  \lambda)$は以下の式\ref{likelihood_pois}になる。
-\begin{align}
-L(\bm{X} \mid \lambda) = \prod_{i = 1}^{N}\frac{\lambda^{X_{i}}e^{-\lambda}}{X_{i}!}
-\label{likelihood_pois}
-\end{align}
-
-したがって，事後分布は以下のようになる。
-\begin{align}
-\Pr(\lambda \mid \bm{X}) &\propto L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) \\
-L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) &=\begin{cases}
- \prod_{i = 1}^{N}\frac{\lambda^{X_{i}}e^{-\lambda}}{X_{i}!} \times 10^{-4} & 0 \leq \lambda  < 10^{4}  \\
- 0 & 上以外の場合  \label{posterior} \\
-\end{cases}
-\end{align}
-
-\noindent
-上の \textsf{R}関数\texttt{LogPoisFun()}では式\ref{posterior}を対数和として計算している。
-%\begin{align*}
-%\log\mathrm{Pr}(\lambda|\bm{X}) &= \sum_{i = 1}^{N}\log\frac{\lambda^{X_{i}}e^{-\lambda}}{X_{i}!} + \log10^{-4} \\
-%\end{align*}
-
-つづいて，\texttt{MCMCmetrop1R()}を実行する。
-引数\texttt{fun}は，サンプリングをおこなう事後分布の密度関数
-（詳細は\texttt{help(MCMCmetrop1R)}を参照）で，
-先に定義した\texttt{LogPoisFun}を与えている。
-対数密度として与えるので\texttt{logfun}引数を\texttt{TRUE}と指定し，
-データの\texttt{x}も引数としている。
-その他の引数は\texttt{MCMCpoisoon()}におなじである。
-ここでも3本のMarkov chainを計算させているが，\texttt{lapply()}関数を使って
-プログラムを短くしている。
-
-\vspace{1zw}
-\begin{lstlisting}
-> chains <- 1:3
-> inits <- c(1, 10, 20)
-> seeds <- c(1117, 1123, 1129)
-> post3 <- lapply(chains,
-+                 function(chain) {
-+                   MCMCmetrop1R(fun = LogPoisFun,
-+                                theta.init = inits[chain],
-+                                burnin = 1000, mcmc = 1000,
-+                                thin = 1,
-+                                tune = 2, seed = seeds[chain],
-+                                verbose = 0, logfun = TRUE,
-+                                x = x)
-+                 })
-
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-The Metropolis acceptance rate was 0.49600
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-The Metropolis acceptance rate was 0.48850
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-The Metropolis acceptance rate was 0.51000
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-\end{lstlisting}
-
-\texttt{gelman.diag()}関数で$\Hat{R}$値を求める。
-%ページ調整
-\vspace{2zw}
-\begin{lstlisting}
-Potential scale reduction factors:
-
-     Point est. Upper C.I.
-[1,]          1       1.01
-
-\end{lstlisting}
-
-$\Hat{R}$の値は1であった。軌跡を見ても，うまく収束しているようなので，結果の要約を表示する。
-
-\begin{lstlisting}
-> summary(post3.mcmc)
-
-Iterations = 1001:2000
-Thinning interval = 1 
-Number of chains = 3 
-Sample size per chain = 1000 
-
-1. Empirical mean and standard deviation for each variable,
-   plus standard error of the mean:
-
-          Mean             SD       Naive SE Time-series SE 
-      3.823640       0.435003       0.007942       0.016180 
-
-2. Quantiles for each variable:
-
- 2.5%   25%   50%   75% 97.5% 
-3.059 3.529 3.801 4.085 4.744 
-
-\end{lstlisting}
-
-最尤推定値の3.8に近い値が事後平均として得られた。また，事後中央値は3.80であった。
 
 \paragraph{情報事前分布}
 
@@ -869,6 +768,81 @@ Sample size per chain = 1000
 この分布の平均値は1，分散は0.5である。
 グラフで示すと，図\ref{prior_posterior}の上の点線のようになる。
 
+\textsf{BUGS}言語によるモデルは以下のようになる。
+\begin{lstlisting}
+model {
+  # Likelihood
+  for (i in 1:N) {
+    X[i] ~ dpois(lambda)
+  }
+
+  # Prior
+  lambda ~ dgamma(2, 2)
+}
+\end{lstlisting}
+8行目で，\texttt{lambda}の事前分布にガンマ分布\texttt{dgamma(2, 2)}を使うようになっている。
+
+
+前の例と同様に，\textsf{JAGS}を実行し，結果を\texttt{post4}に代入する。
+%
+\begin{lstlisting}
+> inits <- list(list(lambda = 0.1,
++                    .RNG.seed = 1,
++                    .RNG.name = "base::Mersenne-Twister"),
++               list(lambda = 1,
++                    .RNG.seed = 2,
++                    .RNG.name = "base::Mersenne-Twister"),
++               list(lambda = 10,
++                    .RNG.seed = 3,
++                    .RNG.name = "base::Mersenne-Twister"))
+> model4 <- jags.model("example1-1_model.txt",
++                      data = list(X = x, N = length(x)),
++                      inits = inits, n.chains = 3, n.adapt = 500)
+Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 20
+   Unobserved stochastic nodes: 1
+   Total graph size: 23
+
+Initializing model
+
+> update(model4, n.iter = burnin - 500)
+  |**************************************************| 100%
+> post4 <- coda.samples(model4,
++                       variable.names = "lambda",
++                       n.iter = iter, thin = thin)
+  |**************************************************| 100%
+\end{lstlisting}
+
+結果は以下のとおり。無情報事前分布を使用したときの結果よりも，事前分布の
+影響を受けて事後平均が小さくなっているのがわかる。
+
+\begin{lstlisting}
+> summary(post4)
+
+Iterations = 501:1500
+Thinning interval = 1 
+Number of chains = 3 
+Sample size per chain = 1000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+          Mean             SD       Naive SE Time-series SE 
+      3.544598       0.396085       0.007231       0.007348 
+
+2. Quantiles for each variable:
+
+ 2.5%   25%   50%   75% 97.5% 
+2.814 3.272 3.527 3.806 4.378 
+
+\end{lstlisting}
+
+図\ref{prior_posterior}は，事前分布（上の点線）が尤度（下の実線）で更新されて
+事後分布（上の実線）となることを示している。
+
 \begin{figure}[htbp]
 	\begin{center}
 		\includegraphics[bb=0 0 480 480, clip, width=320 bp]{example1-4.pdf}
@@ -878,73 +852,10 @@ Sample size per chain = 1000
 \end{figure}
 
 
-
-\texttt{MCMCmetrop1R()}にわたす関数は以下のように定義される。
-%
-\begin{lstlisting}
-## Function for sampling
-LogPoisFun2 <- function(lambda, x) {
-  if (lambda >= 0) {  # lambda must be non-negative
-    # prior: Gamma(2, 2)
-    log(dgamma(lambda, shape = 2, rate = 2)) + 
-      # log likelihood
-      sum(log(dpois(x, lambda)))
-  } else {
-    -Inf
-  }
-}
-\end{lstlisting}
-
-前の例と同様に，\texttt{lapply()}を使って\texttt{MCMCmetrop1R}を
-実行し，結果を\texttt{post4}に代入する。
-%
-\begin{lstlisting}
-chains <- 1:3
-inits <- c(1, 10, 20)
-seeds <- c(1117, 1123, 1129)
-post4 <- lapply(chains,
-                function(i) {
-                  MCMCmetrop1R(fun = LogPoisFun2,
-                               theta.init = inits[i],
-                               burnin = 2000, mcmc = 2000,
-                               thin = 1,
-                               tune = 2, seed = seeds[i],
-                               verbose = 0, logfun = TRUE,
-                               x = x)
-                })
-post4.mcmc <- mcmc.list(post4)
-\end{lstlisting}
-
-結果は以下のとおり。無情報事前分布を使用したときの結果よりも，事前分布の
-影響を受けて事後平均が小さくなっているのがわかる。
-
-\begin{lstlisting}
-> summary(post4.mcmc)
-
-Iterations = 2001:4000
-Thinning interval = 1 
-Number of chains = 3 
-Sample size per chain = 2000 
-
-1. Empirical mean and standard deviation for each variable,
-   plus standard error of the mean:
-
-          Mean             SD       Naive SE Time-series SE 
-      3.543336       0.411685       0.005315       0.011512 
-
-2. Quantiles for each variable:
-
- 2.5%   25%   50%   75% 97.5% 
-2.801 3.261 3.524 3.815 4.417 
-
-\end{lstlisting}
-
-図\ref{prior_posterior}は，事前分布（上の点線）が尤度（下の実線）で更新されて
-事後分布（上の実線）となることを示している。
-
 %ページ調整
 %\pagebreak
 
+\clearpage
 
 %%
 %% ロジスティック回帰
@@ -983,220 +894,10 @@ $\bm{x}$と$\bm{y}$との関係をプロットしてみると，図\ref{example2
   \label{example2_plot}
 \end{figure}
 
-
-\subsubsection{MCMCpackによる例}
-
-まず，\textsf{MCMCpack}で解いてみる。
-\textsf{R}スクリプトは\texttt{example2.R}。
-
-\textsf{MCMCpackage}を読み込む。
-\begin{lstlisting}
-> library(MCMCpack)
-\end{lstlisting}
-
-\paragraph{データ}
-データを用意する。
-\texttt{data}データフレームの\texttt{y}要素には，各試行ごとの
-生死（生=0, 死=1）の結果を入れるようにしている。
-\begin{lstlisting}
-> x <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-> y <- c(1, 2, 2, 6, 4, 5, 8, 9, 9, 9, 10)
-> k <- 10
-> data <- data.frame(x = rep(x, each = k),
-+                    y = c(sapply(y, function(i)
-+                                      c(rep(0, k - i), rep(1, i)))))
-\end{lstlisting}
-
-\paragraph{モデルとあてはめ}
-\texttt{y $\sim$ x}をモデル式として，\texttt{MCMClogit()}関数によりベイズ推定をおこなう。
-\texttt{MCMClogit()}関数はロジスティック回帰をおこなう\textsf{MCMCpack}の関数。
-以下の例ではchainの数を3，burn-inの回数を2000，burn-in後の繰り返し回数を2，
-サンプリング間隔を2としている。
-\begin{lstlisting}
-> chains <- 1:3
-> inits <- c(1, 10, 20)
-> seeds <- c(12, 123, 1234)
-> post <- lapply(chains,
-+                function(chain) {
-+                  MCMClogit(y ~ x,
-+                            data = data,
-+                            burnin = 2000, mcmc = 2000,
-+                            thin = 2,
-+                            tune = 1.1, verbose = 500,
-+                            seed = seeds[chain])
-+                 })
-
-
-MCMClogit iteration 1 of 4000 
-beta = 
-  -2.51563
-   0.57885
-Metropolis acceptance rate for beta = 1.00000
-
-        :
-        :
-        
-MCMClogit iteration 3501 of 4000 
-beta = 
-  -2.23947
-   0.53340
-Metropolis acceptance rate for beta = 0.52699
-
-
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-The Metropolis acceptance rate for beta was 0.52400
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-\end{lstlisting}
-
-結果を\texttt{mcmc.list}形式に変換して，
-軌跡と事後分布を表示する(図\ref{plot_coda_mcmcpack})。
-\begin{lstlisting}
-> post.mcmc <- mcmc.list(post)
-> plot(post.mcmc)
-\end{lstlisting}
-
-
-\begin{figure}[htbp]
-	\begin{center}
-		\includegraphics[bb=0 0 400 400, clip, width=300 bp]{example2_results.pdf}
-	\end{center}
-	\caption{\textsf{coda}クラスオブジェクトのplot出力(MCMCpack)}
-	\label{plot_coda_mcmcpack}
-\end{figure}
-
-収束診断のため，Gelman-Rubin統計量($\Hat{R}$)を表示する。
-\begin{lstlisting}
-> gelman.diag(post.mcmc)
-Potential scale reduction factors:
-
-            Point est. Upper C.I.
-(Intercept)       1.00       1.02
-x                 1.01       1.02
-
-Multivariate psrf
-
-1.01
-\end{lstlisting}
-図\ref{plot_coda_mcmcpack}の結果と合わせ，うまく収束していると
-判断できる。
-
-%ページ調整
-%\vspace{1zw}
-
-
-結果を表示する。
-\begin{lstlisting}
-> summary(post.mcmc)
-
-Iterations = 2001:3999
-Thinning interval = 2 
-Number of chains = 3 
-Sample size per chain = 1000 
-
-1. Empirical mean and standard deviation for each variable,
-   plus standard error of the mean:
-
-               Mean     SD Naive SE Time-series SE
-(Intercept) -2.1738 0.4948 0.009034        0.01891
-x            0.5575 0.1016 0.001856        0.00403
-
-2. Quantiles for each variable:
-
-               2.5%     25%     50%     75%   97.5%
-(Intercept) -3.2003 -2.5160 -2.1490 -1.8405 -1.2595
-x            0.3675  0.4883  0.5518  0.6204  0.7736
-
-\end{lstlisting}
-切片の事後平均が-2.17，95\%信用区間が-3.20〜-1.26，
-xの係数の事後平均が0.56，95\%信用区間が0.37〜0.77と推定された。
-
-\paragraph{MCMCmetrop1R()を使った例}
-
-次に，\texttt{MCMCmetrop1R()}関数を使って同じ問題を解いてみよう。
-この場合，データとして元の\texttt{x}と\texttt{y}をそのまま利用できる。
-\texttt{MCMCmetrop1R()}関数に渡す，対数事後分布（この例では，事前分布はないものと扱っているので，
-対数尤度に同じ）を返す関数は以下のように定義できる。
-\texttt{beta}引数に与えるデータは，2次元のベクトルになることに注意。
-
-\begin{lstlisting}
-LogFun <- function(beta, x, y, k) {
-  mu <- beta[1] + beta[2] * x
-  sum(log(dbinom(y, k, (1 / (1 + exp(-mu))))))
-}
-\end{lstlisting}
-
-\noindent
-ロジットスケールの線形予測子\texttt{mu}を，リストの3行目，\texttt{dbinom()}関数の第3引数の部分で
-逆ロジット変換して確率スケールにしている。
-
-次に，\texttt{MCMCmetrop1R()}関数でMCMC計算を実行するが，ここでも\texttt{lapply()}関数を
-使ってプログラムを短くしている。
-上で定義した\texttt{LogFun()}の\texttt{beta}引数は2次元ベクトルなので，初期値\texttt{theta.init}引数に
-与えるデータも2次元ベクトルになるように，\texttt{inits}は2次元ベクトルを要素とするリストとして
-定義する。
-
-
-\begin{lstlisting}
-chains <- 1:3
-inits <- list(c(1, 1), c(3, 3), c(-3, -3))
-seeds <- c(1117, 1123, 1129)
-post2 <- lapply(chains,
-                function(chain) {
-                  MCMCmetrop1R(fun = LogFun,
-                               theta.init = inits[[chain]],
-                               burnin = 1000, mcmc = 1000,
-                               thin = 1,
-                               tune = 1.1, seed = seeds[chain],
-                               verbose = 500, logfun = TRUE,
-                               x = x, y = y, k = 10)
-                })
-post2.mcmc <- mcmc.list(post2)
-\end{lstlisting}
-
-\texttt{MCMClogit()}関数を使用したのと，ほぼ同様の結果が得られる。
-
-\begin{lstlisting}
-> summary(post2.mcmc)
-
-Iterations = 1001:2000
-Thinning interval = 1 
-Number of chains = 3 
-Sample size per chain = 1000 
-
-1. Empirical mean and standard deviation for each variable,
-   plus standard error of the mean:
-
-        Mean     SD Naive SE Time-series SE
-[1,] -2.1842 0.5123 0.009354       0.028818
-[2,]  0.5624 0.1067 0.001948       0.006238
-
-2. Quantiles for each variable:
-
-        2.5%     25%     50%     75%  97.5%
-[1,] -3.2531 -2.5065 -2.1734 -1.8401 -1.217
-[2,]  0.3566  0.4866  0.5628  0.6374  0.782
-\end{lstlisting}
-
-%%
-%% 実習ここまで
-%% ここから実演
-%%
-
 \subsubsection{JAGSによる例}
 
-つづいて，同じデータを\textsf{JAGS}でベイズ推定する。
-\textsf{R}スクリプトは\texttt{example2\_JAGS.R}。
-
-%\paragraph{JAGSを使うための設定}
-
-\textsf{R}で\textsf{JAGS}を使用するため，
-\textsf{rjags}パッケージを呼び出す。
-%あらかじめ，\textsf{R2OpenBUGS}パッケージをインストール
-%しておくこと。
-\begin{lstlisting}
-> library(rjags)
-\end{lstlisting}
+まず，\textsf{JAGS}でこのデータを解析してみる。
+この例題で使用する\textsf{R}スクリプトは\texttt{example2.R}，\textsf{BUGS}言語によるモデルは\texttt{example2\_model.txt}である。
 
 \paragraph{データ}
 \textsf{R}上で下のようにデータを用意する。
@@ -1211,26 +912,24 @@ Sample size per chain = 1000
 %\pagebreak
 
 \paragraph{モデル}
-モデルは，BUGS言語で記述したものをファイル（この例では
-``\texttt{example2\_model.txt}''という
-ファイル名）に保存しておく。
-内容は以下のようなものである。
-\texttt{MCMCpack}パッケージの\texttt{MCMClogit()}関数でのモデル記述にくらべると
-複雑だが，これはさまざまなモデルを記述できる汎用性のためである。
+BUGS言語によるモデルは以下のとおり。
 
 \begin{lstlisting}
 model {
+  # Likelihood
   for (i in 1:N) {
-    Y[i] ~ dbin(p[i], K)
     logit(p[i]) <- beta + beta.x * X[i]
+    Y[i] ~ dbin(p[i], K)
   }
-  beta ~ dnorm(0, 1.0E-6)
-  beta.x ~ dnorm(0, 1.0E-6)
+
+  # Priors
+  beta ~ dnorm(0, 1.0E-4)
+  beta.x ~ dnorm(0, 1.0E-4)
 }
 \end{lstlisting}
 
 では，このモデルについて詳しくみてみよう。
-2行目から5行目がこの部分がモデルの中心部である。
+3行目から6行目が尤度の部分である。
 \texttt{for}ループの構文で，\texttt{for}ブロック内の式の変数\texttt{X[i]}, \texttt{Y[i]}, 
 \texttt{p[i]}の\texttt{i}の範囲が
 $i \in 1, 2, \dots, N$であることを示している。
@@ -1242,18 +941,17 @@ $\mathrm{logit}(p) = \log(p/(1-p))$
 である。
 ここでは，\texttt{Y}が，試行回数\texttt{K}および確率\texttt{p}の二項分布に
 従い，\texttt{p}のロジットが\texttt{X}と線形の関係にあるとモデル化している。
-%なお，行末の``;''はなくてもよい。
 
-つぎに，6行目から7行目で\texttt{beta}および\texttt{beta.x}の事前分布を定義している。
+つぎに，9行目から10行目で\texttt{beta}および\texttt{beta.x}の事前分布を定義している。
 ここでは，
-\texttt{beta}および\texttt{beta.x}の事前分布を，$\mathrm{Normal}(0, 10^{6})$，
-すなわち平均0，分散が$10^{6}$という確率分布にしている
+\texttt{beta}および\texttt{beta.x}の事前分布を，$\mathrm{Normal}(0, 10^{4})$，
+すなわち平均0，分散が$10^{4}$という確率分布にしている
 （BUGS言語の確率分布\texttt{dnorm()}の第1引数は平均，第2引数は精度（分散の逆数））。
 これはつまり，無情報事前分布である。
 なお，確率的関係(``\texttt{\textasciitilde}'')と決定論的関係(``\texttt{<-}'')の違いに注意すること。
 
 以上を数式で表現すると以下のようになる。
-\begin{align}
+\begin{align*}
 \Pr(\beta, \beta_x|\bm{X}, \bm{Y}) &\propto L(\bm{X}, \bm{Y}|\beta, \beta_x)\Pr(\beta)\Pr(\beta_x) \\
 L(\bm{X}, \bm{Y}|\beta, \beta_x) &= \prod_{i=1}^{N}{\mathrm{Binomial}(Y_i|K, p(X_i))} \notag \\
   &= \prod_{i=1}^{N}{\frac{K!}{Y_i!(K-Y_i)!}p(X_i)^{Y_i}(1-p(X_i))^{K-Y_i}}
@@ -1262,12 +960,11 @@ p(X_i) &= \mathrm{logit}^{-1}(\beta+\beta_{x}X_i)) \notag \\
   &= \frac{\exp(\beta+\beta_{x}X_i)}{1 + \exp(\beta+\beta_{x}X_i)} \\
 \Pr(\beta) &= \mathrm{Normal}(0, 10^{6}) \\
 \Pr(\beta_{x}) &= \mathrm{Normal}(0, 10^{6})
-\end{align}
+\end{align*}
 
 \paragraph{設定}
 
-つづいて，chainの数，パラメーターの初期値を決める。
-
+つづいて，マルコフ連鎖の数，パラメーターの初期値を決める。
 \begin{lstlisting}
 > ## Number of chains
 > n.chains <- 3
@@ -1290,33 +987,19 @@ p(X_i) &= \mathrm{logit}^{-1}(\beta+\beta_{x}X_i)) \notag \\
 > ## Parameters
 > pars <- c("beta", "beta.x")
 \end{lstlisting}
-
-この例では，それぞれ\texttt{n.chains}と\texttt{inits}という変数に入れておくようにしているが，
-\textsf{rjags}の関数の引数として直接与えるようにしてもかまわない。
-ここでは，chainの数を3とし，
-\texttt{beta}と\texttt{beta.x}とについてそれぞれのchainについて初期値を
+%
+ここでは，マルコフ連鎖の数を3とし，
+\texttt{beta}と\texttt{beta.x}とについてそれぞれの連鎖について初期値を
 定義している。
-これらは省略可能で，その場合には自動的に生成される。
-ただし，自動的に生成された値のせいでその後の計算がうまくいかないこともある。
-初期値についてはさらに，乱数のタネ(\texttt{.RNG.seed})と
-乱数発生アルゴリズム(\texttt{.RNG.name})も明示的に指定するようにしている。
-これらも省略可能である。
 
 また，モデルのファイル名(\texttt{model.file})と，
 推定結果を保存するパラメーター名(\texttt{pars})もそれぞれ同様に変数に入れている。
 後者では，\texttt{beta}と\texttt{beta.x}を指定している。
-%なお，初期値はリストで与える必要がある。
-
 
 \paragraph{実行}
 
-準備ができたら，まず\texttt{jags.mode()}関数でJAGSのモデルオブジェクトを
+ここまで準備ができたら，\texttt{jags.mode()}関数でJAGSのモデルオブジェクトを
 生成する。
-引数として，モデルのファイル名，データ，初期値，chainの数を与える。
-ここでは同時に，MCMC計算のための最適化(adaptation)も実行されるので，
-その回数も\texttt{adapt}引数で指定しておく。
-Rコンソール上で実行していると，進行状況が表示される（下の実行例ではもう100\%になっている）。
-
 \begin{lstlisting}
 > model <- jags.model(file = model.file,
 +                     data = list(N = n, K = k,
@@ -1326,19 +1009,14 @@ Rコンソール上で実行していると，進行状況が表示される（�
   |++++++++++++++++++++++++++++++++++++++++++++++++++| 100%
 \end{lstlisting}
 
-続いて，\texttt{update()}関数によりburn-inをおこなう。n.adaptと，ここでのn.iterとの合計が
-MCMCpackなどでいうburn-inの回数に相当する。
-
+続いて，\texttt{update()}関数によりさらにburn-inをおこなう。
 \begin{lstlisting}
 > update(model, n.iter = 1000)
   |**************************************************| 100%
 \end{lstlisting}
 
 そして，\texttt{coda.samples()}関数によりMCMCのサンプルを得る。
-ここでは，\texttt{coda.samples()}関数により，\textsf{coda}クラスのオブジェクトを
-結果として受け取るようにしているが，\textsf{jags}クラスのオブジェクトを返す
-\texttt{jags.samples()}関数もある。
-各chainについて，繰り返し回数3000回，サンプリング間隔3回としている。
+各連鎖について，繰り返し回数3000回，サンプリング間隔3回としている。
 
 \begin{lstlisting}
 > post <- coda.samples(model, n.iter = 4000, thin = 4,
@@ -1349,7 +1027,7 @@ MCMCpackなどでいうburn-inの回数に相当する。
 
 \paragraph{結果表示}
 
-さっそく，結果をプロットしてみる（図\ref{plot_coda}）。
+結果をプロットしてみる（図\ref{plot_coda}）。
 \begin{lstlisting}
 > plot(post)
 \end{lstlisting}
@@ -1357,13 +1035,12 @@ MCMCpackなどでいうburn-inの回数に相当する。
 
 \begin{figure}[htbp]
 	\begin{center}
-		\includegraphics[bb=0 0 400 400, clip, width=300 bp]{example2_jags_results.pdf}
+		\includegraphics[bb=0 0 400 400, clip, width=300 bp]{example2.pdf}
 	\end{center}
-	\caption{\textsf{coda}クラスオブジェクトのplot出力(JAGS)}
+	\caption{例題2のMCMC計算の結果}
 	\label{plot_coda}
 \end{figure}
-\noindent
-各パラメーターについて，各chainの軌跡と，全chainをまとめた事後分布の密度が図示される。
+
 
 \texttt{gelman.diag()}関数でGelman-Rubin統計量($\Hat{R}$)を表示させてみると，
 両パラメーターについて1に近い値となっており，
@@ -1374,12 +1051,12 @@ MCMCpackなどでいうburn-inの回数に相当する。
 Potential scale reduction factors:
 
        Point est. Upper C.I.
-beta         1.01       1.03
-beta.x       1.01       1.05
+beta         1.01       1.02
+beta.x       1.00       1.01
 
 Multivariate psrf
 
-1.02
+1.01
 \end{lstlisting}
 
 %ページ調整
@@ -1389,7 +1066,7 @@ Multivariate psrf
 \begin{lstlisting}
 > summary(post)
 
-Iterations = 1004:5000
+Iterations = 2004:6000
 Thinning interval = 4 
 Number of chains = 3 
 Sample size per chain = 1000 
@@ -1398,21 +1075,21 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
           Mean     SD Naive SE Time-series SE
-beta   -2.0500 0.4792 0.008749       0.030093
-beta.x  0.5339 0.0978 0.001786       0.007075
+beta   -2.1802 0.4960 0.009055       0.014823
+beta.x  0.5609 0.1021 0.001864       0.003053
 
 2. Quantiles for each variable:
 
-          2.5%     25%     50%     75%   97.5%
-beta   -3.0310 -2.3765 -2.0308 -1.7170 -1.1529
-beta.x  0.3554  0.4644  0.5304  0.5977  0.7382
+          2.5%     25%    50%     75%   97.5%
+beta   -3.1821 -2.5045 -2.160 -1.8401 -1.2539
+beta.x  0.3762  0.4914  0.554  0.6248  0.7721
 
 \end{lstlisting}
 
 \noindent
-\texttt{beta}の事後平均が-2.05，95\%ベイズ信用区間が-3.03〜-1.15，
-\texttt{beta.x}の事後平均が0.53，95\%ベイズ信用区間が0.36〜0.74
-であることがわかる。
+\texttt{beta}の事後平均が-2.18，95\%信用区間が-3.18〜-1.25，
+\texttt{beta.x}の事後平均が0.56，95\%信用区間が0.38〜0.77
+と推定された。
 
 %ページ調整
 %\vspace{1zw}
@@ -1442,7 +1119,7 @@ beta.x  0.3554  0.4644  0.5304  0.5977  0.7382
 +        lty = c(1, 2, 3))
 \end{lstlisting}
 \noindent
-\texttt{post}には，各chainをリストの要素として，
+\texttt{post}には，各連鎖をリストの要素として，
 各パラメーターについて
 サンプリングされた値が格納されているので，それを取り出して使っている。
 1行目と2行目の\texttt{unlist()}関数は，リスト構造になっているものを
@@ -1471,33 +1148,36 @@ RStanを使用する。
 > library(rstan)
 \end{lstlisting}
 
-モデルの定義。\texttt{example2\_code}という文字列にモデルを格納している。
+モデルの定義。
+ここでは，\texttt{example2.stan}というファイルでモデルを記述している。
 %
 \begin{lstlisting}
-> example2_code <- "
-+ data {
-+   int<lower=0> N;
-+   int<lower=0> K;
-+   vector[N] X;
-+   int<lower=0> Y[N];
-+ }
-+ parameters {
-+   real beta;
-+   real beta_x;
-+ }
-+ transformed parameters {
-+   vector[N] logit_p;
-+ 
-+   logit_p = beta + beta_x * X;
-+ }
-+ model {
-+   Y ~ binomial_logit(K, logit_p);
-+   
-+   # priors
-+   beta ~ normal(0.0, 1.0e+3);
-+   beta_x ~ normal(0.0, 1.0e+3);
-+ }
-+ "
+data {
+  int<lower = 0> N;
+  int<lower = 0> K;
+  vector[N] X;
+  int<lower = 0, upper = 10> Y[N];
+}
+
+parameters {
+  real beta;
+  real beta_x;
+}
+
+transformed parameters {
+  vector[N] logit_p;
+
+  logit_p = beta + beta_x * X;
+}
+
+model {
+  // Likelihood
+  Y ~ binomial_logit(K, logit_p);
+
+  // Priors
+  beta ~ normal(0.0, 1.0e+3);
+  beta_x ~ normal(0.0, 1.0e+3);
+}
 \end{lstlisting}
 \noindent
 Stanのモデルの記述は，\texttt{data}，\texttt{parameters}，
@@ -1508,13 +1188,13 @@ Stanのモデルの記述は，\texttt{data}，\texttt{parameters}，
 なお，変数名などに``\texttt{.}''（ピリオド）は使用できない。
 かわりに``\texttt{\_}''（アンダーバー）を使うようにする。
 また，行末には必ずセミコロン(;)をつける。
-Stan 2.10からは，代入には``\texttt{<-}''ではなく``\texttt{=}''を使用することが推奨されるようになった。
+%Stan 2.10からは，代入には``\texttt{<-}''ではなく``\texttt{=}''を使用することが推奨されるようになった。
 
-18行目の\texttt{binomial\_logit}分布は，logitスケール($-\infty$〜$\infty$)のパラメーターを引数にとる2項分布である。
-ここで使用するパラメーター\texttt{logit\_p}は，\texttt{transformed parameters}ブロック中の15行目で
+21行目の\texttt{binomial\_logit}分布は，logitスケール($-\infty$〜$\infty$)のパラメーターを引数にとる2項分布である。
+ここで使用するパラメーター\texttt{logit\_p}は，\texttt{transformed parameters}ブロック中の16行目で
 定義されている。
 
-つづいて，chainの数，初期値，保存するパラメーターを設定する。
+\textsf{R}コードで，連鎖の数，初期値，保存するパラメーターを設定する。
 \begin{lstlisting}
 > n.chains <- 3
 > inits <- vector("list", 3)
@@ -1523,6 +1203,7 @@ Stan 2.10からは，代入には``\texttt{<-}''ではなく``\texttt{=}''を使
 > inits[[3]] <- list(beta =   0, beta_x = -2)
 > pars <- c("beta", "beta_x")
 \end{lstlisting}
+
 \texttt{stan()}関数によりStanを実行して，結果を\texttt{fit}というオブジェクトに格納する。
 \begin{lstlisting}
 > fit <- stan(model_code = example2_code,
@@ -1536,16 +1217,17 @@ Stan 2.10からは，代入には``\texttt{<-}''ではなく``\texttt{=}''を使
 
 結果を表示する。
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
-Inference for Stan model: d441ba03981347d3dd8a19fe20c361c4.
+> print(fit)
+Inference for Stan model: example2.
 3 chains, each with iter=2500; warmup=500; thin=2; 
 post-warmup draws per chain=1000, total post-warmup draws=3000.
 
          mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
-beta    -2.16    0.01 0.48  -3.18  -2.48  -2.15  -1.83  -1.28  1431    1
-beta_x   0.56    0.00 0.10   0.37   0.49   0.55   0.62   0.77  1444    1
-lp__   -51.87    0.02 0.98 -54.60 -52.25 -51.54 -51.18 -50.93  1831    1
+beta    -2.19    0.01 0.51  -3.22  -2.51  -2.17  -1.85  -1.23  1287    1
+beta_x   0.56    0.00 0.10   0.37   0.49   0.56   0.63   0.78  1144    1
+lp__   -51.93    0.03 1.03 -54.66 -52.33 -51.60 -51.20 -50.93  1406    1
 
-Samples were drawn using NUTS(diag_e) at Mon Aug  8 13:57:31 2016.
+Samples were drawn using NUTS(diag_e) at Mon Aug 14 10:04:01 2017.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).
@@ -1595,7 +1277,7 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 \item モデルが必要以上に複雑でないか?
 \item 余分なパラメーターがないか?
 \end{itemize}
-\item Markov chainの長さを長くして，サンプリング間隔を長くする。
+\item マルコフ連鎖の長さを長くして，サンプリング間隔を長くする。
   ただし必然的に計算時間は長くなる。モデルの改良のような本質的な
   改善ではないが，もう少し収束をよくしたいというようなときには
   有効なこともある。
@@ -1604,7 +1286,7 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 %ページ調整
 %\pagebreak
 
-\subsection{線形混合モデルに相当するモデル，あるいは階層ベイズモデル}
+\subsection{線形混合モデル，あるいは階層ベイズモデル}
 \label{mixed_model}
 
 以下の問題を考える。
@@ -1731,6 +1413,7 @@ var
   tau.B, sigma.B;       # Hyperparameters
 
 model {
+  # Likelihood
   for (i in 1:M) {
     for (j in 1:N) {
       Y[i, j] ~ dnorm(mu[i, j], tau)
@@ -1740,10 +1423,10 @@ model {
     e.B[i] ~ dnorm(0, tau.B)
   }
 
-  ## Priors
-  beta ~ dnorm(0, 1.0E-6)
-  beta.1 ~ dnorm(0, 1.0E-6)
-  beta.2 ~ dnorm(0, 1.0E-6)
+  # Priors
+  beta ~ dnorm(0, 1.0E-4)
+  beta.1 ~ dnorm(0, 1.0E-4)
+  beta.2 ~ dnorm(0, 1.0E-4)
   tau <- 1 / (sigma * sigma)
   tau.B <- 1 / (sigma.B * sigma.B)
   sigma ~ dunif(0, 1.0E+4)
@@ -1844,12 +1527,12 @@ Potential scale reduction factors:
 beta          1.00       1.00
 beta.1        1.00       1.00
 beta.2        1.00       1.00
-e.B[1]        1.00       1.00
-e.B[2]        1.00       1.00
+e.B[1]        1.00       1.01
+e.B[2]        1.00       1.01
 e.B[3]        1.00       1.00
 e.B[4]        1.00       1.00
 e.B[5]        1.00       1.00
-e.B[6]        1.00       1.01
+e.B[6]        1.00       1.00
 e.B[7]        1.00       1.00
 e.B[8]        1.00       1.00
 sigma         1.00       1.01
@@ -1869,36 +1552,36 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
            Mean     SD Naive SE Time-series SE
-beta     3.6869 1.2589 0.022984       0.022302
-beta.1   0.4683 0.1875 0.003423       0.003423
-beta.2  -0.3405 0.2043 0.003730       0.003627
-e.B[1]  -0.7276 0.6128 0.011188       0.011189
-e.B[2]  -1.5455 0.6433 0.011745       0.011748
-e.B[3]  -0.6184 0.6145 0.011219       0.010990
-e.B[4]   0.2493 0.6306 0.011514       0.011516
-e.B[5]   0.8584 0.6233 0.011379       0.011382
-e.B[6]   1.3231 0.6262 0.011434       0.011312
-e.B[7]   1.0238 0.6225 0.011364       0.011368
-e.B[8]  -0.4997 0.6137 0.011204       0.011987
-sigma    0.9206 0.1256 0.002292       0.002404
-sigma.B  1.3303 0.5201 0.009496       0.010716
+beta     3.6686 1.2531 0.022879       0.021932
+beta.1   0.4730 0.1893 0.003456       0.003420
+beta.2  -0.3347 0.2041 0.003727       0.003790
+e.B[1]  -0.7469 0.6344 0.011582       0.010847
+e.B[2]  -1.5685 0.6465 0.011804       0.011794
+e.B[3]  -0.6384 0.6239 0.011391       0.011331
+e.B[4]   0.2383 0.6463 0.011800       0.011798
+e.B[5]   0.8257 0.6324 0.011545       0.011547
+e.B[6]   1.2837 0.6373 0.011635       0.011635
+e.B[7]   1.0147 0.6262 0.011432       0.011089
+e.B[8]  -0.5320 0.6321 0.011541       0.011544
+sigma    0.9220 0.1232 0.002249       0.002386
+sigma.B  1.3421 0.5206 0.009505       0.010773
 
 2. Quantiles for each variable:
 
-            2.5%     25%     50%     75%    97.5%
-beta     1.22449  2.8471  3.6879  4.5337  6.16940
-beta.1   0.09328  0.3459  0.4747  0.5935  0.83270
-beta.2  -0.74771 -0.4702 -0.3394 -0.2041  0.04264
-e.B[1]  -1.98965 -1.1067 -0.7171 -0.3382  0.48830
-e.B[2]  -2.85773 -1.9566 -1.5255 -1.1312 -0.30725
-e.B[3]  -1.83887 -1.0194 -0.6075 -0.2241  0.57011
-e.B[4]  -1.02603 -0.1474  0.2487  0.6477  1.52707
-e.B[5]  -0.36805  0.4510  0.8606  1.2536  2.11989
-e.B[6]   0.15752  0.9186  1.3014  1.7216  2.60919
-e.B[7]  -0.20034  0.6317  1.0030  1.3985  2.27732
-e.B[8]  -1.73718 -0.8827 -0.5041 -0.1072  0.71509
-sigma    0.71060  0.8330  0.9109  0.9939  1.19183
-sigma.B  0.64283  0.9905  1.2170  1.5583  2.64066
+           2.5%     25%     50%     75%    97.5%
+beta     1.2390  2.8462  3.6457  4.4993  6.13027
+beta.1   0.1037  0.3445  0.4744  0.5941  0.85960
+beta.2  -0.7474 -0.4635 -0.3318 -0.2021  0.07519
+e.B[1]  -2.0262 -1.1427 -0.7286 -0.3519  0.49027
+e.B[2]  -2.8444 -1.9895 -1.5580 -1.1774 -0.34317
+e.B[3]  -1.8713 -1.0220 -0.6391 -0.2360  0.57344
+e.B[4]  -1.0221 -0.1700  0.2313  0.6367  1.54991
+e.B[5]  -0.3757  0.4150  0.8265  1.2236  2.09405
+e.B[6]   0.1185  0.8862  1.2606  1.6786  2.58318
+e.B[7]  -0.1809  0.5955  1.0096  1.3959  2.27913
+e.B[8]  -1.8475 -0.9065 -0.5262 -0.1399  0.68231
+sigma    0.7218  0.8342  0.9092  0.9956  1.20375
+sigma.B  0.6712  0.9938  1.2313  1.5683  2.65059
 
 \end{lstlisting}
 
@@ -1972,6 +1655,7 @@ var
   tau.B, sigma.B;       # Hyperparameters
 
 model {
+  # Likelihood
   for (i in 1:N) {
     Y[i] ~ dnorm(mu[i], tau)
     mu[i] <- beta + beta.1 * X1[i] +
@@ -1981,10 +1665,10 @@ model {
     e.B[i] ~ dnorm(0, tau.B)
   }
 
-  ## Priors
-  beta ~ dnorm(0, 1.0E-6)
-  beta.1 ~ dnorm(0, 1.0E-6)
-  beta.2 ~ dnorm(0, 1.0E-6)
+  # Priors
+  beta ~ dnorm(0, 1.0E-4)
+  beta.1 ~ dnorm(0, 1.0E-4)
+  beta.2 ~ dnorm(0, 1.0E-4)
   tau <- 1 / (sigma * sigma)
   tau.B <- 1 / (sigma.B * sigma.B)
   sigma ~ dunif(0, 1.0E+4)
@@ -2114,12 +1798,14 @@ var
   beta,      # Intercept in the linear model
   beta.x;    # Coefficient of X in the linear model
 model {
+  # Likelihood
   for (i in 1:N) {
     Y[i] ~ dpois(lambda[i])
     lambda[i] <- z[i] * exp(beta + beta.x * X[i])
     z[i] ~ dbern(p)
   }
-  ## Priors
+
+  # Priors
   p ~ dunif(0, 1)
   beta ~ dnorm(0, 1.0E-4)
   beta.x ~ dnorm(0, 1.0E-4)
@@ -2276,9 +1962,9 @@ using MCMCpack. R News 6(1):2--7. \\
   （日本語訳: 野間口眞太郎訳 (2009) 「生態学のためのベイズ法」共立出版, 東京.）
 \bibitem{Ntzoufras} Ntzoufras I. (2009) Bayesian modeling using WinBUGS.
   Wiley, Hoboken.
-\bibitem{JAGS} Plummer M. (2015) JAGS version 4.0.0 user manual.\\
+\bibitem{JAGS} Plummer M. (2017) JAGS version 4.3.0 user manual.\\
   \url{http://sourceforge.net/projects/mcmc-jags/}
-\bibitem{R} R Core Team (2015)
+\bibitem{R} R Core Team (2017)
    R: A Language and Environment for Statistical Computing.
    R Foundation for Statistical Computing, Vienna.\\
    \url{http://www.R-project.org/}
@@ -2288,8 +1974,8 @@ using MCMCpack. R News 6(1):2--7. \\
 \bibitem{WinBUGS} Spiegelhalter D., Tomas A., Best N., Lunn D. (2003)
   WinBUGS user manual version 1.4.\\
   \url{http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/manual14.pdf}
-\bibitem{Stan} Stan Development Team (2016) Stan Modeling Language:
-  User's Guide and Reference Manual, Version 2.11.0.
+\bibitem{Stan} Stan Development Team (2017) Stan Modeling Language:
+  User's Guide and Reference Manual, Version 2.16.0.
   \url{http://mc-stan.org/}
 \bibitem{Tango} 丹後俊郎 (2000) 統計モデル入門. 朝倉書店, 東京.
 \bibitem{Terui} 照井伸彦 (2010) Rによるベイズ統計分析. 朝倉書店, 東京.

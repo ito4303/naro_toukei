@@ -51,7 +51,7 @@ post <- coda.samples(model, n.iter = 4000, thin = 4,
                      variable.names = pars)
 
 ## Plot results
-#pdf("example2_jags_results.pdf", width = 400/72, height = 400/72,
+#pdf("example2.pdf", width = 400/72, height = 400/72,
 #    family = "Helvetica", pointsize = 10)
 plot(post)
 #dev.off()
