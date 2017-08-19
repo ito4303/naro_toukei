@@ -60,19 +60,19 @@
 
 \subsection{統計モデリング}
 
-現実の問題のモデル
+統計モデリングとは，確率分布を取り入れた数理モデル（確率モデル）をデータにあてはめ，
+現象を理解したり，予測したりすることをいう\cite{Matsuura}。
+このようにいうと何か特別なことのように感じられるかもしれないが，
+実際は，何らかのデータを解釈するときには常に何らかのモデルを使っているといえる\cite{BPA}。
 
-複雑なモデルがよいというわけではない。
+統計モデリングにおいては，複雑なモデルが必ずしもよいというわけではない。
+現実世界の本質的な部分のみをうまくモデリングすることにより，
+現実をよく理解できたり，うまく予測できたりするのである。
 
-現実の本質的な部分のみをモデル化する。
+\subsection{ベイズ統計モデリングとMCMC}
 
-現実をよく説明したり，うまく予測できたりする。
-
-t検定も，統計モデリングである。
-
-\subsection{ベイズ統計とMCMC}
-
-MCMCはベイズ推定のための計算手法である。
+ベイズ統計モデリングは，ベイズ統計を使った統計モデリングをいう。
+そしてMCMCは，ベイズ統計モデリングにおいてよく利用される計算手法である。
 
 \paragraph{ベイズ統計}
 
@@ -92,10 +92,9 @@ MCMCはベイズ推定のための計算手法である。
 イメージとしては，事前の知識（事前確率）を，データ（尤度）で更新して，事後確率を得る，
 ということになろう。
 
-ここで，母数の事後確率（確率分布としては事後分布）を求めたいわけなのだが，
+ここで，母数（パラメーター）の事後確率（確率分布としては事後分布）を求めたいわけなのだが，
 モデルが複雑な場合は事後確率（事後分布）を解析的に解くことは困難である。
 このような問題に対してMCMCは非常に有効である。
-
 
 \paragraph{MCMC=MC+MC}
 
@@ -212,7 +211,7 @@ CやFortranなどでMCMCのプログラムを作成することも可能だが�
 ``Wine Is Not Emulator''の略。Windows互換レイヤーソフトで，Windows用ソフトウェ
   ア(すべてというわけではない)をWindowsなしで動作させることができる。
   最新の安定版は2.0.2。}を使用
-  することで，OS XやLinux，BSDでも使用することが可能。
+  することで，macOSやLinux，BSDでも使用することが可能。
 \item GUI環境はあるがあまり使いやすくない。\textsf{R2WinBUGS}パッケージ
   で \textsf{R}と連携可能なので，そちらから使う方が使いやすい（と思う）。
 \end{itemize}
@@ -242,8 +241,7 @@ macOS用の\textsf{Wine}\footnote{\url{https://wiki.winehq.org/MacOSX}}
 を利用するか，\textsf{Homebrew}\footnote{\url{http://brew.sh/}}, \textsf{MacPors}\footnote{\url{http://www.macports.org/}}などの
 パッケージ管理システムを利用してインストールするのが簡単であろう。
 詳細は，ネット上の資料
-\footnote{\url{http://www001.upp.so-net.ne.jp/ito-hi/stat/winbugs.html}\\
-\url{http://nhkuma.blogspot.jp/2012/12/macosx106-107winbugswiner2winbugs.html}\\
+\footnote{\url{http://nhkuma.blogspot.jp/2012/12/macosx106-107winbugswiner2winbugs.html}\\
 \url{http://nhkuma.blogspot.jp/2012/12/macosx108-mountain-lion-winbugs-wine.html}}を参照するとよい。
 
 
@@ -283,7 +281,7 @@ Macでは\textsf{Wine}により利用可能。
 Windows版インストーラーからインストールできる。64ビットWindowsにもインストールできる。
 開発元ではWindows XPと8とで動作確認している。
 
-\paragraph{OS Xへのインストール}
+\paragraph{macOSへのインストール}
 \textsf{WinBUGS}と同様に，\textsf{Wine}を導入して，Windows版をインストールする。
 
 \paragraph{Linuxへのインストール}
@@ -328,7 +326,7 @@ Linux用ソースパッケージを展開して，コンパイル・インスト
 WindowsおよびMacにはインストーラーが用意されている。
 Linux版主要ディストリビューションにはバイナリパッケージがあるので
 それを利用できる。
-開発環境があれば，ソースから自分でコンパイルすることも比較的簡単である。
+開発環境があれば，ソースから自分でコンパイルすることもできる。
 詳細はインストールマニュアルを参照。
 
 %% Stan
@@ -391,10 +389,13 @@ RStanはCRANからインストール可能。
 
 まずここでは\textsf{R}から，\textsf{JAGS}を使ってポアソン回帰をおこなう。
 \textsf{R}スクリプトは，サンプルファイルの\texttt{example1.R}である。
-\vspace{1zw}
 
+\vspace{1.5zw}
+\begin{screen}
 以下，実行例をボックスの中にしめす。なお，``\texttt{>}''は入力行のプロンプトを，
 ``\texttt{+}''は，前の行からの継続をそれぞれ示す記号であり，実際には入力不要である。
+\end{screen}
+\vspace{0.5zw}
 
 まずは，データをベクトル\texttt{x}に代入する。
 \begin{lstlisting}
@@ -419,7 +420,8 @@ RStanはCRANからインストール可能。
 [1] 3.957895
 \end{lstlisting}
 
-GLMなら以下のようなコードとなる。
+\textsf{JAGS}による解析の前に，GLMではどのようにするか確認しておこう。
+GLMなら以下のようになる。
 \begin{lstlisting}
 > fit <- glm(x ~ 1, family = poisson(link = log))
 > summary(fit)
@@ -450,11 +452,12 @@ Number of Fisher Scoring iterations: 4
         3.8 
 \end{lstlisting}
 
-ではここからいよいよ\textsf{JAGS}による解析を始めよう。
+\vspace{1zw}
 
+ではここからいよいよ\textsf{JAGS}による解析を始めよう。
 \textsf{JAGS}は，\textsf{BUGS}言語で書かれたモデルのパラメーターをMCMCでベイズ推定する。
 ここでは，\textsf{BUGS}言語で書かれたモデルコードは別のファイル（\texttt{example1\_model.txt}）になっている。
-このファイルの内容は以下のようになっている。
+このファイルの内容は以下のとおり。
 \begin{lstlisting}
 model {
   # Likelihood
@@ -468,15 +471,16 @@ model {
 \end{lstlisting}
 %
 GLMでは1行で済んだものが，\textsf{BUGS言語}ではかなり長くなってしまった。
-しかし，このような記法により，複雑なモデルも記述することができるのである。
+しかし，このような記法により，複雑なモデルも記述できる。
 
 1行目の``\texttt{model\{}''と，9行目の``\texttt{\}}''で囲まれた部分がモデルの定義となる。
 まず，3〜5行目が尤度の部分となる。
-\texttt{dpois}はポアソン分布であり，\texttt{dpois(lambda)}は，平均\texttt{lambda}の
-ポアソン分布ということになる。
 \texttt{for}ループの構文で，データ\texttt{X[i]}の添え字\texttt{i}の範囲が
 $i \in 1, 2, \dots, N$であることを示している。
-そして，\texttt{X}が，平均\texttt{lambda}のポアソン分布に従うことを表している。
+\texttt{dpois}はポアソン分布であり，\texttt{dpois(lambda)}は，平均\texttt{lambda}の
+ポアソン分布ということになる。
+``\texttt{\textasciitilde}''(チルダ)は，左辺の変数が右辺の確率分布に従うことをしめす。
+すなわち，4行目は，\texttt{X}が，平均\texttt{lambda}のポアソン分布に従うことを表している。
 
 8行目で，パラメーター\texttt{lambda}の事前分布を定義している。
 \texttt{dunif}は一様分布であり，ここでは，0〜1000という範囲の一様分布を
@@ -495,10 +499,19 @@ L(\bm{X} \mid \lambda) = \prod_{i = 1}^{N}\frac{\lambda^{X_{i}}e^{-\lambda}}{X_{
 \label{likelihood_pois}
 \end{align}
 
-式\ref{likelihood_pois}は，簡単に以下のように書くことも多い。
+なお，式\ref{likelihood_pois}は，簡単に以下のように書くことも多い。
 \begin{align*}
 \bm{X} \sim \mathrm{Poisson}(\lambda)
 \end{align*}
+
+$\lambda$の事前分布は，以下のようになる。
+\begin{align*}
+\Pr(\lambda) = \begin{cases}
+ 10^{-3} & 0 \leq \lambda  < 10^{3}  \\
+ 0 & 上以外の場合 \\
+\end{cases}
+\end{align*}
+
 
 したがって，このモデルの事後分布は以下のようになる。
 \begin{align*}
@@ -508,6 +521,8 @@ L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) &=\begin{cases}
  0 & 上以外の場合  \label{posterior} \\
 \end{cases}
 \end{align*}
+
+\vspace{1zw}
 
 ここでまた\textsf{R}のコードに戻ろう。
 まずは，\textsf{rjags}パッケージを読み込む。
@@ -519,12 +534,12 @@ Loaded modules: basemod,bugs
 \end{lstlisting}
 
 続いて，初期値を定義する。
-これらは省略可能で，その場合には自動的に生成される。
+これらは省略可能で，省略した場合には自動的に生成される。
 ただし，自動的に生成された値のせいでその後の計算がうまくいかないこともある。
-初期値についてはさらに，擬似乱数のタネ(\texttt{.RNG.seed})と
+この例題では，初期値についてさらに，擬似乱数のタネ(\texttt{.RNG.seed})と
 擬似乱数発生アルゴリズム(\texttt{.RNG.name})も明示的に指定するようにしている。
 これらも省略可能である。
-しかし，パラメータの初期値と擬似乱数を固定しておくことで，再現可能(reproducible)，
+しかし，パラメータの初期値と擬似乱数を固定しておくことで，再生可能(reproducible)，
 すなわち同じ計算を繰り返したときに同じ結果が得られるようになる。
 \begin{lstlisting}
 > inits <- vector("list", 3)
@@ -533,9 +548,10 @@ Loaded modules: basemod,bugs
 +                    .RNG.name = "base::Mersenne-Twister")
 \end{lstlisting}
 %
-要素3のリスト\texttt{inits}をまず作っている。
+要素数3のリスト\texttt{inits}をまず作っている。
 ここでは1番目の要素のみを使用し，
 \texttt{lambda}の初期値は1，乱数のタネは1，乱数生成法は Mersenne-Twisterと指定している。
+残りの要素は後で使用する。
 
 ここまで準備ができたら，\texttt{jags.mode()}関数でJAGSのモデルオブジェクトを
 生成する。
@@ -560,7 +576,7 @@ Initializing model
 \texttt{data}引数は，モデルに渡すデータで，ここではBUGS上の\texttt{X}に\textsf{R}上の\texttt{x}を，
 \texttt{N}に\texttt{length(x)}をそれぞれ渡すとしている。
 \texttt{inits}引数は初期値であり，先に定義した\texttt{inits[[1]]}を渡している。
-\texttt{n.chains}引数はマルコフ連鎖の数である。通常は3〜4とするが，説明のためまずは1としている。
+\texttt{n.chains}引数はマルコフ連鎖の数である。通常は3ないし4とするが，説明のためまずは1としている。
 \texttt{n.adapt}引数は，\textsf{JAGS}内部でのMCMC計算のための調整(adaptation)に使われる連鎖の長さを指定する。
 ここでは説明のために0としている。
 
@@ -573,10 +589,12 @@ NOTE: Stopping adaptation
 \end{lstlisting}
 %
 引数の\texttt{variable.names}で，結果を保存するパラメータを指定する（ここでは\texttt{lambda}のみ）。
-\texttt{n.iter}で，マルコフ連鎖の長さを指定する。ここでは50としている。
+\texttt{n.iter}で，サンプルを取得するマルコフ連鎖の長さを指定する。ここでは50としている。
+\texttt{variable.names}引数で，サンプルを取得するパラメーターを指定する。
+このほか，サンプリング間隔として\texttt{thin}引数があるが，ここではデフォルトの1を使用する（すなわちすべてのサンプルを取得する）ので，省略している。
 
 
-計算されたマルコフ連鎖の軌跡を表示してみる。
+\texttt{traceplot()}関数により，計算されたマルコフ連鎖の軌跡を表示してみる。
 \begin{lstlisting}
 > traceplot(post1, col = 1, las = 1)
 \end{lstlisting}
@@ -626,7 +644,7 @@ NOTE: Stopping adaptation
 
 \end{lstlisting}
 
-軌跡を表示させる。結果は図\ref{fig:trace3}。
+軌跡を表示させる。結果は図\ref{fig:trace3}。  黒実線が1番目の初期値，赤点線が2番目の初期値，緑点線が3番目の初期値のものである。
 \begin{lstlisting}
 > traceplot(post2, las = 1)
 \end{lstlisting}
@@ -646,8 +664,8 @@ NOTE: Stopping adaptation
 
 では次に，実際に事後分布のサンプルを得ることとする。
 設定として，burn-inを1000回（そのうち，500回は\textsf{JAGS}のadaptation），burn-in後の繰り返し回数を1000回，
-サンプル取得間隔を1回（つまり毎回）としている。
-これらをそれぞれ変数(\texttt{burnin}, \texttt{iter}, \texttt{thin})に代入してから，\texttt{rjags}の関数に渡しているが，もちろん関数の引数に直接数値を渡しても良い。
+サンプリング間隔を1としている。
+これらをそれぞれ変数(\texttt{burnin}, \texttt{iter}, \texttt{thin})に代入してから，\textsf{rjags}の関数に渡している（関数の引数に直接数値を渡してもよい）。
 マルコフ連鎖の数は3としているので，
 このとき，取得されるサンプルの大きさは$1000 \div 1 \times 3 = 3000$となる。
 
@@ -676,6 +694,11 @@ Initializing model
 +                       n.iter = iter, thin = thin)
   |**************************************************| 100%
 \end{lstlisting}
+%
+\texttt{update()}関数は，最初の引数で指定したモデルに対して，
+サンプリングをおこなわずに\texttt{n.iter}回だけマルコフ連鎖を
+更新するものである。これはburn-inのために使われる。
+最後に\texttt{coda.samples()}関数により，事後分布からのサンプルを取得している。
 
 \texttt{plot()}関数で，マルコフ連鎖の軌跡と事後分布をグラフ表示させる。
 結果は図\ref{fig:plot}。
@@ -696,6 +719,9 @@ Initializing model
 3本の連鎖がよく混ざりあっているのがわかる。このように，初期値や擬似乱数系列に
 よらず，各連鎖がよく混ざりあっているのは，MCMC計算がうまくいったことを示している。
 数値的に収束の診断をおこなう方法は後述する。
+
+%ページ調整
+\pagebreak
 
 \texttt{summary()}関数で結果の要約を表示させる。
 \begin{lstlisting}
@@ -721,7 +747,7 @@ Sample size per chain = 1000
 %
 ベイズ推定ではパラメーターの推定値も確率的に（事後分布として）与えられる。
 その代表値としては一般に平均や中央値が用いられる\footnote{このほか，事後分布のモードを用いる場合もある。これをMAP(Maximum A Posterior)推定値という。}。
-また，95\%信用区間\footnote{「頻度主義」統計における信頼区間とは実は違うもの。}も同時に使われることが多い。
+また，95\%信用区間（あるいは「ベイズ信頼区間」）\footnote{「頻度主義」統計における信頼区間とは実は違うもの。}も同時に使われることが多い。
 この例では，
 $\lambda$の事後分布の平均値（事後平均）が3.84，中央値が3.82，95\%信用区間が
 3.00〜4.81と推定された。事後平均に対応する$\lambda$の値は$\exp(1.33)=3.78$と
@@ -741,7 +767,7 @@ $\lambda$の事後分布の平均値（事後平均）が3.84，中央値が3.82
 \end{figure}
 
 収束状況を数値で診断するためには，Gelman-Rubinの収束診断($\Hat{R}$; Rhat)がよく使われる。
-\textsf{R}では，\texttt{coda}パッケージの\texttt{gelman.diag()}関数などで計算できる。
+\textsf{R}では，\texttt{coda}パッケージの\texttt{gelman.diag()}関数で計算できる。
 収束していれば$\Hat{R}$の値が1に近くなる（この計算のためには複数の連鎖が必要である）。
 詳細は\texttt{help(gelman.diag)}などを参照されたい。
 $\Hat{R}$の値は一般には1.1以下でよいとされるが，軌跡とあわせ見て，
@@ -761,8 +787,8 @@ $\Hat{R}$値は1であった。図\ref{fig:plot}の結果とあわせ，
 
 \paragraph{情報事前分布}
 
-次に，情報事前分布を使った例をみてみよう。
-今度は，$\lambda$がそれほど大きな値（10以上とか）は取らないだろうと事前の知識で
+次に，情報を持った事前分布（情報事前分布）を使った例をみてみよう。
+今度は，$\lambda$が大きな値（10以上とか）は取らないだろうと事前の知識で
 わかっていたとする。
 そこで，$\lambda$の事前分布として$\mathrm{Gamma}(2, 2)$を指定した。
 この分布の平均値は1，分散は0.5である。
@@ -780,7 +806,7 @@ model {
   lambda ~ dgamma(2, 2)
 }
 \end{lstlisting}
-8行目で，\texttt{lambda}の事前分布にガンマ分布\texttt{dgamma(2, 2)}を使うようになっている。
+先のモデルと比較すると，8行目で，\texttt{lambda}の事前分布にガンマ分布\texttt{dgamma(2, 2)}を使うようになっている。
 
 
 前の例と同様に，\textsf{JAGS}を実行し，結果を\texttt{post4}に代入する。
@@ -817,7 +843,7 @@ Initializing model
 \end{lstlisting}
 
 結果は以下のとおり。無情報事前分布を使用したときの結果よりも，事前分布の
-影響を受けて事後平均が小さくなっているのがわかる。
+影響を受けて事後平均（今回は3.54）が小さくなっているのがわかる。
 
 \begin{lstlisting}
 > summary(post4)
@@ -845,17 +871,20 @@ Sample size per chain = 1000
 
 \begin{figure}[htbp]
 	\begin{center}
-		\includegraphics[bb=0 0 480 480, clip, width=320 bp]{example1-4.pdf}
+		\includegraphics[bb=0 0 480 480, clip, width=280 bp]{example1-4.pdf}
 	\end{center}
 	\caption{$\lambda$の事前分布（上の点線）・事後分布（上の実線）と，尤度（下）}
 	\label{prior_posterior}
 \end{figure}
 
+実用上は，とくに事前の情報がない限りは，情報事前分布は使わない。
+
+このほか，後述の\textsf{Stan}では，無情報事前分布よりもいくぶん情報を持った「弱情報事前分布」の使用が推奨されている\footnote{Prior Choice Recommendations\\ \url{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}}。
 
 %ページ調整
 %\pagebreak
 
-\clearpage
+%\clearpage
 
 %%
 %% ロジスティック回帰
@@ -935,7 +964,6 @@ model {
 $i \in 1, 2, \dots, N$であることを示している。
 \texttt{dbin(p, n)}は二項分布$\mathrm{Binomial}(n, p)$
 （\texttt{p}は確率。\texttt{n}は試行回数）。
-``\texttt{\textasciitilde}''(チルダ)は，左辺の変数が右辺の確率分布に従うことをしめす。
 \texttt{logit(p)}はロジット関数
 $\mathrm{logit}(p) = \log(p/(1-p))$
 である。
@@ -1035,7 +1063,7 @@ p(X_i) &= \mathrm{logit}^{-1}(\beta+\beta_{x}X_i)) \notag \\
 
 \begin{figure}[htbp]
 	\begin{center}
-		\includegraphics[bb=0 0 400 400, clip, width=300 bp]{example2.pdf}
+		\includegraphics[bb=0 0 400 400, clip, width=300 bp]{example2_results.pdf}
 	\end{center}
 	\caption{例題2のMCMC計算の結果}
 	\label{plot_coda}
@@ -1126,13 +1154,13 @@ beta.x  0.3762  0.4914  0.554  0.6248  0.7721
 まとめて単純なベクトルとする関数である。
 
 Xの値をすこしづつ変えながら，MCMCでサンプリングされたすべての値についてYの値を
-計算して，その期待値および信用区間を計算させている。
+計算して，その期待値および事後分布の信用区間を計算させている。
 表示結果は図\ref{example2exp_plot}。
 \begin{figure}[htbp]
   \begin{center}
     \includegraphics[bb=0 0 360 360, clip, width=240 bp]{example2_exp.pdf}
   \end{center}
-  \caption{\ref{logistic}で使用したデータ（点）とYの期待値および信用区間（曲線）}
+  \caption{\ref{logistic}で使用したデータ（点）とYの期待値および事後分布の信用区間（曲線）}
   \label{example2exp_plot}
 \end{figure}
 
@@ -1314,6 +1342,8 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 > data <- read.csv("example3.csv")
 \end{lstlisting}
 
+%ページ調整
+\vspace{2zw}
 
 最初の10行の内容を表示してみると，以下のとおり。
 %\vspace{0.5em}
@@ -1885,7 +1915,7 @@ GLM$\rightarrow$GLMM$\rightarrow$階層ベイズモデル
 \textsf{JAGS}や\textsf{Stan}などを用いた解析方法の記事があり，
 サポートページ\footnote{\url{https://sites.google.com/site/iwanamidatascience/vol1/support_tokushu}}では，
 コードや解説動画なども公開されている。
-
+『StanとRでベイズ統計モデリング』\cite{Matsuura}は，ベイズ統計モデリングの基本的な考え方から，\textsf{Stan}の実践的な使用法まで解説をおこなっている。
 
 その他，MCMCや階層ベイズモデルについて目に付いたものを参考文献リストに入れて
 おいたので，参考にされたい。
@@ -1905,9 +1935,9 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
   Princeton University Press, Princeton.
 \bibitem{Clark_Gelfand} Clark J.S., Gelfand A.E. (2006) Hierarchical modelling
   for the environmental sciences. Oxford University Press, New York.
-%\bibitem{Fukasawa} 深澤圭太・角谷拓 (2009) 始めよう! ベイズ推定によるデータ解析.
-%  日本生態学会誌 59:167--170.\\
-%  \texttt{http://ci.nii.ac.jp/naid/110007340208}
+\bibitem{Fukasawa} 深澤圭太・角谷拓 (2009) 始めよう! ベイズ推定によるデータ解析.
+  日本生態学会誌 59:167--170.\\
+  \url{http://ci.nii.ac.jp/naid/110007340208}
 \bibitem{Fukasawa_et_al} 深澤圭太・石濱史子・小熊宏之・武田知己・田中信行・
   竹中明夫 (2009) 条件付き自己回帰モデルによる空間自己相関を考慮した生物の分布
   データ解析. 日本生態学会誌 59:171--186. \\
@@ -1936,6 +1966,7 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{Kery2015} K\'ery M., Royle J.A. (2015) Applied Hierarchical Modeling in Ecology --- Analysis of distribution, abundance and species richness in R and BUGS, Volume 1. Academic Press, Waltham.
 \bibitem{DBDA2} Kruschke J. (2014) Doing Bayesian data analysis, 2nd ed.:
   a tutorial with R, JAGS, and Stan. Academic Press, Waltham.
+  （日本語訳: 前田和寛・小杉考司監訳 (2017) 「ベイズ統計モデリング---R,JAGS, Stanによるチュートリアル---」共立出版, 東京. ）
 \bibitem{Kubo} 久保拓弥 (2009) 簡単な例題で理解する空間統計モデル. 
   日本生態学会誌 59: 187--196. \\
   \url{http://ci.nii.ac.jp/naid/110007340204}
@@ -1955,8 +1986,7 @@ Methods in Ecology and Evolution 3: 112--115. doi: 10.1111/j.2041-210X.2011.0013
 \bibitem{MCMCpack} Martin A.D., Quinn, K.M. (2006) Applied Bayesian inference in R
 using MCMCpack. R News 6(1):2--7. \\
     \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
-%\bibitem{Martin} Martin J-M, Robert C. P. (2007) Bayesian core: A practical
-%  approach to computational Bayesian statistics. Springer, New York.
+\bibitem{Matsuura} 松浦健太郎 (2016) StanとRでベイズ統計モデリング. 共立出版, 東京.
 \bibitem{McCarthy} McCarthy M.A. (2007) Bayesian methods for ecology.
   Cambridge University Press, New York.
   （日本語訳: 野間口眞太郎訳 (2009) 「生態学のためのベイズ法」共立出版, 東京.）
@@ -1985,10 +2015,6 @@ using MCMCpack. R News 6(1):2--7. \\
 \bibitem{Thomas} Thomas A., O'Hara B., Ligges U., Sturtz S. (2006) Making BUGS open.
   R News 6(1): 12--17. \\
   \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
-%\bibitem{Tomita} 富田基史・花岡創 (2009) 階層ベイズモデルによる複雑な生態学的
-%  プロセスの推定: ブナの花粉散布空間パターン推定を例に.
-%  日本生態学会誌 59: 197--206.  \\
-%  \texttt{http://ci.nii.ac.jp/naid/110007340202}
 \bibitem{Toyoda} 豊田秀樹 (2008) マルコフ連鎖モンテカルロ法. 朝倉書店, 東京.
 \bibitem{Toyoda2015} 豊田秀樹(編著) (2015) 基礎からのベイズ統計学
   ---ハミルトニアンモンテカルロ法による実践的入門---. 朝倉書店, 東京.
@@ -1996,10 +2022,6 @@ using MCMCpack. R News 6(1):2--7. \\
   西山茂・人見光太郎・吉川肇子・吉田栄介・濱岡豊(著)「経済・経営のための
   統計学」有斐閣, 東京):243--284.
 \bibitem{Watanabe} 渡辺澄夫 (2012) ベイズ統計の理論と方法. コロナ社, 東京.
-%\bibitem{Yamamichi} 山道真人・角谷拓 (2009) マルコフ連鎖モンテカルロ(MCMC)法を
-%  用いたシミュレーションモデルのパラメータ推定: ベイジアンキャリブレーション入門.
-%  日本生態学会誌 59:207--216. \\
-%  \texttt{http://ci.nii.ac.jp/naid/110007340200}
 \end{thebibliography}
 
 
