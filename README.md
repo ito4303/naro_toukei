@@ -3,7 +3,7 @@
 農研機構短期集合研修（数理統計）「ベイズ統計モデリングとMCMC」で使用するファイルです。
 
 ## テキストと投影資料
-- [テキスト(PDF)](https://github.com/ito4303/naro_toukei/raw/master/mcmc_text/mcmc_text.pdf)
+- [テキスト(PDF)](https://www.dropbox.com/s/6lo62nqxmu9142l/mcmc_text.pdf?dl=0)
 
 - [投影資料(PDF)](https://www.dropbox.com/s/42dehp1b6cme8eh/mcmc_slide.pdf?dl=0)
 
