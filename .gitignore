@@ -3,8 +3,9 @@
 .Rproj.user
 .Rhistory
 .RData
-*.rda
+*.rds
 *.zip
+*~
 naro_toukei.Rproj 
 mcmc_slide.pdf
 mcmc_text/mcmc_text.aux

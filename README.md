@@ -1,6 +1,6 @@
-# ベイジアンMCMCによる統計モデル
+# ベイズ統計モデリングとMCMC
 
-農研機構短期集合研修（数理統計）「ベイジアンMCMCによる統計モデル」で使用するファイルです。
+農研機構短期集合研修（数理統計）「ベイズ統計モデリングとMCMC」で使用するファイルです。
 
 ## テキストと投影資料
 - [テキスト(PDF)](https://github.com/ito4303/naro_toukei/raw/master/mcmc_text/mcmc_text.pdf)
@@ -11,15 +11,21 @@
 ## 例題1: ポアソン回帰
 <dl>
 <dt>example1.R</dt>
-<dd>MCMCpackによる例</dd>
+<dd>Rスクリプト</dd>
+<dt>example1_model.txt</dt>
+<dd>BUGSモデル</dd>
 </dl>
 
 ## 例題2: ロジスティック回帰
 <dl>
 <dt>example2.R</dt>
-<dd>MCMCpackによる例</dd>
-<dt>example2_JAGS.R</dt>
-<dd>JAGSによる例</dd>
+<dd>Rスクリプト（JAGS用）</dd>
+<dt>example2_model.txt</dt>
+<dd>BUGSモデル</dd>
+<dt>example2_Stan.R</dt>
+<dd>Rスクリプト（Stan用）</dd>
+<dt>example2.stan</dt>
+<dd>Stanモデル</dd>
 </dl>
 
 ## 例題3: 線形混合モデル
@@ -27,13 +33,13 @@
 <dt>example3.csv</dt>
 <dd>データ</dd>
 <dt>example3.R</dt>
-<dd>JAGSによる例</dd>
+<dd>Rスクリプト（JAGS用）</dd>
 <dt>example3_model.txt</dt>
 <dd>BUGSモデル</dd>
 <dt>example3-1_model.txt</dt>
 <dd>BUGSモデル (nested indexing)</dd>
 <dt>example3_Stan.R</dt>
-<dd>Stanによる例</dd>
+<dd>Rスクリプト（Stan用）</dd>
 <dt>example3.stan</dt>
 <dd>Stanモデル</dd>
 </dl>
@@ -43,11 +49,11 @@
 <dt>example4.csv</dt>
 <dd>データ</dd>
 <dt>example4.R</dt>
-<dd>JAGSによる例</dd>
+<dd>Rスクリプト（JAGS用）</dd>
 <dt>example4_model.txt</dt>
 <dd>BUGSモデル</dd>
 <dt>example4_Stan.R</dt>
-<dd>Stanによる例</dd>
+<dd>Rスクリプト（Stan用）</dd>
 <dt>example4.stan</dt>
 <dd>Stanモデル</dd>
 </dl>

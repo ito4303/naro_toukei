@@ -1,8 +1,11 @@
 model {
+  # Likelihood
   for (i in 1:N) {
-    Y[i] ~ dbin(p[i], K)
     logit(p[i]) <- beta + beta.x * X[i]
+    Y[i] ~ dbin(p[i], K)
   }
-  beta ~ dnorm(0, 1.0E-6)
-  beta.x ~ dnorm(0, 1.0E-6)
+
+  # Priors
+  beta ~ dnorm(0, 1.0E-4)
+  beta.x ~ dnorm(0, 1.0E-4)
 }

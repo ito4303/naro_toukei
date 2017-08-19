@@ -18,6 +18,5 @@ fit <- stan("example3.stan",
              chains = 4, iter = 2000, warmup = 1000)
 
 #
-traceplot(fit, c("beta[1]", "beta[2]", "beta[3]",
-                  "sigma", "sigma_B"))
-print(fit, digits = 3)
+rstan::traceplot(fit, pars = c("beta", "sigma"))
+print(fit, pars = c("beta", "sigma"), digits = 3)
