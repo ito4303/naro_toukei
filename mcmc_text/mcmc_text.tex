@@ -49,10 +49,10 @@
 本講では，理論的な解説については最小限として，
 マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置きたい。
 理論面についての解説は末尾の参考文献などを参照されたい。
-ソフトウェア\footnote{本テキスト執筆時には，R 3.4.1, JAGS 4.3.0, Stan 2.16.0を使用した。}
+ソフトウェア
 としては，\textsf{R}\cite{R}上にて
 %\textsf{MCMCpack}\cite{MCMCpack}と
-\textsf{JAGS}\cite{JAGS}を使用する。
+\textsf{JAGS}\cite{JAGS}を使用する。\footnote{本テキスト執筆時には，R 3.4.1, JAGS 4.3.0, Stan 2.16.0を使用した。}
 %（実習には\textsf{MCMCpack}を使用する）。
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
 例題等のファイルは\url{https://github.com/ito4303/naro_toukei}で
@@ -1120,51 +1120,6 @@ beta.x  0.3762  0.4914  0.554  0.6248  0.7721
 と推定された。
 
 %ページ調整
-%\vspace{1zw}
-
-つづいて，$\bm{X}$と$\bm{Y}$とのプロットに，$\bm{Y}$の期待値を重ねて表示させてみよう。
-\begin{lstlisting}
-> beta <- unlist(post[, "beta"])
-> beta.x <- unlist(post[, "beta.x"])
-> 
-> new.x <- seq(0, 10, len = 100)
-> logit.p <- beta + beta.x %o% new.x
-> exp.y <- k * exp(logit.p) / (1 + exp(logit.p))
-> y.mean <- apply(exp.y, 2, mean)
-> y.975 <- apply(exp.y, 2, quantile, probs = 0.975)
-> y.025 <- apply(exp.y, 2, quantile, probs = 0.025)
-> y.995 <- apply(exp.y, 2, quantile, probs = 0.995)
-> y.005 <- apply(exp.y, 2, quantile, probs = 0.005)
-> 
-> plot(x, y, type = "p", ylim = c(0, 10), las = 1)
-> lines(new.x, y.mean, lty = 1)
-> lines(new.x, y.975, lty = 2)
-> lines(new.x, y.025, lty = 2)
-> lines(new.x, y.995, lty = 3)
-> lines(new.x, y.005, lty = 3)
-> legend("bottomright",
-+        legend = c("mean", "95% interval", "99% interval"),
-+        lty = c(1, 2, 3))
-\end{lstlisting}
-\noindent
-\texttt{post}には，各連鎖をリストの要素として，
-各パラメーターについて
-サンプリングされた値が格納されているので，それを取り出して使っている。
-1行目と2行目の\texttt{unlist()}関数は，リスト構造になっているものを
-まとめて単純なベクトルとする関数である。
-
-Xの値をすこしづつ変えながら，MCMCでサンプリングされたすべての値についてYの値を
-計算して，その期待値および事後分布の信用区間を計算させている。
-表示結果は図\ref{example2exp_plot}。
-\begin{figure}[htbp]
-  \begin{center}
-    \includegraphics[bb=0 0 360 360, clip, width=240 bp]{example2_exp.pdf}
-  \end{center}
-  \caption{\ref{logistic}で使用したデータ（点）とYの期待値および事後分布の信用区間（曲線）}
-  \label{example2exp_plot}
-\end{figure}
-
-%ページ調整
 %\pagebreak
 
 \subsubsection{Stanによる例}
@@ -1175,6 +1130,9 @@ RStanを使用する。
 \begin{lstlisting}
 > library(rstan)
 \end{lstlisting}
+
+%ページ調整
+\vspace{3zw}
 
 モデルの定義。
 ここでは，\texttt{example2.stan}というファイルでモデルを記述している。
@@ -1966,7 +1924,7 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{Kery2015} K\'ery M., Royle J.A. (2015) Applied Hierarchical Modeling in Ecology --- Analysis of distribution, abundance and species richness in R and BUGS, Volume 1. Academic Press, Waltham.
 \bibitem{DBDA2} Kruschke J. (2014) Doing Bayesian data analysis, 2nd ed.:
   a tutorial with R, JAGS, and Stan. Academic Press, Waltham.
-  （日本語訳: 前田和寛・小杉考司監訳 (2017) 「ベイズ統計モデリング---R,JAGS, Stanによるチュートリアル---」共立出版, 東京. ）
+  （日本語訳: 前田和寛・小杉考司監訳 (2017) 「ベイズ統計モデリング---R, JAGS, Stanによるチュートリアル---」共立出版, 東京. ）
 \bibitem{Kubo} 久保拓弥 (2009) 簡単な例題で理解する空間統計モデル. 
   日本生態学会誌 59: 187--196. \\
   \url{http://ci.nii.ac.jp/naid/110007340204}

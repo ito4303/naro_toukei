@@ -61,28 +61,3 @@ gelman.diag(post)
 
 ## Print results
 summary(post)
-
-## Plot expected and observed values
-beta <- unlist(post[, "beta"])
-beta.x <- unlist(post[, "beta.x"])
-
-new.x <- seq(0, 10, len = 100)
-logit.p <- beta + beta.x %o% new.x
-exp.y <- k * exp(logit.p) / (1 + exp(logit.p))
-y.mean <- apply(exp.y, 2, mean)
-y.975 <- apply(exp.y, 2, quantile, probs = 0.975)
-y.025 <- apply(exp.y, 2, quantile, probs = 0.025)
-y.995 <- apply(exp.y, 2, quantile, probs = 0.995)
-y.005 <- apply(exp.y, 2, quantile, probs = 0.005)
-
-#pdf("example2exp.pdf", width = 360/72, height = 360/72,
-#    family = "Helvetica", pointsize = 10)
-plot(x, y, type = "p", ylim = c(0, 10), las = 1)
-lines(new.x, y.mean, lty = 1)
-lines(new.x, y.975, lty = 2)
-lines(new.x, y.025, lty = 2)
-lines(new.x, y.995, lty = 3)
-lines(new.x, y.005, lty = 3)
-legend("bottomright", legend = c("mean", "95%", "99%"),
-       lty = c(1, 2, 3))
-#dev.off()
