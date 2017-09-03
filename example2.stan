@@ -11,9 +11,7 @@ parameters {
 }
 
 transformed parameters {
-  vector[N] logit_p;
-
-  logit_p = beta + beta_x * X;
+  vector[N] logit_p = beta + beta_x * X;
 }
 
 model {

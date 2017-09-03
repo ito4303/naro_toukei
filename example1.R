@@ -57,7 +57,7 @@ post2 <- coda.samples(model2, variable.names = "lambda",
 ## Plot trace
 #pdf("example1-2.pdf", width = 360/72, height = 240/72,
 #    family = "Helvetica", pointsize = 10)
-traceplot(post2, las = 1)
+traceplot(post2, las = 1, col = c(1, 2, 4))
 #dev.off()
 
 
