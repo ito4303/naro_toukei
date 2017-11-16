@@ -2,7 +2,7 @@ data {
   int<lower = 0> N;
   int<lower = 0> K;
   vector[N] X;
-  int<lower = 0, upper = 10> Y[N];
+  int<lower = 0, upper = K> Y[N];
 }
 
 parameters {
@@ -19,6 +19,6 @@ model {
   Y ~ binomial_logit(K, logit_p);
 
   // Priors
-  beta ~ normal(0.0, 1.0e+3);
-  beta_x ~ normal(0.0, 1.0e+3);
+  beta ~ normal(0.0, 1.0e+2);
+  beta_x ~ normal(0.0, 1.0e+2);
 }
