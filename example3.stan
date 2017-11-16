@@ -14,7 +14,7 @@ parameters {
 }
 
 transformed parameters {
-  vector[N] mu;                // Local variable
+  vector[N] mu;
 
   // Mean values
   for (i in 1:N)
