@@ -1,5 +1,5 @@
 %%
-%% 2017年度 数理統計短期集合研修
+%% 2018年度 数理統計短期集合研修
 %%
 
 \documentclass[11pt,uplatex]{jsarticle}
@@ -41,7 +41,7 @@
 
 \title{ベイズ統計モデリングとMCMC}
 \author{森林総合研究所 北海道支所\\伊東宏樹\footnote{hiroki@affrc.go.jp}}
-\date{2017年11月17日}
+\date{2018年11月4日}
 \maketitle
 
 
@@ -171,12 +171,12 @@ CやFortranなどでMCMCのプログラムを作成することも可能だが�
 MCMCのソフトウェアには以下のようなものがある。
 
 \begin{itemize}
-\item  \textsf{R}のパッケージ: MCMCpackなど
+\item  \textsf{R}のパッケージ: \textsf{MCMCpack}など
 \item 専用ソフトウェア: \textsf{WinBUGS}, \textsf{OpenBUGS}, \textsf{JAGS}, \textsf{Stan}など
 \begin{itemize}
- \item  上に挙げたもののうち，\textsf{Stan}以外は，BUGS (\textbf{B}ayesian inference \textbf{U}sing
- \textbf{G}ibbs \textbf{S}ampling)言語\cite{BUGSBook, BUGS}という
- モデリング言語を使用している。
+ \item  上に挙げたもののうち，\textsf{WinBUGS}および\textsf{OpenBUGS}，\textsf{JAGS}は，
+ BUGS (\textbf{B}ayesian inference \textbf{U}sing \textbf{G}ibbs \textbf{S}ampling)
+ 言語\cite{BUGSBook, BUGS}という モデリング言語を使用している。
  \label{BUGS}
 \textsf{Stan}は，BUGSとは異なる言語仕様である。
 \item  いずれにも\textsf{R}から使えるようにするパッケージあり
@@ -189,7 +189,7 @@ MCMCのソフトウェアには以下のようなものがある。
 
 \begin{itemize}
 \item ウェブサイト: \texttt{\url{http://mcmcpack.berkeley.edu/}}
-\item 最新版: 1.4-0
+\item 最新版: 1.4-3
 \item \textsf{R}のパッケージ
 \item CRANからインストールできる。
 \item Metropolis samplerを使う。
@@ -218,51 +218,6 @@ MCMCのソフトウェアには以下のようなものがある。
 \item GUI環境はあるがあまり使いやすくない。\textsf{R2WinBUGS}パッケージ
   で \textsf{R}と連携可能なので，そちらから使う方が使いやすい（と思う）。
 \end{itemize}
-
-%\subsubsection*{インストール}
-%
-%ウェブサイトからインストーラーをダウンロード
-%できる。いずれの環境でも\textsf{WinBUGS}のインストール後には1.4.3パッチをあ
-%て，``key''をインストールすること。``key''をインストールすることにより，
-%全機能が使えるようになる。
-%
-%\paragraph{Windowsへのインストール}
-%
-%インストーラー（\texttt{WinBUGS14.exe}）を起動して，あとは指示に従ってい
-%けばインストールされる。
-%ただし，Windows Vistaでは，\texttt{C:{\textbackslash}Program~Files}以下に
-%インストールすると，アクセス制御の
-%関係でパッチなどが当てられなくなるので，\texttt{C:{\textbackslash}Program~Files}以外への
-%インストールが推奨されている
-%\footnote{\url{http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/#install}}。
-%インストーラーは64ビットWindowsには非対応である。
-%
-%\paragraph{Macへのインストール}
-%
-%Macでは，\textsf{Wine}を利用して\textsf{WinBUGS}を使うことができる。
-%macOS用の\textsf{Wine}\footnote{\url{https://wiki.winehq.org/MacOSX}}
-%を利用するか，\textsf{Homebrew}\footnote{\url{http://brew.sh/}}, \textsf{MacPors}\footnote{\url{http://www.macports.org/}}などの
-%パッケージ管理システムを利用してインストールするのが簡単であろう。
-%詳細は，ネット上の資料
-%\footnote{\url{http://nhkuma.blogspot.jp/2012/12/macosx106-107winbugswiner2winbugs.html}\\
-%\url{http://nhkuma.blogspot.jp/2012/12/macosx108-mountain-lion-winbugs-wine.html}}を参照するとよい。
-%
-%
-%\textsf{Wine}をインストールしたら，
-%これを使用してWindows用インストーラー
-%(\texttt{WinBUGS14.exe})を起動
-%し，\textsf{Wine}環境へ
-%\textsf{WinBUGS}をインストールする
-%（デフォルトでは\texttt{\textasciitilde/.wine/drive\_c/Program Files}以下にインストールされる）。
-%
-%
-%\paragraph{Linuxへのインストール}
-%\textsf{Wine}を使用する。Ubuntuなどの主要なディストリビューションではパッ
-%ケージ化されているので，それを利用するのが簡単だろう。
-%\textsf{Wine}を使用してインストーラー(\texttt{WinBUGS14.exe})を起動
-%し，\textsf{WinBUGS}をインストールする。
-%
-%BSDその他UNIXも基本的にはLinuxに準じる。
 
 \subsection{OpenBUGS}
 
@@ -341,10 +296,10 @@ Linux版主要ディストリビューションにはバイナリパッケージ
 \item ウェブサイト:
   \url{http://mc-stan.org/}
 
-\item 最新版: 2.16.0
+\item 最新版: 2.17.0
 \item オープンソース（BSDライセンスまたはGPL3）。再配布，内部の解析，改
   造なども自由にできる。
-\item \textsf{RStan}という\textsf{R}のパッケージもあり，CRANに収録されている\footnote{macOS版のrstan-2.16.2では，エラーメッセージが正常に表示されない問題がある。これはソースからインストールしなおすことで解決できる。\url{http://ito-hi.blog.so-net.ne.jp/2017-08-09}}。
+\item \textsf{RStan}という\textsf{R}のパッケージもあり，CRANに収録されている。
 また，Pyhtonインターフェイスの\textsf{PyStan}もある。
 コマンドラインから実行するものは\textsf{CmdStan}と呼ばれる。
 \item Stan $\rightarrow$ C++ $\rightarrow$ ネイティブバイナリ，とコンパイルして実行する。
