@@ -3,6 +3,7 @@
 .Rproj.user
 .Rhistory
 .RData
+.gitignore
 *.rds
 *.zip
 *~
@@ -14,4 +15,5 @@ mcmc_text/mcmc_text.fdb_latexmk
 mcmc_text/mcmc_text.fls
 mcmc_text/mcmc_text.log
 mcmc_text/mcmc_text.synctex.gz
+mcmc_text/mcmc_text.pdf
 事務文書
