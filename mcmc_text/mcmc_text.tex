@@ -41,20 +41,17 @@
 
 \title{ベイズ統計モデリングとMCMC}
 \author{森林総合研究所 北海道支所\\伊東宏樹\footnote{hiroki@affrc.go.jp}}
-\date{2018年11月4日}
+\date{2018年11月14日}
 \maketitle
 
 
 \section{はじめに}
 
 本講では，理論的な解説については最小限として，
-マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置きたい。
+マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置くこととする。
 理論面についての解説は末尾の参考文献などを参照されたい。
-ソフトウェア
-としては，\textsf{R}\cite{R}上にて
-%\textsf{MCMCpack}\cite{MCMCpack}と
-\textsf{JAGS}\cite{JAGS}を使用する。\footnote{本テキスト執筆時には，R 3.4.1, JAGS 4.3.0, Stan 2.16.0を使用した。}
-%（実習には\textsf{MCMCpack}を使用する）。
+ソフトウェアとしては，\textsf{R}\cite{R}上にて
+\textsf{JAGS}\cite{JAGS}を使用する。\footnote{本テキスト執筆時には，R 3.5.0, JAGS 4.3.0, Stan 2.17.0を使用した。}
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
 例題等のファイルの最新版は\url{https://github.com/ito4303/naro_toukei}で
 公開しているので，必要に応じて参照されたい。
@@ -213,7 +210,7 @@ MCMCのソフトウェアには以下のようなものがある。
 \item Windows用ソフトだが，\textsf{Wine}\footnote{\url{http://www.winehq.org/} 名前は，
 ``Wine Is Not Emulator''の略。Windows互換レイヤーソフトで，Windows用ソフトウェ
   ア(すべてというわけではない)をWindowsなしで動作させることができる。
-  最新の安定版は2.0.2。}を使用
+  最新の安定版は3.0.1。}を使用
   することで，macOSやLinux，BSDでも使用することが可能。
 \item GUI環境はあるがあまり使いやすくない。\textsf{R2WinBUGS}パッケージ
   で \textsf{R}と連携可能なので，そちらから使う方が使いやすい（と思う）。
@@ -237,7 +234,7 @@ Macでは\textsf{Wine}により利用可能。
 \subsubsection*{インストール}
 \paragraph{Windowsへのインストール}
 Windows版インストーラーからインストールできる。64ビットWindowsにもインストールできる。
-開発元ではWindows XPと8とで動作確認している。
+%開発元ではWindows XPと8とで動作確認している。
 
 \paragraph{macOSへのインストール}
 \textsf{Wine}を導入して，Windows版をインストールする。
@@ -296,7 +293,7 @@ Linux版主要ディストリビューションにはバイナリパッケージ
 \item ウェブサイト:
   \url{http://mc-stan.org/}
 
-\item 最新版: 2.17.0
+\item 最新版: 2.17.1
 \item オープンソース（BSDライセンスまたはGPL3）。再配布，内部の解析，改
   造なども自由にできる。
 \item \textsf{RStan}という\textsf{R}のパッケージもあり，CRANに収録されている。
@@ -430,7 +427,8 @@ model {
 \end{lstlisting}
 %
 GLMでは1行で済んだものが，\textsf{BUGS言語}ではかなり長くなってしまった。
-しかし，このような記法により，複雑なモデルも記述できるのである。
+しかし，このような記法により，実際の研究で使用されるような複雑なモデルにも
+柔軟に対応できるのである。
 
 1行目の``\texttt{model \{}''と，9行目の``\texttt{\}}''とで囲まれた部分がモデルの定義となる。
 そのうち，3〜5行目が尤度の部分である。
@@ -501,7 +499,7 @@ Loaded modules: basemod,bugs
 擬似乱数発生アルゴリズム(\texttt{.RNG.name})も明示的に指定するようにしている。
 これらも省略可能であるが，
 パラメーターの初期値と擬似乱数を固定しておくことで，再生可能(reproducible)，
-すなわち同じ計算を繰り返したときに同じ結果が得られるようになる。
+すなわち同じ計算を繰り返したときに同じ結果が得られるようになる。\footnote{厳密には，ソフトウェアのバージョンやCPUなども同じでないといけない。}
 %
 \begin{lstlisting}
 > inits <- vector("list", 3)
@@ -837,7 +835,7 @@ Sample size per chain = 1000
 	\label{prior_posterior}
 \end{figure}
 
-実用上は，とくに事前の情報がない限りは，情報事前分布は使わない。
+実際には，とくに事前の情報がない限りは，情報事前分布は使わない。
 
 このほか，後述の\textsf{Stan}では，無情報事前分布よりもいくぶん情報を持った「弱情報事前分布」の使用が推奨されている\footnote{Prior Choice Recommendations\\ \url{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}}。
 
@@ -1705,7 +1703,7 @@ Number of Fisher Scoring iterations: 6
 もう一度，データをよくみてみると，芽生えの数に0が多いことがわかる（図\ref{example4_barplot}）。
 このような状態はゼロ過剰(Zero-inflated)と呼ばれる。
 こうしたデータを扱うためには，ポアソン分布からはずれて0が多いことを，
-そもそも存在する可能性がない場合があると考えて
+そもそも存在する可能性がない（潜在的な分布範囲から外れているなど）場合があると考えて
 モデル化する。
 このようなモデルはゼロ過剰ポアソンモデル(Zero-Inflated Poisson model; ZIP model)と呼ばれる。
 
@@ -1860,6 +1858,7 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
   (伊庭幸人・種村正美・大森裕浩・和合肇・佐藤整尚・高橋明彦(著)
   「計算統計II ---マルコフ連鎖モンテカルロ法とその周辺---」
   岩波書店, 東京): 1--106.
+\bibitem{Iba2018} 伊庭幸人(編) (2018) ベイズモデリングの世界. 岩波書店, 東京.
 \bibitem{Iwanami_vol1} 岩波データサイエンス刊行委員会(編) (2015) 岩波データサイエンス Vol.1.
 岩波書店, 東京. \\
 シリーズサポートページ \url{https://sites.google.com/site/iwanamidatascience/}
@@ -1900,7 +1899,7 @@ using MCMCpack. R News 6(1):2--7. \\
   Wiley, Hoboken.
 \bibitem{JAGS} Plummer M. (2017) JAGS version 4.3.0 user manual.\\
   \url{http://sourceforge.net/projects/mcmc-jags/}
-\bibitem{R} R Core Team (2017)
+\bibitem{R} R Core Team (2018)
    R: A Language and Environment for Statistical Computing.
    R Foundation for Statistical Computing, Vienna.\\
    \url{http://www.R-project.org/}
@@ -1911,7 +1910,7 @@ using MCMCpack. R News 6(1):2--7. \\
   WinBUGS user manual version 1.4.\\
   \url{http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/manual14.pdf}
 \bibitem{Stan} Stan Development Team (2017) Stan Modeling Language:
-  User's Guide and Reference Manual, Version 2.16.0.
+  User's Guide and Reference Manual, Version 2.17.0.
   \url{http://mc-stan.org/}
 \bibitem{Tango} 丹後俊郎 (2000) 統計モデル入門. 朝倉書店, 東京.
 \bibitem{Terui} 照井伸彦 (2010) Rによるベイズ統計分析. 朝倉書店, 東京.
