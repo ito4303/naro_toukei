@@ -15,7 +15,7 @@ fit <- stan("example3.stan",
              data = list(X = cbind(rep(1, n.data), data$x1, data$x2),
                          Y = data$y, B = data$block,
                          M = n.block, N = n.data, L = 3),
-             chains = 4, iter = 2000, warmup = 1000)
+             chains = 4, iter = 2000, warmup = 1000, thin = 1)
 
 #
 rstan::traceplot(fit, pars = c("beta", "sigma"))

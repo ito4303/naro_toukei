@@ -98,8 +98,8 @@ inits <- list(list(lambda = 0.1,
                    .RNG.name = "base::Mersenne-Twister"))
 model4 <- jags.model("example1-1_model.txt",
                      data = list(X = x, N = length(x)),
-                     inits = inits, n.chains = 3, n.adapt = 500)
-update(model4, n.iter = burnin - 500)
+                     inits = inits, n.chains = 3)
+update(model4, n.iter = burnin)
 post4 <- coda.samples(model4,
                       variable.names = "lambda",
                       n.iter = iter, thin = thin)
