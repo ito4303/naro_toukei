@@ -69,3 +69,7 @@ post <- coda.samples(model, n.iter = 10000, thin = 10,
 ## Show results
 gelman.diag(post)
 summary(post)
+
+samp.beta.x <- unlist(post[, "beta.x"])
+sum(samp.beta.x > 0) / length(samp.beta.x)
+
