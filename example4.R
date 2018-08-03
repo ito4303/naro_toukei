@@ -72,4 +72,3 @@ summary(post)
 
 samp.beta.x <- unlist(post[, "beta.x"])
 sum(samp.beta.x > 0) / length(samp.beta.x)
-

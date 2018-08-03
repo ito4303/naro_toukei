@@ -1543,19 +1543,6 @@ sigma.B  0.6712  0.9938  1.2313  1.5683  2.65059
 
 \texttt{e.B[]}の事後分布は図\ref{example3_e_plot}のようになっている。
 
-%%\begin{breakbox}
-%\begin{verbatim}
-%plot(NULL, type = "n",
-%     xlim = c(-2, 2), ylim = c(0, 2.5),
-%     xlab = "value", ylab = "density",
-%     main = "Posterior destribution of e[]",
-%     las = 1)
-%for (i in 1:n.block) {
-%  lines(density(post.samp$sims.list$e[,i]), col = i)
-%}
-%\end{verbatim}
-%\end{breakbox}
-
 \begin{figure}[htbp]
 	\begin{center}
 		\includegraphics[bb=0 0 360 360, clip, width=270 bp]{example3_e.pdf}
@@ -1563,9 +1550,6 @@ sigma.B  0.6712  0.9938  1.2313  1.5683  2.65059
 	\caption{\texttt{e.B[]}の事後分布}
 	\label{example3_e_plot}
 \end{figure}
-
-%ページ調整
-%\pagebreak
 
 \subsubsection*{Nested Indexing}
 上の例では2次元配列を使用しているが，配列のインデックスに配列を使用
@@ -1656,6 +1640,35 @@ model <- jags.model(file = model.file,
 ただし，\textsf{JAGS}で\texttt{glm}モジュールを使用した場合にはこの技法は不要である
 (JAGS User's Manual 4.3 \cite{JAGS} 10.2節)。
 
+\subsubsection*{結果の可視化}
+
+ここまで，MCMCの結果をグラフで図示するのに，おもに\texttt{coda}パッケージの\texttt{plot}関数を使用してきた。
+だが，MCMCの結果を可視化することを目的としたパッケージも，\texttt{ggmcmc}，\texttt{bayesplot}，\texttt{MCMCvis}などいくつかある（このうち前のふたつはグラフ描画に\texttt{ggplot}パッケージを使用する）。
+ここでは，\texttt{ggmcmc}を使用したグラフの作成法を紹介する。
+
+以下では，ランダム効果のパラメーターである\texttt{e.B}について，キャタピラープロットと呼ばれるグラフを描画する。
+
+\begin{lstlisting}
+library(ggmcmc)
+
+post.ggs <- ggs(post)
+ggs_caterpillar(post.ggs, "e.B")
+\end{lstlisting}
+
+結果は図\ref{example3_caterpillar}である。
+
+\begin{figure}[hbtp]
+  \begin{center}
+    \includegraphics[bb=0 0 340 340, clip, width=320 bp]{example3_caterpillar.pdf}
+  \end{center}
+  \caption{パラメーター\texttt{e.B}のキャタピラープロット}
+  \label{example3_caterpillar}
+\end{figure}
+
+\noindent
+図の点は中央値，太線は90\%信用区間，細線は95\%信用区間である（この信用区間は，正確には「最高事後密度(Highest Posterior Density: HPD)区間」である。）。キャタピラープロットにより，ランダム効果がどのブロックで大きく，どのブロックで小さいのかが視覚的に理解できる。
+
+このほか，\texttt{ggmcmc(post.ggs, "example3-output.pdf")}などとすると，各種の図を指定したファイル名のPDFにまとめて出力する。詳細はオンラインマニュアルなどを参照されたい。
 
 %%
 %% Zero-Inflated Poissonモデル
@@ -1736,9 +1749,6 @@ Number of Fisher Scoring iterations: 6
   \caption{芽生えの発生数の頻度分布}
   \label{example4_barplot}
 \end{figure}
-
-%ページ調整
-%\vspace{2zw}
 
 \paragraph{モデル}
 ZIPモデルを扱うBUGSコードは以下のようになる。
@@ -1826,12 +1836,13 @@ p       0.2432  0.3591  0.42538 0.5015 0.6552
 \noindent
 88\%の確率で$\beta_{x}$は0よりも大きいと推定された。
 
-%ページ調整
-%\pagebreak
+頻度主義統計でいうところの「有意」ではないが，単純なGLMよりも，係数の大きさをよりよく推定できたといえるだろう。
+
+\pagebreak
 
 \section{さらに学ぶには}
 
-今回紹介したモデルは，モデルとしては簡単なものである。
+今回紹介したモデルは，モデルとしては比較的簡単なものである。
 実際に研究で使用されるモデルはもっと複雑なものであることが多い。
 ``Models for Ecological Data''\cite{Clark},
 ``Hierarchical modelling for the environmental sciences''\cite{Clark_Gelfand},
@@ -1855,7 +1866,7 @@ GLM$\rightarrow$GLMM$\rightarrow$階層ベイズモデル
 コードや解説動画なども公開されている。
 『StanとRでベイズ統計モデリング』\cite{Matsuura}は，ベイズ統計モデリングの基本的な考え方から，\textsf{Stan}の実践的な使用法まで解説をおこなっている。
 
-実際の応用例としては、状態空間モデルを使用したシカの個体数推定\cite{Iijima2013}やキョンの個体数推定の例\cite{Asada:2014}などを参照されたい。
+実際の応用例としては，状態空間モデルを使用したシカの個体数推定\cite{Iijima2013}やキョンの個体数推定の例\cite{Asada:2014}などを参照されたい。
 
 その他，ベイズ統計モデリングやMCMCについて目に付いたものを参考文献リストに入れて
 おいた。
