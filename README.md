@@ -26,6 +26,8 @@
 <dd>Rスクリプト（Stan用）</dd>
 <dt>example2.stan</dt>
 <dd>Stanモデル</dd>
+<dt>example2_nimble.R</dt>
+<dd>Rスクリプト（NIMBLE用）</dd>
 </dl>
 
 ## 例題3: 線形混合モデル
