@@ -1866,7 +1866,7 @@ GLM$\rightarrow$GLMM$\rightarrow$階層ベイズモデル
 コードや解説動画なども公開されている。
 『StanとRでベイズ統計モデリング』\cite{Matsuura}は，ベイズ統計モデリングの基本的な考え方から，\textsf{Stan}の実践的な使用法まで解説をおこなっている。
 
-実際の応用例としては，状態空間モデルを使用したシカの個体数推定\cite{Iijima2013}やキョンの個体数推定の例\cite{Asada:2014}などを参照されたい。
+実際の応用例も，状態空間モデルを使用したシカの個体数推定\cite{Iijima2013}やキョンの個体数推定の例\cite{Asada:2014}、階層モデルにより森林内への樹種ごとの定着率や生存率を解析した例\cite{Ito2016}など多数ある。論文での結果の記述法についてもこれらを参照されたい。
 
 その他，ベイズ統計モデリングやMCMCについて目に付いたものを参考文献リストに入れて
 おいた。
@@ -1878,7 +1878,7 @@ GLM$\rightarrow$GLMM$\rightarrow$階層ベイズモデル
 \begin{thebibliography}{99}
 \bibitem{Asada:2014} 浅田正彦・長田穣・深澤圭太・落合啓二 (2014)
   状態空間モデルを用いた階層ベイズ推定法によるキョン(\textit{Muntiacus reevesi})の
-  個体数推定, 哺乳類科学 54:53--72.
+  個体数推定, 哺乳類科学 54:53--72. DOI:10.11238/mammalianscience.54.53
 \bibitem{PRML} Bishop C.M. (2006) Pattern recognition and machine learning.
   Springer-Verlag, New York.
   （日本語訳: 元田浩・栗田多喜夫・樋口知之・松本裕治・村田昇監訳 (2012)
@@ -1890,12 +1890,10 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{Clark_Gelfand} Clark J.S., Gelfand A.E. (2006) Hierarchical modelling
   for the environmental sciences. Oxford University Press, New York.
 \bibitem{Fukasawa} 深澤圭太・角谷拓 (2009) 始めよう! ベイズ推定によるデータ解析.
-  日本生態学会誌 59:167--170.\\
-  \url{http://doi.org/10.18960/seitai.59.2_167}
+  日本生態学会誌 59:167--170. DOI:10.18960/seitai.59.2\_167
 \bibitem{Fukasawa_et_al} 深澤圭太・石濱史子・小熊宏之・武田知己・田中信行・
   竹中明夫 (2009) 条件付き自己回帰モデルによる空間自己相関を考慮した生物の分布
-  データ解析. 日本生態学会誌 59:171--186. \\
-  \url{http://doi.org/10.18960/seitai.59.2_171}
+  データ解析. 日本生態学会誌 59:171--186. DOI:10.18960/seitai.59.2\_171
 \bibitem{Furutani} 古谷知之 (2008) ベイズ統計データ分析 --- R \& WinBUGS ---.
   朝倉出版, 東京.
 \bibitem{BDA3} Gelman A, Carlin J.B., Stern H.S., Dunson D.B., Vehtari A.,
@@ -1911,7 +1909,8 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{Iba2018} 伊庭幸人(編) (2018) ベイズモデリングの世界. 岩波書店, 東京.
 \bibitem{Iijima2013} Iijima, H., Nagaike, T., Honda, T. (2013) Estimation of
   deer population dynamics using a Bayesian state-space model with multiple
-  abundance indices. Journal of Wildlife Management 77:1038--1047.
+  abundance indices. Journal of Wildlife Management 77:1038--1047. DOI:10.1002/jwmg.556
+\bibitem{Ito2016} It\^{o} H. (2016) Changes in understory species occurrence of a secondary broadleaved forest after mass mortality of oak trees under deer foraging pressure. PeerJ 4:e2816. DOI:10.7717/peerj.2816
 \bibitem{Iwanami_vol1} 岩波データサイエンス刊行委員会(編) (2015) 岩波データサイエンス Vol.1.
 岩波書店, 東京. \\
 シリーズサポートページ \url{https://sites.google.com/site/iwanamidatascience/}
@@ -1926,23 +1925,22 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
   a tutorial with R, JAGS, and Stan. Academic Press, Waltham.
   （日本語訳: 前田和寛・小杉考司監訳 (2017) 「ベイズ統計モデリング---R, JAGS, Stanによるチュートリアル---」共立出版, 東京. ）
 \bibitem{Kubo} 久保拓弥 (2009) 簡単な例題で理解する空間統計モデル. 
-  日本生態学会誌 59: 187--196. \\
-  \url{http://ci.nii.ac.jp/naid/110007340204}
+  日本生態学会誌 59: 187--196. DOI:10.18960/seitai.59.2\_187
 \bibitem{Kubo:IEICE} 久保拓弥 (2009) 最近のベイズ理論の進展と応用[I]
-  階層ベイズモデルの基礎. 電子情報通信学会誌 92:881--885.\\
+  階層ベイズモデルの基礎. 電子情報通信学会誌 92:881--885.
   \url{http://eprints.lib.hokudai.ac.jp/dspace/handle/2115/39717}
 \bibitem{Kubo:Modeling} 久保拓弥 (2012) データ解析のための統計モデリング入門 ---
    一般化線形モデル・階層ベイズモデル・MCMC---. 岩波書店, 東京.
 \bibitem{Kyo} 姜興起 (2010) ベイズ統計データ解析. 共立出版, 東京.
 \bibitem{Link2012} Link, W.A., Eaton, M.J. (2012) On thinning of chains in MCMC.
-Methods in Ecology and Evolution 3: 112--115. doi: 10.1111/j.2041-210X.2011.00131.x
+Methods in Ecology and Evolution 3: 112--115. DOI:10.1111/j.2041-210X.2011.00131.x
 \bibitem{OpenBUGS} Lunn D., Spiegelhalter D., Thomas A., Best N. (2009)
   {The BUGS project: Evolution, critique, and future directions}.
   {Statistics in Medicine} {28}:3049--3067.
 \bibitem{BUGSBook} Lunn D., Jackson C, Besk N., Thomas A., Spiegelhalter D.
   (2012) The {BUGS} Book. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{MCMCpack} Martin A.D., Quinn, K.M. (2006) Applied Bayesian inference in R
-using MCMCpack. R News 6(1):2--7. \\
+using MCMCpack. R News 6(1):2--7. 
     \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
 \bibitem{Matsuura} 松浦健太郎 (2016) StanとRでベイズ統計モデリング. 共立出版, 東京.
 \bibitem{McCarthy} McCarthy M.A. (2007) Bayesian methods for ecology.
@@ -1951,11 +1949,11 @@ using MCMCpack. R News 6(1):2--7. \\
 \bibitem{Ntzoufras} Ntzoufras I. (2009) Bayesian modeling using WinBUGS.
   Wiley, Hoboken.
 \bibitem{Okumura} 奥村晴彦・瓜生真也・牧山幸史 (2018) Rで楽しむベイズ統計入門---しくみから理解するベイズ推定の基礎---. 技術評論社, 東京.
-\bibitem{JAGS} Plummer M. (2017) JAGS version 4.3.0 user manual.\\
+\bibitem{JAGS} Plummer M. (2017) JAGS version 4.3.0 user manual. \\
   \url{http://sourceforge.net/projects/mcmc-jags/}
 \bibitem{R} R Core Team (2018)
    R: A Language and Environment for Statistical Computing.
-   R Foundation for Statistical Computing, Vienna.\\
+   R Foundation for Statistical Computing, Vienna.
    \url{http://www.R-project.org/}
 \bibitem{IMCMR} Robert C.P., Casella G. (2010) Introducing Monte Carlo Methods with R.
   Springer, New York.
@@ -1972,7 +1970,7 @@ using MCMCpack. R News 6(1):2--7. \\
   R News 6(1): 17--21. \\
   \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
 \bibitem{Thomas} Thomas A., O'Hara B., Ligges U., Sturtz S. (2006) Making BUGS open.
-  R News 6(1): 12--17. \\
+  R News 6(1): 12--17. 
   \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
 \bibitem{Toyoda} 豊田秀樹 (2008) マルコフ連鎖モンテカルロ法. 朝倉書店, 東京.
 \bibitem{Toyoda2015} 豊田秀樹(編著) (2015) 基礎からのベイズ統計学
