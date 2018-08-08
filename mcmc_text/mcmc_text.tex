@@ -1,5 +1,5 @@
 %%
-%% 2017年度 数理統計短期集合研修
+%% 2018年度 数理統計短期集合研修
 %%
 
 \documentclass[11pt,uplatex]{jsarticle}
@@ -41,20 +41,17 @@
 
 \title{ベイズ統計モデリングとMCMC}
 \author{森林総合研究所 北海道支所\\伊東宏樹\footnote{hiroki@affrc.go.jp}}
-\date{2017年11月17日}
+\date{2018年11月14日}
 \maketitle
 
 
 \section{はじめに}
 
 本講では，理論的な解説については最小限として，
-マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置きたい。
+マルコフ連鎖モンテカルロ(Markov Chain Monte Carlo: MCMC)を使って実際に問題を解くことに主眼を置くこととする。
 理論面についての解説は末尾の参考文献などを参照されたい。
-ソフトウェア
-としては，\textsf{R}\cite{R}上にて
-%\textsf{MCMCpack}\cite{MCMCpack}と
-\textsf{JAGS}\cite{JAGS}を使用する。\footnote{本テキスト執筆時には，R 3.4.1, JAGS 4.3.0, Stan 2.16.0を使用した。}
-%（実習には\textsf{MCMCpack}を使用する）。
+ソフトウェアとしては，\textsf{R}\cite{R}上にて
+\textsf{JAGS}\cite{JAGS}を使用する。\footnote{本テキスト執筆時には，R 3.5.1, JAGS 4.3.0, Stan 2.17を使用した。}
 また，\textsf{Stan}\cite{Stan}の紹介もおこなう。
 例題等のファイルの最新版は\url{https://github.com/ito4303/naro_toukei}で
 公開しているので，必要に応じて参照されたい。
@@ -152,9 +149,6 @@
 \noindent
 からである。
 
-%ページ調整
-%\vspace{4zw}
-
 \subsection{MCMCのアルゴリズム}
 
 MCMCのアルゴリズムとしては，Metropolis-Hastingsアルゴリズムや，
@@ -164,6 +158,7 @@ MCMCのアルゴリズムとしては，Metropolis-Hastingsアルゴリズムや
 を使用したソフトウェアもある。
 アルゴリズムについて詳しく知りたい方は参考文献を参照されたい。
 
+\pagebreak
 
 \section{MCMCのためのソフトウェア}
 CやFortranなどでMCMCのプログラムを作成することも可能だが，
@@ -171,29 +166,32 @@ CやFortranなどでMCMCのプログラムを作成することも可能だが�
 MCMCのソフトウェアには以下のようなものがある。
 
 \begin{itemize}
-\item  \textsf{R}のパッケージ: MCMCpackなど
+\item  \textsf{R}のパッケージ: \textsf{MCMCpack}，\textsf{NIMBLE}など
 \item 専用ソフトウェア: \textsf{WinBUGS}, \textsf{OpenBUGS}, \textsf{JAGS}, \textsf{Stan}など
 \begin{itemize}
- \item  上に挙げたもののうち，\textsf{Stan}以外は，BUGS (\textbf{B}ayesian inference \textbf{U}sing
- \textbf{G}ibbs \textbf{S}ampling)言語\cite{BUGSBook, BUGS}という
- モデリング言語を使用している。
+ \item  上に挙げたもののうち，\textsf{WinBUGS}および\textsf{OpenBUGS}，\textsf{JAGS}，\textsf{NIMBLE}は，
+ BUGS (\textbf{B}ayesian inference \textbf{U}sing \textbf{G}ibbs \textbf{S}ampling)
+ 言語\cite{BUGSBook, BUGS}という モデリング言語を使用している。
  \label{BUGS}
 \textsf{Stan}は，BUGSとは異なる言語仕様である。
-\item  いずれにも\textsf{R}から使えるようにするパッケージあり
+\item  専用ソフトウェアもそれぞれ\textsf{R}から使えるようにするパッケージあり
 （それぞれ\textsf{R2WinBUGS}, \textsf{R2OpenBUGS}, \textsf{rjags}, \textsf{rstan}など）。
 \end{itemize}
 \item \textsf{Python}のパッケージもある（\textsf{PyMC}, \textsf{PyStan}など）。
 \end{itemize}
 
+% MCMCpack
 \subsection{MCMCpack}
 
 \begin{itemize}
-\item ウェブサイト: \texttt{\url{http://mcmcpack.berkeley.edu/}}
-\item 最新版: 1.4-0
-\item \textsf{R}のパッケージ
-\item CRANからインストールできる。
-\item Metropolis samplerを使う。
-\item \texttt{MCMClogit()}，\texttt{MCMCpoisson()}などの関数が用意されており，
+\item ウェブサイト: \texttt{\url{https://CRAN.R-project.org/package=MCMCpack}}
+\item 最新版: 1.4-3
+\item ライセンス: GPL3（オープンソース）
+\end{itemize}
+
+\textsf{R}のパッケージ。
+Metropolis samplerを使う。
+\texttt{MCMClogit()}，\texttt{MCMCpoisson()}などの関数が用意されており，
 これらを使用してMCMC計算ができる。
 一部の混合効果モデル（ランダム効果のあるモデル）にも対応している
 （\texttt{MCMChregress()}，\texttt{MCMChlogit()}，
@@ -201,92 +199,73 @@ MCMCのソフトウェアには以下のようなものがある。
 このように主要なモデルに対応した関数が30個あまりある。
 自分で定義した確率分布を使用するときは\texttt{MCMCmetrop1R()}関数を使用する。
 参考文献\cite{MCMCpack}に解説あり。
+
+
+\subsubsection*{インストール}
+CRANからインストールできる。
+
+%% NIMBLE
+\subsection{NIMBLE}
+\label{NIMBLE}
+\begin{itemize}
+\item ウェブサイト: \url{https://r-nimble.org/}
+\item 最新版: 0.6-12
+\item ライセンス: BSDライセンス（オープンソース）
 \end{itemize}
 
+\textsf{R}のパッケージだが，C++コンパイラを使用して，モデルをネイティブバイナリにコンパイルして実行する。
+\textsf{BUGS}言語を使用してモデルを記述できる。
+MCMC以外に逐次モンテカルロ（粒子フィルタ）などによるパラメーター推定も可能。
+
+\subsubsection*{インストール}
+CRANからインストール可能。
+モデルをコンパイルして実行するので，開発環境（C++など）が別に必要となる。
+詳細はウェブサイトやマニュアルを参照。
+
+% WinBUGS
 \subsection{WinBUGS}
 
 \begin{itemize}
 \item ウェブサイト:\\
   \url{http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/}
 \item 最新版: 1.4.3 （開発は終了している）
-\item ソースコードは非公開なので，内部のアルゴリズムの確認や，改造はできない。
-\item Windows用ソフトだが，\textsf{Wine}\footnote{\url{http://www.winehq.org/} 名前は，
-``Wine Is Not Emulator''の略。Windows互換レイヤーソフトで，Windows用ソフトウェ
-  ア(すべてというわけではない)をWindowsなしで動作させることができる。
-  最新の安定版は2.0.2。}を使用
-  することで，macOSやLinux，BSDでも使用することが可能。
-\item GUI環境はあるがあまり使いやすくない。\textsf{R2WinBUGS}パッケージ
-  で \textsf{R}と連携可能なので，そちらから使う方が使いやすい（と思う）。
+\item ライセンス: 独自ライセンス（オープンソースではない）
 \end{itemize}
 
-%\subsubsection*{インストール}
-%
-%ウェブサイトからインストーラーをダウンロード
-%できる。いずれの環境でも\textsf{WinBUGS}のインストール後には1.4.3パッチをあ
-%て，``key''をインストールすること。``key''をインストールすることにより，
-%全機能が使えるようになる。
-%
-%\paragraph{Windowsへのインストール}
-%
-%インストーラー（\texttt{WinBUGS14.exe}）を起動して，あとは指示に従ってい
-%けばインストールされる。
-%ただし，Windows Vistaでは，\texttt{C:{\textbackslash}Program~Files}以下に
-%インストールすると，アクセス制御の
-%関係でパッチなどが当てられなくなるので，\texttt{C:{\textbackslash}Program~Files}以外への
-%インストールが推奨されている
-%\footnote{\url{http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/#install}}。
-%インストーラーは64ビットWindowsには非対応である。
-%
-%\paragraph{Macへのインストール}
-%
-%Macでは，\textsf{Wine}を利用して\textsf{WinBUGS}を使うことができる。
-%macOS用の\textsf{Wine}\footnote{\url{https://wiki.winehq.org/MacOSX}}
-%を利用するか，\textsf{Homebrew}\footnote{\url{http://brew.sh/}}, \textsf{MacPors}\footnote{\url{http://www.macports.org/}}などの
-%パッケージ管理システムを利用してインストールするのが簡単であろう。
-%詳細は，ネット上の資料
-%\footnote{\url{http://nhkuma.blogspot.jp/2012/12/macosx106-107winbugswiner2winbugs.html}\\
-%\url{http://nhkuma.blogspot.jp/2012/12/macosx108-mountain-lion-winbugs-wine.html}}を参照するとよい。
-%
-%
-%\textsf{Wine}をインストールしたら，
-%これを使用してWindows用インストーラー
-%(\texttt{WinBUGS14.exe})を起動
-%し，\textsf{Wine}環境へ
-%\textsf{WinBUGS}をインストールする
-%（デフォルトでは\texttt{\textasciitilde/.wine/drive\_c/Program Files}以下にインストールされる）。
-%
-%
-%\paragraph{Linuxへのインストール}
-%\textsf{Wine}を使用する。Ubuntuなどの主要なディストリビューションではパッ
-%ケージ化されているので，それを利用するのが簡単だろう。
-%\textsf{Wine}を使用してインストーラー(\texttt{WinBUGS14.exe})を起動
-%し，\textsf{WinBUGS}をインストールする。
-%
-%BSDその他UNIXも基本的にはLinuxに準じる。
+ソースコードは非公開なので，内部のアルゴリズムの確認や，改造はできない。
+Windows用ソフトだが，\textsf{Wine}\footnote{\url{http://www.winehq.org/} 名前は，
+``Wine Is Not Emulator''の略。Windows互換レイヤーソフトで，Windows用ソフトウェ
+ア(すべてというわけではない)をWindowsなしで動作させることができる。}を使用
+することで，macOSやLinux，BSDでも使用することが可能。
+GUI環境はあるがあまり使いやすくない。\textsf{R2WinBUGS}パッケージ
+で \textsf{R}と連携可能なので，そちらから使う方が使いやすい（と思う）。
 
 \subsection{OpenBUGS}
 
 \begin{itemize}
 \item ウェブサイト \url{http://www.openbugs.net/}
 \item 最新版: 3.2.3
-\item オーブンソース（ライセンスはGPL）。しかし開発環境が特
-  殊（Black Box Component Builder\footnote{\texttt{http://www.oberon.ch/blackbox.html}}と
-  いうものを使用）。
-\item WindowsおよびLinuxで動作する。
+\item ライセンス: GPL（オーブンソース）
+\end{itemize}
+
+オープンソースだが，開発環境が特殊（Black Box Component
+Builder\footnote{\texttt{http://www.oberon.ch/blackbox.html}}と
+いうものを使用）。
+WindowsおよびLinuxで動作する。
 Macでは\textsf{Wine}により利用可能。
-\item \textsf{BRUGS}あるいは\textsf{R2OpenBUGS}により
+\textsf{BRUGS}あるいは\textsf{R2OpenBUGS}により
 \textsf{R}との連携が可能\cite{Thomas}。
 ともにCRANに収録されている。
-\end{itemize}
 
 \subsubsection*{インストール}
 \paragraph{Windowsへのインストール}
 Windows版インストーラーからインストールできる。64ビットWindowsにもインストールできる。
-開発元ではWindows XPと8とで動作確認している。
+%開発元ではWindows XPと8とで動作確認している。
 
 \paragraph{macOSへのインストール}
 \textsf{Wine}を導入して，Windows版をインストールする。
-具体的な方法は，「Mac OS X 上で OpenBUGS+R2OpenBUGS を使用する - MMAye's blog」(\url{http://mmays.hatenablog.com/entry/2013/11/20/232330})などを参照。
+具体的な方法は，「Mac OS X 上で OpenBUGS+R2OpenBUGS を使用する - MMAye's blog」
+(\url{http://mmays.hatenablog.com/entry/2013/11/20/232330})などを参照。
 
 \paragraph{Linuxへのインストール}
 Linux用ソースパッケージを展開して，コンパイル・インストールする。
@@ -295,65 +274,55 @@ Linux用ソースパッケージを展開して，コンパイル・インスト
 \subsection{JAGS}
 
 \begin{itemize}
-
 \item ウェブサイト:
   \url{http://mcmc-jags.sourceforge.net/}
-  
 \item 作者ブログ:
   \url{http://martynplummer.wordpress.com/}  
-
 \item 最新版: 4.3.0
+\item ライセンス: GPL（オープンソース）。
+\end{itemize}
 
-\item オープンソース（ライセンスはGPL）。再配布はもちろん，内部の解析，改
-  造なども自由にできる。CおよびC++で書かれていて一般的な開発環境でコンパイル
-  可能\footnote{農林水産研究情報総合センターの科学技術計算システムでも自分
-  でコンパイルして利用できた。}
-  （ただし，BLASやLAPACKといった数値演算ライブラリは必要）。
-
-\item コマンドラインからの操作となるが，\textsf{rjags}や\textsf{R2jags}，\textsf{runjags}
-といったパッケージを
+%再配布はもちろん，内部の解析，改
+%造なども自由にできる。
+コマンドラインからの操作となるが，\textsf{rjags}や\textsf{R2jags}，\textsf{runjags}
+などといったパッケージを
 利用することで，\textsf{R}から使用することも可能。
 いずれもCRANに収録されている。
-
-\item \textsf{WinBUGS}で解析できる一部のモデルは解析できない
-  \footnote{\url{http://hosho.ees.hokudai.ac.jp/~kubo/ce/JagsMisc.html}}。
- もっとも，\textsf{WinBUGS}よりも柔軟なところもある
-  \footnote{\url{http://ito-hi.blog.so-net.ne.jp/2007-02-01-1}}。
-  
-\item \textsf{OpenBUGS}を実行速度を比較すると，いくつかのモデルではとくに遅いことがあるものの，
-平均的にはだいたい同等といったところであると
-いう\footnote{\url{http://martynplummer.wordpress.com/2010/09/20/how-fast-is-jags/}}。
-
-\end{itemize}
+%\textsf{WinBUGS}で解析できる一部のモデルは解析できない
+%  \footnote{\url{http://hosho.ees.hokudai.ac.jp/~kubo/ce/JagsMisc.html}}。
+%もっとも，\textsf{WinBUGS}よりも柔軟なところもある
+%  \footnote{\url{http://ito-hi.blog.so-net.ne.jp/2007-02-01-1}}。
+%\textsf{OpenBUGS}を実行速度を比較すると，いくつかのモデルではとくに遅いことがあるものの，
+%平均的にはだいたい同等といったところであると
+%いう\footnote{\url{http://martynplummer.wordpress.com/2010/09/20/how-fast-is-jags/}}。
 
 \subsubsection*{インストール}
 WindowsおよびMacにはインストーラーが用意されている。
-Linux版主要ディストリビューションにはバイナリパッケージがあるので
+Linuxも主要ディストリビューションにはバイナリパッケージがあるので
 それを利用できる。
-開発環境があれば，ソースから自分でコンパイルすることもできる。
+%開発環境があれば，ソースから自分でコンパイルすることもできる。
+CおよびC++で書かれていて，一般的な開発環境でコンパイル
+可能（ただし，BLASやLAPACKといった数値演算ライブラリは必要）。
 詳細はインストールマニュアルを参照。
 
 %% Stan
 \subsection{Stan}
 \label{Stan}
 \begin{itemize}
+\item ウェブサイト: \url{http://mc-stan.org/}
+\item 最新版: 2.17.1
+\item ライセンス: BSDライセンスまたはGPL3（オープンソース）
+\end{itemize}
 
-\item ウェブサイト:
-  \url{http://mc-stan.org/}
-
-\item 最新版: 2.16.0
-\item オープンソース（BSDライセンスまたはGPL3）。再配布，内部の解析，改
-  造なども自由にできる。
-\item \textsf{RStan}という\textsf{R}のパッケージもあり，CRANに収録されている\footnote{macOS版のrstan-2.16.2では，エラーメッセージが正常に表示されない問題がある。これはソースからインストールしなおすことで解決できる。\url{http://ito-hi.blog.so-net.ne.jp/2017-08-09}}。
+\textsf{RStan}という\textsf{R}のパッケージもあり，CRANに収録されている。
 また，Pyhtonインターフェイスの\textsf{PyStan}もある。
 コマンドラインから実行するものは\textsf{CmdStan}と呼ばれる。
-\item Stan $\rightarrow$ C++ $\rightarrow$ ネイティブバイナリ，とコンパイルして実行する。
+Stan $\rightarrow$ C++ $\rightarrow$ ネイティブバイナリ，とコンパイルして実行する。
 ネイティブバイナリとして実行されるので，インタプリタ形式と比較して高速である。
-\item Mac, Windows, Linuxなどに対応している。
-\item Hamiltonian Monte Carlo法\cite{PRML, BDA3, Toyoda2015}を使用し，
+Mac, Windows, Linuxなどに対応している。
+Hamiltonian Monte Carlo法\cite{PRML, BDA3, Toyoda2015}を使用し，
 通常のMCMCよりも高速に目的分布に収束する。
-\item 言語仕様は，BUGSとは異なる。
-\end{itemize}
+言語仕様は，BUGSとは異なる。
 
 \subsubsection*{インストール}
 RStanはCRANからインストール可能。
@@ -361,7 +330,7 @@ RStanはCRANからインストール可能。
 詳細はウェブサイトやマニュアルを参照。
 
 
-%\pagebreak
+\pagebreak
 
 %%
 %% ここから実習
@@ -474,8 +443,9 @@ model {
 }
 \end{lstlisting}
 %
-GLMでは1行で済んだものが，\textsf{BUGS言語}ではかなり長くなってしまった。
-しかし，このような記法により，複雑なモデルも記述できるのである。
+GLMでは1行で済んだものが，\textsf{BUGS}言語ではかなり長くなってしまった。
+しかし，このような記法により，実際の研究で使用されるような複雑なモデルにも
+柔軟に対応できるのである。
 
 1行目の``\texttt{model \{}''と，9行目の``\texttt{\}}''とで囲まれた部分がモデルの定義となる。
 そのうち，3〜5行目が尤度の部分である。
@@ -489,8 +459,8 @@ $i \in 1, 2, \dots, N$であることを示している。
 8行目で，パラメーター\texttt{lambda}の事前分布を定義している。
 \texttt{dunif}は一様分布であり，ここでは，0〜1000という範囲の一様分布を
 \texttt{lambda}の事前分布として与えている。
-事前分布として与えるべき確率分布があらかじめわからない場合には
-このような，幅の広い分布が与えられることが多い。
+事前分布として与えるべき確率分布が不明のときには，
+このような幅の広い分布が与えられることが一般的である。
 これを「無情報事前分布(non-informative prior)」や「漠然事前分布(vague prior)」という。
 じゅうぶんに幅の広い一様分布のほか，分散の大きい正規分布などもよく用いられる。
 
@@ -515,7 +485,6 @@ $\lambda$の事前分布は，以下のようになる。
  0 & 上以外の場合 \\
 \end{cases}
 \end{align*}
-
 
 したがって，このモデルの事後分布は以下のようになる。
 \begin{align*}
@@ -546,7 +515,7 @@ Loaded modules: basemod,bugs
 擬似乱数発生アルゴリズム(\texttt{.RNG.name})も明示的に指定するようにしている。
 これらも省略可能であるが，
 パラメーターの初期値と擬似乱数を固定しておくことで，再生可能(reproducible)，
-すなわち同じ計算を繰り返したときに同じ結果が得られるようになる。
+すなわち同じ計算を繰り返したときに同じ結果が得られるようになる。\footnote{厳密には，ソフトウェアのバージョンやCPUなども同じでないといけない。}
 %
 \begin{lstlisting}
 > inits <- vector("list", 3)
@@ -598,7 +567,6 @@ NOTE: Stopping adaptation
 引数の\texttt{variable.names}で，結果を保存するパラメータを指定する（ここでは\texttt{lambda}のみ）。
 \texttt{n.iter}で，サンプルを取得するマルコフ連鎖の長さを指定する。ここでは50としている。
 このほか，サンプリング間隔として\texttt{thin}引数があるが，ここではデフォルトの1を使用する（すなわちすべてのサンプルを取得する）ので，省略している。
-
 
 \texttt{traceplot()}関数により，計算されたマルコフ連鎖の軌跡を表示してみる。
 \begin{lstlisting}
@@ -675,6 +643,9 @@ NOTE: Stopping adaptation
 マルコフ連鎖の数は3としているので，
 このとき，取得されるサンプルの大きさは$1000 \div 1 \times 3 = 3000$となる。
 
+%ページ調整
+\vspace{1.5cm}
+
 \begin{lstlisting}
 > burnin <- 1000
 > iter <- 1000
@@ -712,7 +683,7 @@ Initializing model
 > plot(post3)
 \end{lstlisting}
 
-\begin{figure}[hbtp]
+\begin{figure}[htbp]
   \begin{center}
     \includegraphics[bb=0 0 360 240, clip, width=260 bp]{example1-3.pdf}
   \end{center}
@@ -733,7 +704,7 @@ Initializing model
 \begin{lstlisting}
 > summary(post3)
 
-Iterations = 2501:3500
+Iterations = 1001:2000
 Thinning interval = 1 
 Number of chains = 3 
 Sample size per chain = 1000 
@@ -742,12 +713,12 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
           Mean             SD       Naive SE Time-series SE 
-      3.844708       0.460265       0.008403       0.010359 
+      3.856757       0.439953       0.008032       0.010210 
 
 2. Quantiles for each variable:
 
  2.5%   25%   50%   75% 97.5% 
-3.003 3.524 3.816 4.134 4.807 
+3.028 3.551 3.853 4.142 4.782 
 
 \end{lstlisting}
 %
@@ -755,14 +726,15 @@ Sample size per chain = 1000
 その代表値としては一般に平均や中央値が用いられる\footnote{このほか，事後分布のモードを用いる場合もある。これをMAP(Maximum A Posterior)推定値という。}。
 また，95\%信用区間（「ベイズ信頼区間」や「確信区間」ともいう）\footnote{「頻度主義」統計における「信頼区間」とは実は意味するものが違う。}も同時に使われることが多い。
 この例では，
-$\lambda$の事後分布の平均値（事後平均）が3.84，中央値が3.82，95\%信用区間が
-3.00〜4.81と推定された。
+$\lambda$の事後分布の平均値（事後平均）が3.86，中央値が3.85，95\%信用区間が
+3.03〜4.78と推定された。
 事後平均・中央値とも，GLMによる最尤推定値とだいたい一致した。
 
 \paragraph{収束診断}
 この例ではうまく収束したが，いつでもうまくいくというものでもない。
 うまく収束しなかった例を図\ref{bad_mcmc}にしめす。
 3本の連鎖がまったく混ざりあっていない。
+%
 \begin{figure}[htbp]
 	\begin{center}
 		\includegraphics[bb=0 0 420 210, clip, width=320 bp]{bad_mcmc.pdf}
@@ -784,7 +756,7 @@ $\Hat{R}$の値は一般には1.1以下でよいとされるが，軌跡とあ�
 Potential scale reduction factors:
 
        Point est. Upper C.I.
-lambda          1          1
+lambda          1       1.01
 
 \end{lstlisting}
 $\Hat{R}$の値は1であった。図\ref{fig:plot}の結果とあわせ，
@@ -813,8 +785,8 @@ model {
 \end{lstlisting}
 先のモデルと比較すると，8行目で，\texttt{lambda}の事前分布にガンマ分布\texttt{dgamma(2, 2)}を使うようになっている。
 
-
 前の例と同様に，\textsf{JAGS}を実行し，結果を\texttt{post4}に代入する。
+このモデルでは，adaptationがおこなわれないので（理由は不明），\texttt{update}関数で，すべてのburn-inをおこなう。
 %
 \begin{lstlisting}
 > inits <- list(list(lambda = 0.1,
@@ -828,7 +800,7 @@ model {
 +                    .RNG.name = "base::Mersenne-Twister"))
 > model4 <- jags.model("example1-1_model.txt",
 +                      data = list(X = x, N = length(x)),
-+                      inits = inits, n.chains = 3, n.adapt = 500)
++                      inits = inits, n.chains = 3)
 Compiling model graph
    Resolving undeclared variables
    Allocating nodes
@@ -839,7 +811,7 @@ Graph information:
 
 Initializing model
 
-> update(model4, n.iter = burnin - 500)
+> update(model4, n.iter = burnin)
   |**************************************************| 100%
 > post4 <- coda.samples(model4,
 +                       variable.names = "lambda",
@@ -848,12 +820,12 @@ Initializing model
 \end{lstlisting}
 
 結果は以下のとおり。無情報事前分布を使用したときの結果よりも，事前分布の
-影響を受けて事後平均（今回は3.54）が小さくなっているのがわかる。
+影響を受けて事後平均（今回は3.56）が小さくなっているのがわかる。
 
 \begin{lstlisting}
 > summary(post4)
 
-Iterations = 501:1500
+Iterations = 1001:2000
 Thinning interval = 1 
 Number of chains = 3 
 Sample size per chain = 1000 
@@ -862,12 +834,12 @@ Sample size per chain = 1000
    plus standard error of the mean:
 
           Mean             SD       Naive SE Time-series SE 
-      3.544598       0.396085       0.007231       0.007348 
+      3.555179       0.405987       0.007412       0.007213 
 
 2. Quantiles for each variable:
 
  2.5%   25%   50%   75% 97.5% 
-2.814 3.272 3.527 3.806 4.378 
+2.815 3.273 3.536 3.817 4.412 
 
 \end{lstlisting}
 
@@ -882,7 +854,7 @@ Sample size per chain = 1000
 	\label{prior_posterior}
 \end{figure}
 
-実用上は，とくに事前の情報がない限りは，情報事前分布は使わない。
+実際には，とくに事前の情報がない限りは，情報事前分布は使わない。
 
 このほか，後述の\textsf{Stan}では，無情報事前分布よりもいくぶん情報を持った「弱情報事前分布」の使用が推奨されている\footnote{Prior Choice Recommendations\\ \url{https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations}}。
 
@@ -965,7 +937,7 @@ model {
 では，このモデルについて詳しくみてみよう。
 3行目から6行目が尤度の部分である。
 \texttt{for}ループの構文で，\texttt{for}ブロック内の式の変数\texttt{X[i]}, \texttt{Y[i]}, 
-\texttt{p[i]}の\texttt{i}の範囲が
+\texttt{p[i]}の添字\texttt{i}の範囲が
 $i \in 1, 2, \dots, N$であることを示している。
 \texttt{dbin(p, n)}は二項分布$\mathrm{Binomial}(n, p)$
 （\texttt{p}は確率。\texttt{n}は試行回数）。
@@ -1050,6 +1022,9 @@ p(X_i) &= \mathrm{logit}^{-1}(\beta+\beta_{x}X_i)) \notag \\
 
 そして，\texttt{coda.samples()}関数によりMCMCのサンプルを得る。
 各連鎖について，繰り返し回数3000回，サンプリング間隔3回としている。
+
+%ページ調整
+\vspace{1.5cm}
 
 \begin{lstlisting}
 > post <- coda.samples(model, n.iter = 4000, thin = 4,
@@ -1191,11 +1166,11 @@ Stanのモデルの記述は，\texttt{data}，\texttt{parameters}，
 
 \texttt{stan()}関数により\textsf{Stan}を実行して，結果を\texttt{fit}というオブジェクトに格納する。
 \begin{lstlisting}
-> fit <- stan(model_code = example2_code,
+> fit <- stan("example2.stan",
 +             data = list(X = x, Y = y, N = n, K = k),
 +             pars = pars, init = inits, seed = 123,
 +             chains = n.chains,
-+             iter = 2500, warmup = 500, thin = 2)
++             iter = 2000, warmup = 1000, thin = 1)
 \end{lstlisting}
 \noindent
 \texttt{warmup}はburn-inとおなじものと思ってよい（細かな相違点は参考文献\cite{BDA3}を参照）。
@@ -1204,15 +1179,15 @@ Stanのモデルの記述は，\texttt{data}，\texttt{parameters}，
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 > print(fit)
 Inference for Stan model: example2.
-3 chains, each with iter=2500; warmup=500; thin=2; 
+3 chains, each with iter=2000; warmup=1000; thin=1; 
 post-warmup draws per chain=1000, total post-warmup draws=3000.
 
          mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
-beta    -2.18    0.01 0.51  -3.19  -2.51  -2.17  -1.82  -1.25  1407    1
-beta_x   0.56    0.00 0.10   0.37   0.49   0.56   0.63   0.78  1381    1
-lp__   -51.96    0.03 1.06 -54.86 -52.33 -51.64 -51.22 -50.94  1332    1
+beta    -2.15    0.02 0.51  -3.23  -2.47  -2.13  -1.79  -1.19   802    1
+beta_x   0.55    0.00 0.11   0.36   0.48   0.55   0.62   0.78   778    1
+lp__   -51.95    0.03 1.06 -54.91 -52.36 -51.62 -51.19 -50.93   919    1
 
-Samples were drawn using NUTS(diag_e) at Fri Nov 17 08:03:14 2017.
+Samples were drawn using NUTS(diag_e) at Mon Jul 30 22:54:08 2018.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).
@@ -1433,7 +1408,7 @@ BUGS言語では，変数宣言は必ずしも必要ではないが，高次元�
 
 \begin{figure}[htbp]
 	\begin{center}
-		\includegraphics[bb=0 0 440 384, clip, width=280 bp]{example3_schema.pdf}
+		\includegraphics[bb=0 0 422 472, clip, width=280 bp]{example3_schema.pdf}
 	\end{center}
 	\caption{モデルの概念図}
 	\label{example3_schema}
@@ -1568,19 +1543,6 @@ sigma.B  0.6712  0.9938  1.2313  1.5683  2.65059
 
 \texttt{e.B[]}の事後分布は図\ref{example3_e_plot}のようになっている。
 
-%%\begin{breakbox}
-%\begin{verbatim}
-%plot(NULL, type = "n",
-%     xlim = c(-2, 2), ylim = c(0, 2.5),
-%     xlab = "value", ylab = "density",
-%     main = "Posterior destribution of e[]",
-%     las = 1)
-%for (i in 1:n.block) {
-%  lines(density(post.samp$sims.list$e[,i]), col = i)
-%}
-%\end{verbatim}
-%\end{breakbox}
-
 \begin{figure}[htbp]
 	\begin{center}
 		\includegraphics[bb=0 0 360 360, clip, width=270 bp]{example3_e.pdf}
@@ -1588,9 +1550,6 @@ sigma.B  0.6712  0.9938  1.2313  1.5683  2.65059
 	\caption{\texttt{e.B[]}の事後分布}
 	\label{example3_e_plot}
 \end{figure}
-
-%ページ調整
-%\pagebreak
 
 \subsubsection*{Nested Indexing}
 上の例では2次元配列を使用しているが，配列のインデックスに配列を使用
@@ -1681,6 +1640,35 @@ model <- jags.model(file = model.file,
 ただし，\textsf{JAGS}で\texttt{glm}モジュールを使用した場合にはこの技法は不要である
 (JAGS User's Manual 4.3 \cite{JAGS} 10.2節)。
 
+\subsubsection*{結果の可視化}
+
+ここまで，MCMCの結果をグラフで図示するのに，おもに\texttt{coda}パッケージの\texttt{plot}関数を使用してきた。
+だが，MCMCの結果を可視化することを目的としたパッケージも，\texttt{ggmcmc}，\texttt{bayesplot}，\texttt{MCMCvis}などいくつかある（このうち前のふたつはグラフ描画に\texttt{ggplot}パッケージを使用する）。
+ここでは，\texttt{ggmcmc}を使用したグラフの作成法を紹介する。
+
+以下では，ランダム効果のパラメーターである\texttt{e.B}について，キャタピラープロットと呼ばれるグラフを描画する。
+
+\begin{lstlisting}
+library(ggmcmc)
+
+post.ggs <- ggs(post)
+ggs_caterpillar(post.ggs, "e.B")
+\end{lstlisting}
+
+結果は図\ref{example3_caterpillar}である。
+
+\begin{figure}[hbtp]
+  \begin{center}
+    \includegraphics[bb=0 0 340 340, clip, width=320 bp]{example3_caterpillar.pdf}
+  \end{center}
+  \caption{パラメーター\texttt{e.B}のキャタピラープロット}
+  \label{example3_caterpillar}
+\end{figure}
+
+\noindent
+図の点は中央値，太線は90\%信用区間，細線は95\%信用区間である（この信用区間は，正確には「最高事後密度(Highest Posterior Density: HPD)区間」である。）。キャタピラープロットにより，ランダム効果がどのブロックで大きく，どのブロックで小さいのかが視覚的に理解できる。
+
+このほか，\texttt{ggmcmc(post.ggs, "example3-output.pdf")}などとすると，各種の図を指定したファイル名のPDFにまとめて出力する。詳細はオンラインマニュアルなどを参照されたい。
 
 %%
 %% Zero-Inflated Poissonモデル
@@ -1750,7 +1738,7 @@ Number of Fisher Scoring iterations: 6
 もう一度，データをよくみてみると，芽生えの数に0が多いことがわかる（図\ref{example4_barplot}）。
 このような状態はゼロ過剰(Zero-inflated)と呼ばれる。
 こうしたデータを扱うためには，ポアソン分布からはずれて0が多いことを，
-そもそも存在する可能性がない場合があると考えて
+そもそも存在する可能性がない（潜在的な分布範囲から外れているなど）場合があると考えて
 モデル化する。
 このようなモデルはゼロ過剰ポアソンモデル(Zero-Inflated Poisson model; ZIP model)と呼ばれる。
 
@@ -1761,9 +1749,6 @@ Number of Fisher Scoring iterations: 6
   \caption{芽生えの発生数の頻度分布}
   \label{example4_barplot}
 \end{figure}
-
-%ページ調整
-%\vspace{2zw}
 
 \paragraph{モデル}
 ZIPモデルを扱うBUGSコードは以下のようになる。
@@ -1833,18 +1818,31 @@ beta.x -0.3120  0.2206  0.50906 0.7882 1.3116
 p       0.2432  0.3591  0.42538 0.5015 0.6552
 
 \end{lstlisting}
-存在する確率$p$の事後平均は0.431，95\%信用区間は0.247〜0.650と推定された。
+存在する確率$p$の事後平均は0.433，95\%信用区間は0.243〜0.655と推定された。
 また，線形モデル部分の切片$\beta$および開空率の係数$\beta_{x}$の事後平均はそれぞれ
--0.09および0.498と，95\%信用区間はそれぞれ-1.226〜1.017および-0.323〜1.249
-と推定された。開空率の係数の事後平均は，GLMでの推定値0.177よりも大きい値と
-なった。
+-0.103および0.506と，95\%信用区間はそれぞれ-1.339〜1.007および-0.312〜1.312
+と推定された。
 
-%ページ調整
-%\pagebreak
+開空率の係数の事後平均は，GLMでの推定値0.177よりも大きい値と
+なった。
+ここで，開空率の係数$\beta_{x}$が0よりも大きい確率を求めてみる。
+
+\begin{lstlisting}
+> samp.beta.x <- unlist(post[, "beta.x"])
+> sum(samp.beta.x > 0) / length(samp.beta.x)
+[1] 0.8806667
+\end{lstlisting}
+
+\noindent
+88\%の確率で$\beta_{x}$は0よりも大きいと推定された。
+
+頻度主義統計でいうところの「有意」ではないが，単純なGLMよりも，係数の大きさをよりよく推定できたといえるだろう。
+
+\pagebreak
 
 \section{さらに学ぶには}
 
-今回紹介したモデルは，モデルとしては簡単なものである。
+今回紹介したモデルは，モデルとしては比較的簡単なものである。
 実際に研究で使用されるモデルはもっと複雑なものであることが多い。
 ``Models for Ecological Data''\cite{Clark},
 ``Hierarchical modelling for the environmental sciences''\cite{Clark_Gelfand},
@@ -1868,14 +1866,19 @@ GLM$\rightarrow$GLMM$\rightarrow$階層ベイズモデル
 コードや解説動画なども公開されている。
 『StanとRでベイズ統計モデリング』\cite{Matsuura}は，ベイズ統計モデリングの基本的な考え方から，\textsf{Stan}の実践的な使用法まで解説をおこなっている。
 
-その他，MCMCや階層ベイズモデルについて目に付いたものを参考文献リストに入れて
-おいたので，参考にされたい。
+実際の応用例も，状態空間モデルを使用したシカの個体数推定\cite{Iijima2013}やキョンの個体数推定の例\cite{Asada:2014}、階層モデルにより森林内への樹種ごとの定着率や生存率を解析した例\cite{Ito2016}など多数ある。論文での結果の記述法についてもこれらを参照されたい。
+
+その他，ベイズ統計モデリングやMCMCについて目に付いたものを参考文献リストに入れて
+おいた。
 
 %ページ調整
 %\pagebreak
 
 %% 参考文献
 \begin{thebibliography}{99}
+\bibitem{Asada:2014} 浅田正彦・長田穣・深澤圭太・落合啓二 (2014)
+  状態空間モデルを用いた階層ベイズ推定法によるキョン(\textit{Muntiacus reevesi})の
+  個体数推定, 哺乳類科学 54:53--72. DOI:10.11238/mammalianscience.54.53
 \bibitem{PRML} Bishop C.M. (2006) Pattern recognition and machine learning.
   Springer-Verlag, New York.
   （日本語訳: 元田浩・栗田多喜夫・樋口知之・松本裕治・村田昇監訳 (2012)
@@ -1887,12 +1890,10 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{Clark_Gelfand} Clark J.S., Gelfand A.E. (2006) Hierarchical modelling
   for the environmental sciences. Oxford University Press, New York.
 \bibitem{Fukasawa} 深澤圭太・角谷拓 (2009) 始めよう! ベイズ推定によるデータ解析.
-  日本生態学会誌 59:167--170.\\
-  \url{http://doi.org/10.18960/seitai.59.2_167}
+  日本生態学会誌 59:167--170. DOI:10.18960/seitai.59.2\_167
 \bibitem{Fukasawa_et_al} 深澤圭太・石濱史子・小熊宏之・武田知己・田中信行・
   竹中明夫 (2009) 条件付き自己回帰モデルによる空間自己相関を考慮した生物の分布
-  データ解析. 日本生態学会誌 59:171--186. \\
-  \url{http://doi.org/10.18960/seitai.59.2_171}
+  データ解析. 日本生態学会誌 59:171--186. DOI:10.18960/seitai.59.2\_171
 \bibitem{Furutani} 古谷知之 (2008) ベイズ統計データ分析 --- R \& WinBUGS ---.
   朝倉出版, 東京.
 \bibitem{BDA3} Gelman A, Carlin J.B., Stern H.S., Dunson D.B., Vehtari A.,
@@ -1905,6 +1906,11 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
   (伊庭幸人・種村正美・大森裕浩・和合肇・佐藤整尚・高橋明彦(著)
   「計算統計II ---マルコフ連鎖モンテカルロ法とその周辺---」
   岩波書店, 東京): 1--106.
+\bibitem{Iba2018} 伊庭幸人(編) (2018) ベイズモデリングの世界. 岩波書店, 東京.
+\bibitem{Iijima2013} Iijima, H., Nagaike, T., Honda, T. (2013) Estimation of
+  deer population dynamics using a Bayesian state-space model with multiple
+  abundance indices. Journal of Wildlife Management 77:1038--1047. DOI:10.1002/jwmg.556
+\bibitem{Ito2016} It\^{o} H. (2016) Changes in understory species occurrence of a secondary broadleaved forest after mass mortality of oak trees under deer foraging pressure. PeerJ 4:e2816. DOI:10.7717/peerj.2816
 \bibitem{Iwanami_vol1} 岩波データサイエンス刊行委員会(編) (2015) 岩波データサイエンス Vol.1.
 岩波書店, 東京. \\
 シリーズサポートページ \url{https://sites.google.com/site/iwanamidatascience/}
@@ -1919,23 +1925,22 @@ Handbook of Markov chain Monte Carlo. Chapman \& Hall/CRC, Boca Raton.
   a tutorial with R, JAGS, and Stan. Academic Press, Waltham.
   （日本語訳: 前田和寛・小杉考司監訳 (2017) 「ベイズ統計モデリング---R, JAGS, Stanによるチュートリアル---」共立出版, 東京. ）
 \bibitem{Kubo} 久保拓弥 (2009) 簡単な例題で理解する空間統計モデル. 
-  日本生態学会誌 59: 187--196. \\
-  \url{http://ci.nii.ac.jp/naid/110007340204}
+  日本生態学会誌 59: 187--196. DOI:10.18960/seitai.59.2\_187
 \bibitem{Kubo:IEICE} 久保拓弥 (2009) 最近のベイズ理論の進展と応用[I]
-  階層ベイズモデルの基礎. 電子情報通信学会誌 92:881--885.\\
+  階層ベイズモデルの基礎. 電子情報通信学会誌 92:881--885.
   \url{http://eprints.lib.hokudai.ac.jp/dspace/handle/2115/39717}
 \bibitem{Kubo:Modeling} 久保拓弥 (2012) データ解析のための統計モデリング入門 ---
    一般化線形モデル・階層ベイズモデル・MCMC---. 岩波書店, 東京.
 \bibitem{Kyo} 姜興起 (2010) ベイズ統計データ解析. 共立出版, 東京.
 \bibitem{Link2012} Link, W.A., Eaton, M.J. (2012) On thinning of chains in MCMC.
-Methods in Ecology and Evolution 3: 112--115. doi: 10.1111/j.2041-210X.2011.00131.x
+Methods in Ecology and Evolution 3: 112--115. DOI:10.1111/j.2041-210X.2011.00131.x
 \bibitem{OpenBUGS} Lunn D., Spiegelhalter D., Thomas A., Best N. (2009)
   {The BUGS project: Evolution, critique, and future directions}.
   {Statistics in Medicine} {28}:3049--3067.
 \bibitem{BUGSBook} Lunn D., Jackson C, Besk N., Thomas A., Spiegelhalter D.
   (2012) The {BUGS} Book. Chapman \& Hall/CRC, Boca Raton.
 \bibitem{MCMCpack} Martin A.D., Quinn, K.M. (2006) Applied Bayesian inference in R
-using MCMCpack. R News 6(1):2--7. \\
+using MCMCpack. R News 6(1):2--7. 
     \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
 \bibitem{Matsuura} 松浦健太郎 (2016) StanとRでベイズ統計モデリング. 共立出版, 東京.
 \bibitem{McCarthy} McCarthy M.A. (2007) Bayesian methods for ecology.
@@ -1943,11 +1948,12 @@ using MCMCpack. R News 6(1):2--7. \\
   （日本語訳: 野間口眞太郎訳 (2009) 「生態学のためのベイズ法」共立出版, 東京.）
 \bibitem{Ntzoufras} Ntzoufras I. (2009) Bayesian modeling using WinBUGS.
   Wiley, Hoboken.
-\bibitem{JAGS} Plummer M. (2017) JAGS version 4.3.0 user manual.\\
+\bibitem{Okumura} 奥村晴彦・瓜生真也・牧山幸史 (2018) Rで楽しむベイズ統計入門---しくみから理解するベイズ推定の基礎---. 技術評論社, 東京.
+\bibitem{JAGS} Plummer M. (2017) JAGS version 4.3.0 user manual. \\
   \url{http://sourceforge.net/projects/mcmc-jags/}
-\bibitem{R} R Core Team (2017)
+\bibitem{R} R Core Team (2018)
    R: A Language and Environment for Statistical Computing.
-   R Foundation for Statistical Computing, Vienna.\\
+   R Foundation for Statistical Computing, Vienna.
    \url{http://www.R-project.org/}
 \bibitem{IMCMR} Robert C.P., Casella G. (2010) Introducing Monte Carlo Methods with R.
   Springer, New York.
@@ -1956,7 +1962,7 @@ using MCMCpack. R News 6(1):2--7. \\
   WinBUGS user manual version 1.4.\\
   \url{http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/manual14.pdf}
 \bibitem{Stan} Stan Development Team (2017) Stan Modeling Language:
-  User's Guide and Reference Manual, Version 2.16.0.
+  User's Guide and Reference Manual, Version 2.17.0.
   \url{http://mc-stan.org/}
 \bibitem{Tango} 丹後俊郎 (2000) 統計モデル入門. 朝倉書店, 東京.
 \bibitem{Terui} 照井伸彦 (2010) Rによるベイズ統計分析. 朝倉書店, 東京.
@@ -1964,7 +1970,7 @@ using MCMCpack. R News 6(1):2--7. \\
   R News 6(1): 17--21. \\
   \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
 \bibitem{Thomas} Thomas A., O'Hara B., Ligges U., Sturtz S. (2006) Making BUGS open.
-  R News 6(1): 12--17. \\
+  R News 6(1): 12--17. 
   \url{http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf}
 \bibitem{Toyoda} 豊田秀樹 (2008) マルコフ連鎖モンテカルロ法. 朝倉書店, 東京.
 \bibitem{Toyoda2015} 豊田秀樹(編著) (2015) 基礎からのベイズ統計学

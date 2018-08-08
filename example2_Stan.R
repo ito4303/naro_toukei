@@ -34,8 +34,7 @@ fit <- stan("example2.stan",
             data = list(X = x, Y = y, N = n, K = k),
             pars = pars, init = inits, seed = 123,
             chains = n.chains,
-            iter = 2500, warmup = 500, thin = 2)
-
+            iter = 2000, warmup = 1000, thin = 1)
 
 # plot trace
 rstan::traceplot(fit)

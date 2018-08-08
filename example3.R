@@ -136,3 +136,11 @@ post <- coda.samples(model, n.iter = 5000, thin = 5,
 gelman.diag(post)
 summary(post)
 
+## Visualization using ggmcmc
+library(ggmcmc)
+
+post.ggs <- ggs(post)
+ggs_caterpillar(post.ggs, "e.B")
+#ggsave("example3_caterpillar.pdf", width = 12, height = 12, units = "cm")
+
+ggmcmc(post.ggs, "example3-output.pdf")
