@@ -1,4 +1,5 @@
 library(nimble)
+library(coda)
 
 ## Data
 k <- 10
