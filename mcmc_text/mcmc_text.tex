@@ -2,7 +2,8 @@
 %% 2018年度 数理統計短期集合研修
 %%
 
-\documentclass[11pt,uplatex]{jsarticle}
+%\documentclass[11pt,uplatex]{jsarticle}
+\documentclass[11pt]{ltjsarticle}
 
 \usepackage{amsmath}
 \usepackage{ascmac}
@@ -10,8 +11,9 @@
 \usepackage{lmodern}
 \usepackage{boites}
 \usepackage{bm}
-\usepackage[deluxe]{otf}
-\usepackage[noto-otc]{pxchfon}
+%\usepackage[deluxe]{otf}
+%\usepackage[noto-otc]{pxchfon}
+\usepackage[match,deluxe,expert,bold,noto-otf]{luatexja-preset}
 \usepackage{listings}
 %\usepackage[T1]{fontenc}
 %\usepackage{textcomp}
@@ -121,30 +123,30 @@
 
 そして，ベイズ統計モデリングにおけるMCMCを一言で説明するなら，
 
-\vspace{2zw}
+\vspace{5mm}
 \hspace{10mm}
 \begin{minipage}{110mm}
 \begin{breakbox}
 \noindent
-{\large\bf 乱数を用いてマルコフ連鎖を生成し，それにより母数の事後分布を推定する手法}
+{\large\bfseries 乱数を用いてマルコフ連鎖を生成し，それにより母数の事後分布を推定する手法}
 \end{breakbox}
 \end{minipage}
-\vspace{2zw}
+\vspace{5mm}
 
 \noindent
 となるだろう。というのも，
 
-\vspace{2zw}
+\vspace{5mm}
 \hspace{10mm}
 \begin{minipage}{110mm}
 \begin{breakbox}
 \noindent
-{\large\bf うまく工夫したマルコフ連鎖をつくってやることにより，
+{\large\bfseries うまく工夫したマルコフ連鎖をつくってやることにより，
 事後分布からのサンプルと見なせる
 データをとりだすことができる}
 \end{breakbox}
 \end{minipage}
-\vspace{2zw}
+\vspace{5mm}
 
 \noindent
 からである。
@@ -344,10 +346,10 @@ RStanはCRANからインストール可能。
 %簡単な例題から。
 まずは次の例題をMCMCを使って解いてみる。
 
-\vspace{1zw}
+\vspace{5mm}
 
-\hspace{18mm}
-\begin{minipage}{100mm}
+\hspace{10mm}
+\begin{minipage}{120mm}
 \begin{breakbox}
 ポアソン分布することがわかっている ある母集団から，\\
 \hspace{10mm} $\bm{x} = (3, 1, 4, 3, 3, 6, 4, 1, 6, 4, 
@@ -356,19 +358,19 @@ RStanはCRANからインストール可能。
 \end{breakbox}
 \end{minipage}
 
-\vspace{1zw}
+\vspace{5mm}
 
 \subsubsection{JAGSによるポアソン回帰}
 
 まずここでは\textsf{R}から，\textsf{JAGS}を使ってポアソン回帰をおこなう。
 \textsf{R}スクリプトは，サンプルファイルの\texttt{example1.R}である。
 
-\vspace{1.5zw}
+\vspace{5mm}
 \begin{screen}
 以下，実行例をボックスの中にしめす。なお，``\texttt{>}''は入力行のプロンプトを，
 ``\texttt{+}''は，前の行からの継続をそれぞれ示す記号であり，実際には入力不要である。
 \end{screen}
-\vspace{0.5zw}
+\vspace{5mm}
 
 まずは，データをベクトル\texttt{x}に代入する。
 \begin{lstlisting}
@@ -425,7 +427,7 @@ Number of Fisher Scoring iterations: 4
         3.8 
 \end{lstlisting}
 
-\vspace{1zw}
+\vspace{5mm}
 
 ではここからいよいよ\textsf{JAGS}による解析を始めよう。
 \textsf{JAGS}は，\textsf{BUGS}言語で書かれたモデルのパラメーターをMCMCでベイズ推定する。
@@ -495,7 +497,7 @@ L(\bm{X} \mid \lambda) \mathrm{Pr}(\lambda) &=\begin{cases}
 \end{cases}
 \end{align*}
 
-\vspace{1zw}
+\vspace{5mm}
 
 ここでまた\textsf{R}のコードに戻ろう。
 まずは，\textsf{rjags}パッケージを読み込む。
@@ -871,10 +873,10 @@ Sample size per chain = 1000
 
 
 つぎに，以下の問題をMCMCを使用して解いてみる。
-\vspace{1zw}
+\vspace{5mm}
 
-\hspace{18mm}
-\begin{minipage}{100mm}
+\hspace{10mm}
+\begin{minipage}{120mm}
 \begin{breakbox}
 \noindent
 ある生物の集団があったとする。
@@ -887,7 +889,7 @@ $N$(=11)段階($\bm{x} = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)$単位)に薬品の�
 このとき，$\bm{x}$と$\bm{y}$との関係をモデル化し，パラメーターを推定する。
 \end{breakbox}
 \end{minipage}
-\vspace{1zw}
+\vspace{5mm}
 
 $\bm{x}$と$\bm{y}$との関係をプロットしてみると，図\ref{example2_plot}の
 ようになる。
@@ -1022,9 +1024,6 @@ p(X_i) &= \mathrm{logit}^{-1}(\beta+\beta_{x}X_i)) \notag \\
 
 そして，\texttt{coda.samples()}関数によりMCMCのサンプルを得る。
 各連鎖について，繰り返し回数3000回，サンプリング間隔3回としている。
-
-%ページ調整
-\vspace{1.5cm}
 
 \begin{lstlisting}
 > post <- coda.samples(model, n.iter = 4000, thin = 4,
@@ -1250,7 +1249,7 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 \label{mixed_model}
 
 以下の問題を考える。
-\vspace{1zw}
+\vspace{5mm}
 
 \hspace{18mm}
 \begin{minipage}{100mm}
@@ -1266,7 +1265,7 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 \end{breakbox}
 \end{minipage}
 
-\vspace{2zw}
+\vspace{5mm}
 
 \paragraph{データ}
 今回のデータはあらかじめファイルに保存してある。``\texttt{example3.csv}''から読み込む。
@@ -1323,7 +1322,7 @@ MCMC計算がうまくいかないときは，まず \textsf{R}コードおよ�
 \end{lstlisting}
 
 %ページ調整
-\vspace{4zw}
+\vspace{2cm}
 
 
 \texttt{x1}の内容を確認する。
@@ -1355,7 +1354,7 @@ $\beta$は線形モデル部分の切片，$\beta_{1}$，$\beta_{2}$はそれぞ
 係数である。
 
 このモデルをBUGS言語で記述すると以下のようになる。
-このモデルを，``\texttt{example3\_model.txt}''というファイル名で保存しておく。
+``\texttt{example3\_model.txt}''というファイル名で保存しておく。
 
 \begin{lstlisting}
 var
@@ -1473,8 +1472,7 @@ BUGS言語では，変数宣言は必ずしも必要ではないが，高次元�
 \paragraph{結果}
 
 結果は以下のようになる。
-%ページ調整
-\vspace{1zw}
+
 \begin{lstlisting}
 > gelman.diag(post)
 Potential scale reduction factors:
@@ -1568,6 +1566,9 @@ BUGS言語によるモデルは``\texttt{example3-1\_model.txt}''である。
 > n.row <- nrow(data)    # number of observations
 \end{lstlisting}
 
+%ページ調整
+\vspace{2cm}
+
 \texttt{data\$block}にどのブロックのデータであるかが格納されている。
 \begin{lstlisting}
 > data$block
@@ -1615,6 +1616,9 @@ model {
   sigma.B ~ dunif(0, 1.0E+4)
 }
 \end{lstlisting}
+
+%ページ調整
+\vspace{2cm}
 
 \paragraph{実行}
 
@@ -1670,6 +1674,9 @@ ggs_caterpillar(post.ggs, "e.B")
 
 このほか，\texttt{ggmcmc(post.ggs, "example3-output.pdf")}などとすると，各種の図を指定したファイル名のPDFにまとめて出力する。詳細はオンラインマニュアルなどを参照されたい。
 
+%ページ調整
+\clearpage
+
 %%
 %% Zero-Inflated Poissonモデル
 %%
@@ -1704,6 +1711,9 @@ ggs_caterpillar(post.ggs, "e.B")
   \caption{開空率と芽生えの発生数との関係}
   \label{example4_scatter}
 \end{figure}
+
+%ページ調整
+\vspace{1cm}
 
 単純に，誤差構造をポアソン分布（リンク関数をlog）とした一般化線形モデル（GLM）を適用すると，
 以下のような結果となる。
@@ -1793,6 +1803,9 @@ $\log\lambda = \beta + \beta_{x}X$であるとする。
 \paragraph{結果}
 これも同様に\textsf{rjags}を使って計算したところ
 （burn-in 2000回，繰り返し回数 10000回，サンプリング間隔 10回），結果は以下のようになった。
+
+%ページ調整
+\vspace{1.5cm}
 
 \begin{lstlisting}
 > summary(post)
