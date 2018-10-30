@@ -5,7 +5,7 @@
 ## テキストと投影資料
 - [テキスト(PDF)](https://figshare.com/articles/_____MCMC/5615539)(CC-BY 4.0)
 
-- [投影資料(PDF)](https://www.dropbox.com/s/42dehp1b6cme8eh/mcmc_slide.pdf?dl=0)
+- [投影資料(PDF)](https://www.dropbox.com/s/vt57fktmfpg23dm/mcmc_slide.pdf?dl=0)
 
 
 ## 例題1: ポアソン回帰
