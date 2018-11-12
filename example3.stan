@@ -22,8 +22,7 @@ transformed parameters {
 }
 
 model {
-  // Improper uniform priors are implicitly defined on e, beta,
-  // and sigma.
+  // Improper uniform priors are implicitly defined on beta and sigma.
 
   // Vectorized
   Y ~ normal(mu, sigma[1]);
