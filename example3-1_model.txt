@@ -16,6 +16,8 @@ model {
     mu[i] <- beta + beta.1 * X1[i] +
                     beta.2 * X2[i] + e.B[B[i]]
   }
+
+  # Prior of the random effect
   for (i in 1:M) {
     e.B[i] ~ dnorm(0, tau.B)
   }
